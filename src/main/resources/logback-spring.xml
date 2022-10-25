@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径-->
+    <property name="BASE_PATH" value="/logs/admin"/>
+    <!-- 控制台输出 -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread][%X{globalId}] %logger{20}.%M\(%F:%L\): %msg%n</pattern>
+<!--            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(%-5level) [%thread] %logger{20}.%M\(%F:%L\): %msg%n</pattern>-->
+        </layout>
+    </appender>
+
+    <appender name="appLogAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <!--            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(%-5level) [%thread] %logger{20}.%M\(%F:%L\): %msg%n</pattern>-->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread][%X{globalId}] %logger{20}.%M\(%F:%L\): %msg%n</pattern>
+        </encoder>
+        <file>${BASE_PATH}/admin.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${BASE_PATH}/%d{yyyy-MM-dd}/admin.%i.log</fileNamePattern>
+            <maxFileSize>500MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>20GB</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+    <appender name="errorAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <Append>true</Append>
+        <file>${BASE_PATH}/admin-error.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${BASE_PATH}/%d{yyyy-MM-dd}/admin-error.%i.log</fileNamePattern>
+            <maxFileSize>500MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>20GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>
+                <![CDATA[[%d{yyyy-MM-dd HH:mm:ss.SSSZ} ] - %X{method} %X{requestURIWithQueryString} [ip=%X{remoteAddr}, ref=%X{referrer}, ua=%X{userAgent}, sid=%X{cookie.JSESSIONID}]%n  %-5level %logger{35} - %m%n]]>
+            </pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!-- 异步输出 -->
+    <appender name="ASYNC_FILE" class="ch.qos.logback.classic.AsyncAppender">
+        <!-- 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 -->
+        <discardingThreshold>20</discardingThreshold>
+        <!-- 更改默认的队列的深度,该值会影响性能.默认值为256 -->
+        <queueSize>512</queueSize>
+        <!-- 添加附加的appender,最多只能添加一个 -->
+        <appender-ref ref="appLogAppender"/>
+    </appender>
+
+    <!-- 日志输出级别 -->
+    <root level="INFO">
+        <springProfile name="dev,prod">
+            <appender-ref ref="CONSOLE"/>
+        </springProfile>
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="ASYNC_FILE"/>
+        <appender-ref ref="errorAppender"/>
+    </root>
+
+    <springProfile name="default">
+        <root>
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="dev">
+        <root>
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="ASYNC_FILE"/>
+            <appender-ref ref="errorAppender"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="test">
+        <root>
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="ASYNC_FILE"/>
+            <appender-ref ref="errorAppender"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="pre">
+        <root>
+            <appender-ref ref="ASYNC_FILE"/>
+            <appender-ref ref="errorAppender"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="prod">
+        <root>
+            <appender-ref ref="ASYNC_FILE"/>
+            <appender-ref ref="errorAppender"/>
+        </root>
+    </springProfile>
+</configuration>

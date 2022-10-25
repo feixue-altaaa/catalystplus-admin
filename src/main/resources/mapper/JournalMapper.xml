@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.catalystplus.admin.mapper.JournalMapper">
+
+    <resultMap id="BaseResultMap" type="com.catalystplus.admin.entity.Journal">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="isbn" column="isbn" jdbcType="VARCHAR"/>
+            <result property="issn" column="issn" jdbcType="VARCHAR"/>
+            <result property="issnPrimaryFormatted" column="issn_primary_formatted" jdbcType="VARCHAR"/>
+            <result property="enName" column="en_name" jdbcType="VARCHAR"/>
+            <result property="chName" column="ch_name" jdbcType="VARCHAR"/>
+            <result property="description" column="description" jdbcType="VARCHAR"/>
+            <result property="cover" column="cover" jdbcType="VARCHAR"/>
+            <result property="subjectId" column="subject_id" jdbcType="BIGINT"/>
+            <result property="publisherId" column="publisher_id" jdbcType="BIGINT"/>
+            <result property="informationPageUrl" column="information_page_url" jdbcType="VARCHAR"/>
+            <result property="impactFactor" column="impact_factor" jdbcType="DOUBLE"/>
+            <result property="top" column="top" jdbcType="TINYINT"/>
+            <result property="openAccess" column="open_access" jdbcType="TINYINT"/>
+            <result property="review" column="review" jdbcType="TINYINT"/>
+            <result property="quartile" column="quartile" jdbcType="TINYINT"/>
+            <result property="subQuartile" column="sub_quartile" jdbcType="TINYINT"/>
+            <result property="status" column="status" jdbcType="TINYINT"/>
+            <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
+            <result property="updatedTime" column="updated_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,isbn,issn,
+        issn_primary_formatted,en_name,ch_name,
+        description,cover,subject_id,
+        publisher_id,information_page_url,impact_factor,
+        top,open_access,review,
+        quartile,sub_quartile,status,
+        created_time,updated_time
+    </sql>
+</mapper>
