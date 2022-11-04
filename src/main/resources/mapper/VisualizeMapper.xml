@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.catalystplus.admin.mapper.VisualizeMapper">
+
+    <resultMap id="BaseResultMap" type="com.catalystplus.admin.entity.Visualize">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="pv" column="pv" jdbcType="BIGINT"/>
+            <result property="uv" column="uv" jdbcType="BIGINT"/>
+            <result property="au" column="au" jdbcType="BIGINT"/>
+            <result property="ru" column="ru" jdbcType="BIGINT"/>
+            <result property="cu" column="cu" jdbcType="BIGINT"/>
+            <result property="ptl" column="ptl" jdbcType="BIGINT"/>
+            <result property="ctl" column="ctl" jdbcType="BIGINT"/>
+            <result property="dau" column="dau" jdbcType="BIGINT"/>
+            <result property="status" column="status" jdbcType="TINYINT"/>
+            <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
+            <result property="updatedTime" column="updated_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,pv,uv,
+        au,ru,cu,
+        ptl,ctl,dau,
+        status,created_time,updated_time
+    </sql>
+</mapper>

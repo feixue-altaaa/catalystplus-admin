@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import static com.catalystplus.admin.config.GlobalAspect.GLOBAL_ID;
+import static com.catalystplus.admin.config.GlobalAspect.*;
 
 /**
  * @Author 蓝染
@@ -35,8 +35,10 @@ public class SubjectController implements SubjectApi {
         //1. 参数验证
         log.info("subjectByAreaIdVo: {}", subjectByAreaIdVo);
         if (Assert.notEmpty(subjectByAreaIdVo.getAreaId())) {
-            return Response.fail(GLOBAL_ID.get(), subjectByAreaIdVo.getUserId(), ResponseCode.SUBJECT_AREAID_ERROR.getCode(), ResponseCode.SUBJECT_AREAID_ERROR.getMsg());
+            return Response.fail(subjectByAreaIdVo.getUserId(), ResponseCode.SUBJECT_AREAID_ERROR.getCode(), ResponseCode.SUBJECT_AREAID_ERROR.getMsg());
         }
+        PAGE_NO.set(subjectByAreaIdVo.getPageNo());
+        PAGE_SIZE.set(subjectByAreaIdVo.getPageSize());
         List<SubjectResponse> subjectResponses;
 
         //2. 通过领域ID查询主题
@@ -44,10 +46,10 @@ public class SubjectController implements SubjectApi {
             subjectResponses = subjectManager.getSubjectByAreaId(subjectByAreaIdVo);
         } catch (Exception e) {
             log.error(e.getMessage());
-            return Response.fail(GLOBAL_ID.get(), subjectByAreaIdVo.getUserId(), e.getMessage());
+            return Response.fail(subjectByAreaIdVo.getUserId(), e.getMessage());
         }
 
-        return Response.success(GLOBAL_ID.get(), subjectByAreaIdVo.getUserId(), subjectResponses);
+        return Response.success(subjectByAreaIdVo.getUserId(), subjectResponses);
     }
 
 
@@ -57,10 +59,10 @@ public class SubjectController implements SubjectApi {
         //1. 参数验证
         log.info("subjectId: {},  areaId: {}", subjectId, areaId);
         if (Assert.notEmpty(subjectId)) {
-            return Response.fail(GLOBAL_ID.get(), null, ResponseCode.SUBJECT_AREAID_ERROR.getCode(), ResponseCode.SUBJECT_AREAID_ERROR.getMsg());
+            return Response.fail(null, ResponseCode.SUBJECT_AREAID_ERROR.getCode(), ResponseCode.SUBJECT_AREAID_ERROR.getMsg());
         }
         if (Assert.notEmpty(areaId)) {
-            return Response.fail(GLOBAL_ID.get(), null, ResponseCode.SUBJECT_AREAID_ERROR.getCode(), ResponseCode.SUBJECT_AREAID_ERROR.getMsg());
+            return Response.fail(null, ResponseCode.SUBJECT_AREAID_ERROR.getCode(), ResponseCode.SUBJECT_AREAID_ERROR.getMsg());
         }
 
         //2. 通过领域ID查询主题
@@ -68,9 +70,29 @@ public class SubjectController implements SubjectApi {
             subjectManager.updateSubjectByAreaId(subjectId, areaId);
         } catch (Exception e) {
             log.error(e.getMessage());
-            return Response.fail(GLOBAL_ID.get(), null, e.getMessage());
+            return Response.fail(null, e.getMessage());
         }
 
-        return Response.success(GLOBAL_ID.get(), null, null);
+        return Response.success(null, null);
+    }
+
+    @Override
+    public Response<List<SubjectResponse>> getSubject(SubjectByAreaIdVo subjectByAreaIdVo) {
+
+        //1. 参数验证
+        log.info("subjectByAreaIdVo: {}", subjectByAreaIdVo);
+        PAGE_NO.set(subjectByAreaIdVo.getPageNo());
+        PAGE_SIZE.set(subjectByAreaIdVo.getPageSize());
+        List<SubjectResponse> subjectResponses;
+
+        //2. 通过领域ID查询主题
+        try {
+            subjectResponses = subjectManager.getSubject(subjectByAreaIdVo);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return Response.fail(subjectByAreaIdVo.getUserId(), e.getMessage());
+        }
+
+        return Response.success(subjectByAreaIdVo.getUserId(), subjectResponses);
     }
 }

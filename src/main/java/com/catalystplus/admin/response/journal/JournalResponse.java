@@ -1,5 +1,6 @@
 package com.catalystplus.admin.response.journal;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -19,8 +20,14 @@ public class JournalResponse implements Serializable {
 
     private static final long serialVersionUID = -1418217707640656576L;
 
-    @ApiModelProperty("期刊ID")
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    @ApiModelProperty("表序列，除了查找文献以外，其他都用这个这个id")
     private Long id;
+
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    @ApiModelProperty("真实唯一journalId，查找文献用这个id")
+    private Long journalId;
 
     /**
      * 期刊名字, en_name:英文名
@@ -61,4 +68,5 @@ public class JournalResponse implements Serializable {
      */
     @ApiModelProperty("期刊出版商")
     private String publisher;
+
 }

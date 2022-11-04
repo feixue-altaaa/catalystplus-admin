@@ -1,5 +1,6 @@
 package com.catalystplus.admin.mapper;
 
+import com.baomidou.mybatisplus.core.metadata.PageList;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.catalystplus.admin.entity.Journal;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -26,7 +27,7 @@ public interface JournalMapper extends BaseMapper<Journal> {
             "LEFT JOIN publisher pub ON pub.id = j.publisher_id",
             "LEFT JOIN subject s ON s.id = j.subject_id",
             "WHERE j.subject_id = #{subjectId}"})
-    List<Journal> getJournalBySubjectId(Page<Journal> page, Long subjectId);
+    Page<Journal> getJournalBySubjectId(Page<Journal> page, Long subjectId);
 }
 
 

@@ -32,4 +32,9 @@ public interface JournalApi {
     );
 
 
+    @PostMapping("/auth/journal/page")
+    @ApiOperation("通过主题ID查找期刊")
+    Response<List<JournalResponse>> getJournal(@RequestBody JournalBySubjectIdVo journalBySubjectIdVo);
+
+
 }

@@ -16,4 +16,6 @@ public interface SubjectManager {
     List<SubjectResponse> getSubjectByAreaId(SubjectByAreaIdVo subjectByAreaIdVo);
 
     void updateSubjectByAreaId(Long subjectId, Long areaId);
+
+    List<SubjectResponse> getSubject(SubjectByAreaIdVo subjectByAreaIdVo);
 }

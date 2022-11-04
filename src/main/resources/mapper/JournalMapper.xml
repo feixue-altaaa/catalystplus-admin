@@ -6,6 +6,7 @@
 
     <resultMap id="BaseResultMap" type="com.catalystplus.admin.entity.Journal">
             <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="journalId" column="journal_id" jdbcType="BIGINT"/>
             <result property="isbn" column="isbn" jdbcType="VARCHAR"/>
             <result property="issn" column="issn" jdbcType="VARCHAR"/>
             <result property="issnPrimaryFormatted" column="issn_primary_formatted" jdbcType="VARCHAR"/>
@@ -28,12 +29,12 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,isbn,issn,
-        issn_primary_formatted,en_name,ch_name,
-        description,cover,subject_id,
-        publisher_id,information_page_url,impact_factor,
-        top,open_access,review,
-        quartile,sub_quartile,status,
-        created_time,updated_time
+        id,journal_id,isbn,
+        issn,issn_primary_formatted,en_name,
+        ch_name,description,cover,
+        subject_id,publisher_id,information_page_url,
+        impact_factor,top,open_access,
+        review,quartile,sub_quartile,
+        status,created_time,updated_time
     </sql>
 </mapper>

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import static com.catalystplus.admin.config.GlobalAspect.GLOBAL_ID;
+import static com.catalystplus.admin.config.GlobalAspect.*;
 
 /**
  * @Author 蓝染
@@ -33,8 +33,10 @@ public class JournalController implements JournalApi {
         //1. 参数验证
         log.info("journalBySubjectIdVo: {}", journalBySubjectIdVo);
         if (Assert.notEmpty(journalBySubjectIdVo.getSubjectId())) {
-            return Response.fail(GLOBAL_ID.get(), journalBySubjectIdVo.getUserId(), ResponseCode.JOURNAL_SUBJECTID_ERROR.getCode(), ResponseCode.JOURNAL_SUBJECTID_ERROR.getMsg());
+            return Response.fail(journalBySubjectIdVo.getUserId(), ResponseCode.JOURNAL_SUBJECTID_ERROR.getCode(), ResponseCode.JOURNAL_SUBJECTID_ERROR.getMsg());
         }
+        PAGE_NO.set(journalBySubjectIdVo.getPageNo());
+        PAGE_SIZE.set(journalBySubjectIdVo.getPageSize());
         List<JournalResponse> journalResponses;
 
         //2. 通过主题ID查询期刊
@@ -42,10 +44,10 @@ public class JournalController implements JournalApi {
             journalResponses = journalManager.getJournalBySubjectId(journalBySubjectIdVo);
         } catch (Exception e) {
             log.error(e.getMessage());
-            return Response.fail(GLOBAL_ID.get(), journalBySubjectIdVo.getUserId(), e.getMessage());
+            return Response.fail(journalBySubjectIdVo.getUserId(), e.getMessage());
         }
 
-        return Response.success(GLOBAL_ID.get(), journalBySubjectIdVo.getUserId(), journalResponses);
+        return Response.success(journalBySubjectIdVo.getUserId(), journalResponses);
     }
 
     @Override
@@ -54,7 +56,7 @@ public class JournalController implements JournalApi {
         //1. 参数验证
         log.info("journalId: {}, subjectId: {}, publisherId: {}", journalId, subjectId, publisherId);
         if (Assert.notEmpty(journalId)) {
-            return Response.fail(GLOBAL_ID.get(), null, ResponseCode.JOURNAL_SUBSCRIBE_ERROR.getCode(), ResponseCode.JOURNAL_SUBSCRIBE_ERROR.getMsg());
+            return Response.fail(null, ResponseCode.JOURNAL_SUBSCRIBE_ERROR.getCode(), ResponseCode.JOURNAL_SUBSCRIBE_ERROR.getMsg());
         }
 
         //2. 通过主题ID或者出版商ID修改期刊关联
@@ -62,9 +64,30 @@ public class JournalController implements JournalApi {
             journalManager.updateJournalBySidOrPid(journalId, subjectId, publisherId);
         } catch (Exception e) {
             log.error(e.getMessage());
-            return Response.fail(GLOBAL_ID.get(), null, e.getMessage());
+            return Response.fail(null, e.getMessage());
         }
 
-        return Response.success(GLOBAL_ID.get(), null, null);
+        return Response.success(null, null);
+    }
+
+    @Override
+    public Response<List<JournalResponse>> getJournal(JournalBySubjectIdVo journalBySubjectIdVo) {
+
+        //1. 参数验证
+        log.info("journalBySubjectIdVo: {}", journalBySubjectIdVo);
+
+        PAGE_NO.set(journalBySubjectIdVo.getPageNo());
+        PAGE_SIZE.set(journalBySubjectIdVo.getPageSize());
+        List<JournalResponse> journalResponses;
+
+        //2. 通过主题ID查询期刊
+        try {
+            journalResponses = journalManager.getJournal(journalBySubjectIdVo);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return Response.fail(journalBySubjectIdVo.getUserId(), e.getMessage());
+        }
+
+        return Response.success(journalBySubjectIdVo.getUserId(), journalResponses);
     }
 }

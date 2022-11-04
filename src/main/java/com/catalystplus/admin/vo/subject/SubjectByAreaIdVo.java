@@ -28,6 +28,6 @@ public class SubjectByAreaIdVo implements Serializable {
     private Integer pageNo = 1;
 
     @ApiModelProperty("每页数量")
-    private Integer pageSize = 100;
+    private Integer pageSize = 20;
 
 }

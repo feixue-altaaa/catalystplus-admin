@@ -16,4 +16,6 @@ public interface JournalManager {
     List<JournalResponse> getJournalBySubjectId(JournalBySubjectIdVo journalBySubjectIdVo);
 
     void updateJournalBySidOrPid(Long journalId, Long subjectId, Long publisherId);
+
+    List<JournalResponse> getJournal(JournalBySubjectIdVo journalBySubjectIdVo);
 }

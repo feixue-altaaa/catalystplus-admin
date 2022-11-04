@@ -16,10 +16,15 @@ import lombok.Data;
 @Data
 public class Journal implements Serializable {
     /**
-     * 期刊id, 使用雪花算法, 关闭自增
+     * id，自增
      */
     @TableId(type = IdType.AUTO)
     private Long id;
+
+    /**
+     * 期刊id，使用自带id, 关闭自增
+     */
+    private Long journalId;
 
     /**
      * ISBN编号, 国际标准书号
@@ -57,21 +62,14 @@ public class Journal implements Serializable {
     private String cover;
 
     /**
-     * 期刊关联subject主题表
+     * 期刊关联subject主题表,
      */
     private Long subjectId;
-
-    private String subjectName;
 
     /**
      * 关联publisher出版商表
      */
     private Long publisherId;
-
-    /**
-     * publisher名字
-     */
-    private String publisher;
 
     /**
      * 出版商的详细信息页链接
@@ -139,6 +137,7 @@ public class Journal implements Serializable {
         }
         Journal other = (Journal) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
+            && (this.getJournalId() == null ? other.getJournalId() == null : this.getJournalId().equals(other.getJournalId()))
             && (this.getIsbn() == null ? other.getIsbn() == null : this.getIsbn().equals(other.getIsbn()))
             && (this.getIssn() == null ? other.getIssn() == null : this.getIssn().equals(other.getIssn()))
             && (this.getIssnPrimaryFormatted() == null ? other.getIssnPrimaryFormatted() == null : this.getIssnPrimaryFormatted().equals(other.getIssnPrimaryFormatted()))
@@ -165,6 +164,7 @@ public class Journal implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
+        result = prime * result + ((getJournalId() == null) ? 0 : getJournalId().hashCode());
         result = prime * result + ((getIsbn() == null) ? 0 : getIsbn().hashCode());
         result = prime * result + ((getIssn() == null) ? 0 : getIssn().hashCode());
         result = prime * result + ((getIssnPrimaryFormatted() == null) ? 0 : getIssnPrimaryFormatted().hashCode());
@@ -194,6 +194,7 @@ public class Journal implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
+        sb.append(", journalId=").append(journalId);
         sb.append(", isbn=").append(isbn);
         sb.append(", issn=").append(issn);
         sb.append(", issnPrimaryFormatted=").append(issnPrimaryFormatted);

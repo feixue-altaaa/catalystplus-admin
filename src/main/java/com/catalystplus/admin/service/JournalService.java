@@ -13,4 +13,5 @@ import java.util.List;
 public interface JournalService extends IService<Journal> {
 
     List<Journal> getJournalBySubjectId(long subjectId, int pageNo, int pageSize);
+
 }

@@ -31,20 +31,20 @@ public class UnifiedExceptionhandler {
     @ExceptionHandler(value = Exception.class)
     public Response<String> handleException(Exception e) {
         log.error(e.getMessage(), e);
-        return Response.error(null, null, e.getMessage());
+        return Response.error( null, e.getMessage());
     }
 
     @ExceptionHandler(value = BadSqlGrammarException.class)
     public Response<String> handleException(BadSqlGrammarException e) {
         log.error(e.getMessage(), e);
-        return Response.error(null, null, ResponseCode.BAD_SQL_GRAMMAR_ERROR.getMsg());
+        return Response.error( null, ResponseCode.BAD_SQL_GRAMMAR_ERROR.getMsg());
     }
 
 
     @ExceptionHandler(value = BusinessException.class)
     public Response<String> handleException(BusinessException e) {
         log.error(e.getMessage(), e);
-        return Response.error(null, null, e.getCode(), e.getMessage());
+        return Response.error( null, e.getCode(), e.getMessage());
     }
 
     /**
@@ -69,6 +69,6 @@ public class UnifiedExceptionhandler {
     public Response<String> handleServletException(Exception e) {
         log.error(e.getMessage(), e);
         //SERVLET_ERROR(-102, "servlet请求异常"),
-        return Response.error(null, null, ResponseCode.SERVLET_ERROR.getCode(), ResponseCode.SERVLET_ERROR.getMsg());
+        return Response.error( null, ResponseCode.SERVLET_ERROR.getCode(), ResponseCode.SERVLET_ERROR.getMsg());
     }
 }

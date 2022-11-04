@@ -30,5 +30,8 @@ public interface SubjectApi {
             @RequestParam Long areaId
     );
 
+    @PostMapping("/auth/subject/page")
+    @ApiOperation("通过领域ID查找主题")
+    Response<List<SubjectResponse>> getSubject(@RequestBody SubjectByAreaIdVo subjectByAreaIdVo);
 
 }

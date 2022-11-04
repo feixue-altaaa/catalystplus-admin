@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.catalystplus.admin.config.GlobalAspect.PAGE_TOTAL;
+
 /**
 * @author lanran
 * @description 针对表【journal(期刊信息表)】的数据库操作Service实现
@@ -24,7 +26,10 @@ public class JournalServiceImpl extends ServiceImpl<JournalMapper, Journal> impl
 //        LambdaQueryWrapper<Journal> subjectLambdaQueryWrapper = new LambdaQueryWrapper<>();
 //        subjectLambdaQueryWrapper.eq(Journal::getSubjectId, subjectId);
 //        Page<Journal> journalPage = this.baseMapper.selectPage(page, subjectLambdaQueryWrapper);
-        return this.baseMapper.getJournalBySubjectId(page, subjectId);
+        Page<Journal> journalPage = this.baseMapper.getJournalBySubjectId(page, subjectId);
+        PAGE_TOTAL.set(journalPage.getTotal());
+
+        return journalPage.getRecords();
     }
 
 }

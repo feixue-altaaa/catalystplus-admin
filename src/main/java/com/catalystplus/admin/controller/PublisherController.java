@@ -34,10 +34,10 @@ public class PublisherController implements PublisherApi {
             publisherResponses = publisherManager.getPublisher();
         } catch (Exception e) {
             log.error(e.getMessage());
-            return Response.fail(GlobalAspect.GLOBAL_ID.get(), null, e.getMessage());
+            return Response.fail(null, e.getMessage());
         }
 
-        return Response.success(GlobalAspect.GLOBAL_ID.get(), null, publisherResponses);
+        return Response.success(null, publisherResponses);
     }
 
 }

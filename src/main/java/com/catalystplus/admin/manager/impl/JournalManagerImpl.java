@@ -1,5 +1,6 @@
 package com.catalystplus.admin.manager.impl;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.catalystplus.admin.entity.Journal;
 import com.catalystplus.admin.manager.JournalManager;
 import com.catalystplus.admin.response.journal.JournalResponse;
@@ -15,6 +16,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static com.catalystplus.admin.config.GlobalAspect.PAGE_TOTAL;
 
 /**
  * @Author 蓝染
@@ -66,5 +69,30 @@ public class JournalManagerImpl implements JournalManager {
         if (!journalService.updateById(journal)) {
             throw new RuntimeException("journal期刊更新失败");
         }
+    }
+
+    @Override
+    public List<JournalResponse> getJournal(JournalBySubjectIdVo journalBySubjectIdVo) {
+
+        //1. 初始化
+        List<JournalResponse> journalResponses = Lists.newArrayList();
+
+        //2. 查询journal
+        Page<Journal> journalPage = new Page<>(journalBySubjectIdVo.getPageNo(), journalBySubjectIdVo.getPageSize());
+        Page<Journal> page = journalService.page(journalPage);
+        PAGE_TOTAL.set(journalPage.getTotal());
+        List<Journal> journals = page.getRecords();
+
+        //3. 组装响应
+        journals.forEach(journal -> {
+            JournalResponse journalResponse = new JournalResponse();
+            BeanUtils.copyProperties(journal, journalResponse);
+            journalResponses.add(journalResponse);
+        });
+        journals.clear();
+
+        //3. 先根据分区排序，再根据英文名排序
+        // return journalResponses.parallelStream().sorted(Comparator.comparing(JournalResponse::getQuartile).thenComparing(JournalResponse::getEnName)).collect(Collectors.toList());
+        return journalResponses;
     }
 }

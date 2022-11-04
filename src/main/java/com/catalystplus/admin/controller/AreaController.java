@@ -36,9 +36,9 @@ public class AreaController implements AreaApi {
             areaResponses = areaManager.getArea();
         } catch (Exception e) {
             log.error(e.getMessage());
-            return Response.fail(GLOBAL_ID.get(), null, e.getMessage());
+            return Response.fail(null, e.getMessage());
         }
 
-        return Response.success(GLOBAL_ID.get(), null, areaResponses);
+        return Response.success(null, areaResponses);
     }
 }

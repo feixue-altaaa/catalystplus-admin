@@ -1,5 +1,6 @@
 package com.catalystplus.admin.manager.impl;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.catalystplus.admin.entity.Subject;
 import com.catalystplus.admin.manager.SubjectManager;
 import com.catalystplus.admin.response.subject.SubjectResponse;
@@ -12,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static com.catalystplus.admin.config.GlobalAspect.PAGE_TOTAL;
 
 /**
  * @Author 蓝染
@@ -59,5 +62,30 @@ public class SubjectManagerImpl implements SubjectManager {
         if(!subjectService.updateById(subject)){
             throw new RuntimeException("subject主题更新失败");
         }
+    }
+
+    @Override
+    public List<SubjectResponse> getSubject(SubjectByAreaIdVo subjectByAreaIdVo) {
+
+        //1. 初始化
+        List<SubjectResponse> subjectResponses = Lists.newArrayList();
+
+        //2. 查询主题
+        Page<Subject> page = new Page<>(subjectByAreaIdVo.getPageNo(), subjectByAreaIdVo.getPageSize());
+        Page<Subject> subjectPage = subjectService.page(page);
+        PAGE_TOTAL.set(subjectPage.getTotal());
+        List<Subject> subjects = subjectPage.getRecords();
+
+
+        subjects.forEach(subject -> {
+            SubjectResponse subjectResponse = new SubjectResponse();
+            BeanUtils.copyProperties(subject, subjectResponse);
+            subjectResponses.add(subjectResponse);
+        });
+
+        //2. 清空数据，释放内存
+        subjects.clear();
+        //3. 通过中文名字母排序
+        return subjectResponses;
     }
 }

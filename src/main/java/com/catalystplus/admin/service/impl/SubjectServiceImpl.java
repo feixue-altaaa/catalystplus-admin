@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.catalystplus.admin.config.GlobalAspect.PAGE_TOTAL;
+
 /**
  * @author lanran
  * @description 针对表【subject(主题信息表)】的数据库操作Service实现
@@ -24,6 +26,7 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
         LambdaQueryWrapper<Subject> subjectLambdaQueryWrapper = new LambdaQueryWrapper<>();
         subjectLambdaQueryWrapper.eq(Subject::getAreaId, areaId);
         Page<Subject> subjectPage = this.baseMapper.selectPage(page, subjectLambdaQueryWrapper);
+        PAGE_TOTAL.set(subjectPage.getTotal());
         return subjectPage.getRecords();
     }
 }

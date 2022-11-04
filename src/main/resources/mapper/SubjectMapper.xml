@@ -6,17 +6,22 @@
 
     <resultMap id="BaseResultMap" type="com.catalystplus.admin.entity.Subject">
             <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="subjectId" column="subject_id" jdbcType="INTEGER"/>
+            <result property="journalName" column="journal_name" jdbcType="VARCHAR"/>
             <result property="enName" column="en_name" jdbcType="VARCHAR"/>
             <result property="chName" column="ch_name" jdbcType="VARCHAR"/>
             <result property="areaId" column="area_id" jdbcType="BIGINT"/>
+            <result property="areaParition" column="area_parition" jdbcType="INTEGER"/>
+            <result property="subjectPartition" column="subject_partition" jdbcType="INTEGER"/>
             <result property="status" column="status" jdbcType="TINYINT"/>
             <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
             <result property="updatedTime" column="updated_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,en_name,ch_name,
-        area_id,status,created_time,
-        updated_time
+        id,subject_id,journal_name,
+        en_name,ch_name,area_id,
+        area_parition,subject_partition,status,
+        created_time,updated_time
     </sql>
 </mapper>

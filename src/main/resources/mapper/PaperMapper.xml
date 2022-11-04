@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.catalystplus.admin.mapper.PaperMapper">
+
+    <resultMap id="BaseResultMap" type="com.catalystplus.admin.entity.Paper">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="detailUrl" column="detail_url" jdbcType="VARCHAR"/>
+            <result property="journalId" column="journal_id" jdbcType="BIGINT"/>
+            <result property="journalName" column="journal_name" jdbcType="VARCHAR"/>
+            <result property="enName" column="en_name" jdbcType="VARCHAR"/>
+            <result property="chName" column="ch_name" jdbcType="VARCHAR"/>
+            <result property="keyword" column="keyword" jdbcType="VARCHAR"/>
+            <result property="imageUrl" column="image_url" jdbcType="VARCHAR"/>
+            <result property="coverDateStart" column="cover_date_start" jdbcType="VARCHAR"/>
+            <result property="doi" column="doi" jdbcType="VARCHAR"/>
+            <result property="pdfDownloadUrl" column="pdf_download_url" jdbcType="VARCHAR"/>
+            <result property="hubJumpUrl" column="hub_jump_url" jdbcType="VARCHAR"/>
+            <result property="hubPdfUrl" column="hub_pdf_url" jdbcType="VARCHAR"/>
+            <result property="authors" column="authors" jdbcType="VARCHAR"/>
+            <result property="enAbstract" column="en_abstract" jdbcType="VARCHAR"/>
+            <result property="chAbstract" column="ch_abstract" jdbcType="VARCHAR"/>
+            <result property="highlights" column="highlights" jdbcType="VARCHAR"/>
+            <result property="graphicalAbstract" column="graphical_abstract" jdbcType="VARCHAR"/>
+            <result property="popularity" column="popularity" jdbcType="BIGINT"/>
+            <result property="clickCount" column="click_count" jdbcType="BIGINT"/>
+            <result property="timeFrequency" column="time_frequency" jdbcType="BIGINT"/>
+            <result property="good" column="good" jdbcType="BIGINT"/>
+            <result property="status" column="status" jdbcType="TINYINT"/>
+            <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
+            <result property="updatedTime" column="updated_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,detail_url,journal_id,
+        journal_name,en_name,ch_name,
+        keyword,image_url,cover_date_start,
+        doi,pdf_download_url,hub_jump_url,
+        hub_pdf_url,authors,en_abstract,
+        ch_abstract,highlights,graphical_abstract,
+        popularity,click_count,time_frequency,
+        good,status,created_time,
+        updated_time
+    </sql>
+</mapper>

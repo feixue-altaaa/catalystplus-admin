@@ -26,6 +26,9 @@ public class GlobalAspect {
     public static final NamedThreadLocal<String> GLOBAL_ID = new NamedThreadLocal<>("GlobalId");
     public static final NamedThreadLocal<String> REQUEST_IP = new NamedThreadLocal<>("RequestIp");
     public static final NamedThreadLocal<LocalDateTime> REQUEST_TIME = new NamedThreadLocal<>("RequestTime");
+    public static final NamedThreadLocal<Integer> PAGE_NO = new NamedThreadLocal<>("PageNo");
+    public static final NamedThreadLocal<Integer> PAGE_SIZE = new NamedThreadLocal<>("PageSize");
+    public static final NamedThreadLocal<Long> PAGE_TOTAL = new NamedThreadLocal<>("PageTotal");
 
     /**
      * 保存每个线程调用方法名
@@ -41,12 +44,13 @@ public class GlobalAspect {
      */
     private static final NamedThreadLocal<Long> START_TIME_THREAD_LOCAL = new NamedThreadLocal<>("startTime");
 
-    @Pointcut("execution(public * com.catalystplus.library.controller..*.*(..))")
+    @Pointcut("execution(public * com.catalystplus.admin.controller..*.*(..))")
     public void pointCut() {
     }
 
     @Before("pointCut()")
     public void before(JoinPoint joinPoint) {
+        log.info("aaaaaaaaaaaaaaaa");
         try {
             REQUEST_TIME.set(LocalDateTime.now());
             final ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
@@ -106,5 +110,8 @@ public class GlobalAspect {
         REQUEST_METHOD_THREAD_LOCAL.remove();
         REQUEST_IP.remove();
         REQUEST_TIME.remove();
+        PAGE_NO.remove();
+        PAGE_SIZE.remove();
+        PAGE_TOTAL.remove();
     }
 }
