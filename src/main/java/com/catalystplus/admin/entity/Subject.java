@@ -24,7 +24,7 @@ public class Subject implements Serializable {
     /**
      * lanran端数据显示需要该字段，在志洋数据解析阶段依然用自增id为subject_id
      */
-    private Integer subjectId;
+    private Long subjectId;
 
     /**
      * 期刊名称

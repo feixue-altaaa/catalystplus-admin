@@ -1,7 +1,9 @@
 package com.catalystplus.admin.manager.impl;
 
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.catalystplus.admin.entity.Subject;
+import com.catalystplus.admin.entity.SubjectJournal;
 import com.catalystplus.admin.manager.SubjectManager;
 import com.catalystplus.admin.response.subject.SubjectResponse;
 import com.catalystplus.admin.service.SubjectService;
@@ -42,6 +44,7 @@ public class SubjectManagerImpl implements SubjectManager {
         subjects.forEach(subject -> {
             SubjectResponse subjectResponse = new SubjectResponse();
             BeanUtils.copyProperties(subject, subjectResponse);
+            subjectResponse.setId(subject.getSubjectId());
             subjectResponses.add(subjectResponse);
         });
 
@@ -49,19 +52,19 @@ public class SubjectManagerImpl implements SubjectManager {
         subjects.clear();
         //3. 通过中文名字母排序
         return subjectResponses;
-       // return subjectResponses.parallelStream().sorted(Comparator.comparing(SubjectResponse::getChName, Collator.getInstance(Locale.CHINA))).collect(Collectors.toList());
+        // return subjectResponses.parallelStream().sorted(Comparator.comparing(SubjectResponse::getChName, Collator.getInstance(Locale.CHINA))).collect(Collectors.toList());
     }
 
     @Override
     public void updateSubjectByAreaId(Long subjectId, Long areaId) {
 
-        Subject subject = new Subject();
-        subject.setId(subjectId);
-        subject.setAreaId(areaId);
-
-        if(!subjectService.updateById(subject)){
+        LambdaUpdateWrapper<Subject> subjectLambdaUpdateWrapper = new LambdaUpdateWrapper<>();
+        subjectLambdaUpdateWrapper.eq(Subject::getSubjectId, subjectId)
+                .set(Subject::getAreaId, areaId);
+        if (!subjectService.update(subjectLambdaUpdateWrapper)) {
             throw new RuntimeException("subject主题更新失败");
         }
+
     }
 
     @Override
@@ -71,15 +74,11 @@ public class SubjectManagerImpl implements SubjectManager {
         List<SubjectResponse> subjectResponses = Lists.newArrayList();
 
         //2. 查询主题
-        Page<Subject> page = new Page<>(subjectByAreaIdVo.getPageNo(), subjectByAreaIdVo.getPageSize());
-        Page<Subject> subjectPage = subjectService.page(page);
-        PAGE_TOTAL.set(subjectPage.getTotal());
-        List<Subject> subjects = subjectPage.getRecords();
-
-
+        List<Subject> subjects = subjectService.getSubject(subjectByAreaIdVo.getPageNo(), subjectByAreaIdVo.getPageSize());
         subjects.forEach(subject -> {
             SubjectResponse subjectResponse = new SubjectResponse();
             BeanUtils.copyProperties(subject, subjectResponse);
+            subjectResponse.setId(subject.getSubjectId());
             subjectResponses.add(subjectResponse);
         });
 

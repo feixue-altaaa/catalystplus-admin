@@ -3,6 +3,8 @@ package com.catalystplus.admin.controller.api;
 import com.catalystplus.admin.response.Response;
 import com.catalystplus.admin.response.journal.JournalResponse;
 import com.catalystplus.admin.vo.journal.JournalBySubjectIdVo;
+import com.catalystplus.admin.vo.journal.ModifyPublisherVo;
+import com.catalystplus.admin.vo.journal.ModifySubjectVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
@@ -23,14 +25,13 @@ public interface JournalApi {
     Response<List<JournalResponse>> getJournalBySubjectId(@RequestBody JournalBySubjectIdVo journalBySubjectIdVo);
 
 
-    @PutMapping("/auth/modify/journal/subject_publisher")
+    @PutMapping("/auth/modify/journal/subject")
     @ApiOperation("修改期刊关联的主题")
-    Response<Void> updateJournalBySidOrPid(
-            @RequestParam Long journalId,
-            @RequestParam Long subjectId,
-            @RequestParam Long publisherId
-    );
+    Response<Void> updateJournalBySubjectId(@RequestBody ModifySubjectVo modifySubjectVo);
 
+    @PutMapping("/auth/modify/journal/publisher")
+    @ApiOperation("修改期刊关联的主题")
+    Response<Void> updateJournalByPublisherId(@RequestBody ModifyPublisherVo modifyPublisherVo);
 
     @PostMapping("/auth/journal/page")
     @ApiOperation("通过主题ID查找期刊")

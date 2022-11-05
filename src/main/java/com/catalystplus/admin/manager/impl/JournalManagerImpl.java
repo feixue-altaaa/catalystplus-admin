@@ -2,10 +2,14 @@ package com.catalystplus.admin.manager.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.catalystplus.admin.entity.Journal;
+import com.catalystplus.admin.entity.SubjectJournal;
 import com.catalystplus.admin.manager.JournalManager;
 import com.catalystplus.admin.response.journal.JournalResponse;
 import com.catalystplus.admin.service.JournalService;
+import com.catalystplus.admin.service.SubjectJournalService;
 import com.catalystplus.admin.vo.journal.JournalBySubjectIdVo;
+import com.catalystplus.admin.vo.journal.ModifyPublisherVo;
+import com.catalystplus.admin.vo.journal.ModifySubjectVo;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -31,6 +35,9 @@ public class JournalManagerImpl implements JournalManager {
     @Autowired
     JournalService journalService;
 
+    @Autowired
+    SubjectJournalService subjectJournalService;
+
     @Override
     public List<JournalResponse> getJournalBySubjectId(JournalBySubjectIdVo journalBySubjectIdVo) {
 
@@ -46,6 +53,7 @@ public class JournalManagerImpl implements JournalManager {
         journals.forEach(journal -> {
             JournalResponse journalResponse = new JournalResponse();
             BeanUtils.copyProperties(journal, journalResponse);
+            journalResponse.setSubjectId(journal.getSid());
             journalResponses.add(journalResponse);
         });
         journals.clear();
@@ -56,19 +64,19 @@ public class JournalManagerImpl implements JournalManager {
     }
 
     @Override
-    public void updateJournalBySidOrPid(Long journalId, Long subjectId, Long publisherId) {
+    public void updateJournalBySubjectId(ModifySubjectVo modifySubjectVo) {
 
-        Journal journal = new Journal();
-        journal.setId(journalId);
-        if (Optional.ofNullable(subjectId).isPresent()) {
-            journal.setSubjectId(subjectId);
-        }
-        if (Optional.ofNullable(publisherId).isPresent()) {
-            journal.setPublisherId(publisherId);
-        }
-        if (!journalService.updateById(journal)) {
-            throw new RuntimeException("journal期刊更新失败");
-        }
+        Long journalId = modifySubjectVo.getJournalId();
+        Long sourceSubjectId = modifySubjectVo.getSourceSubjectId();
+        Long targetSubjectId = modifySubjectVo.getTargetSubjectId();
+
+        subjectJournalService.updateJournalBySubjectId(journalId, sourceSubjectId, targetSubjectId);
+    }
+
+    @Override
+    public void updateJournalByPublisherId(ModifyPublisherVo modifyPublisherVo) {
+
+
     }
 
     @Override

@@ -7,8 +7,11 @@ import com.catalystplus.admin.response.Response;
 import com.catalystplus.admin.response.ResponseCode;
 import com.catalystplus.admin.response.journal.JournalResponse;
 import com.catalystplus.admin.vo.journal.JournalBySubjectIdVo;
+import com.catalystplus.admin.vo.journal.ModifyPublisherVo;
+import com.catalystplus.admin.vo.journal.ModifySubjectVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -51,17 +54,37 @@ public class JournalController implements JournalApi {
     }
 
     @Override
-    public Response<Void> updateJournalBySidOrPid(Long journalId, Long subjectId, Long publisherId) {
+    public Response<Void> updateJournalBySubjectId(ModifySubjectVo modifySubjectVo) {
 
         //1. 参数验证
-        log.info("journalId: {}, subjectId: {}, publisherId: {}", journalId, subjectId, publisherId);
-        if (Assert.notEmpty(journalId)) {
+        log.info("modifySubjectVo: {}", modifySubjectVo);
+        if (Assert.notEmpty(modifySubjectVo.getJournalId())) {
             return Response.fail(null, ResponseCode.JOURNAL_SUBSCRIBE_ERROR.getCode(), ResponseCode.JOURNAL_SUBSCRIBE_ERROR.getMsg());
         }
 
         //2. 通过主题ID或者出版商ID修改期刊关联
         try {
-            journalManager.updateJournalBySidOrPid(journalId, subjectId, publisherId);
+            journalManager.updateJournalBySubjectId(modifySubjectVo);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return Response.fail(null, e.getMessage());
+        }
+
+        return Response.success(null, null);
+    }
+
+    @Override
+    public Response<Void> updateJournalByPublisherId(ModifyPublisherVo modifyPublisherVo) {
+
+        //1. 参数验证
+        log.info("modifyPublisherVo: {}", modifyPublisherVo);
+        if (Assert.notEmpty(modifyPublisherVo.getJournalId())) {
+            return Response.fail(null, ResponseCode.JOURNAL_SUBSCRIBE_ERROR.getCode(), ResponseCode.JOURNAL_SUBSCRIBE_ERROR.getMsg());
+        }
+
+        //2. 通过主题ID或者出版商ID修改期刊关联
+        try {
+            journalManager.updateJournalByPublisherId(modifyPublisherVo);
         } catch (Exception e) {
             log.error(e.getMessage());
             return Response.fail(null, e.getMessage());

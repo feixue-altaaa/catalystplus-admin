@@ -2,6 +2,8 @@ package com.catalystplus.admin.manager;
 
 import com.catalystplus.admin.response.journal.JournalResponse;
 import com.catalystplus.admin.vo.journal.JournalBySubjectIdVo;
+import com.catalystplus.admin.vo.journal.ModifyPublisherVo;
+import com.catalystplus.admin.vo.journal.ModifySubjectVo;
 
 import java.util.List;
 
@@ -15,7 +17,9 @@ public interface JournalManager {
 
     List<JournalResponse> getJournalBySubjectId(JournalBySubjectIdVo journalBySubjectIdVo);
 
-    void updateJournalBySidOrPid(Long journalId, Long subjectId, Long publisherId);
+    void updateJournalBySubjectId(ModifySubjectVo modifySubjectVo);
+
+    void updateJournalByPublisherId(ModifyPublisherVo modifyPublisherVo);
 
     List<JournalResponse> getJournal(JournalBySubjectIdVo journalBySubjectIdVo);
 }

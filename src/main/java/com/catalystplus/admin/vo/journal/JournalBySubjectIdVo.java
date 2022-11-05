@@ -22,7 +22,7 @@ public class JournalBySubjectIdVo implements Serializable {
     private Long userId;
 
     @ApiModelProperty("主题ID")
-    Long subjectId;
+    private Long subjectId;
 
     @ApiModelProperty("当前页码")
     private Integer pageNo = 1;
