@@ -1,8 +1,10 @@
 package com.catalystplus.admin.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.catalystplus.admin.entity.Journal;
+import com.catalystplus.admin.entity.SubjectJournal;
 import com.catalystplus.admin.service.JournalService;
 import com.catalystplus.admin.mapper.JournalMapper;
 import org.springframework.stereotype.Service;
@@ -32,6 +34,17 @@ public class JournalServiceImpl extends ServiceImpl<JournalMapper, Journal> impl
         return journalPage.getRecords();
     }
 
+    @Override
+    public void updateJournalByPublisherId(long journalId, long publisherId) {
+
+        LambdaUpdateWrapper<Journal> journalLambdaUpdateWrapper = new LambdaUpdateWrapper<>();
+        journalLambdaUpdateWrapper.eq(Journal::getJournalId,journalId)
+                .set(Journal::getPublisherId,publisherId);
+        if(!this.update(journalLambdaUpdateWrapper)){
+            throw new RuntimeException("更新Journal失败, journalId: " + journalId + ", publisherId: " + publisherId);
+        }
+
+    }
 }
 
 

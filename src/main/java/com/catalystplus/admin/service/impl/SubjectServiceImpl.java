@@ -24,8 +24,19 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
     public List<Subject> getSubjectByAreaId(long areaId, int pageNo, int pageSize) {
         Page<Subject> page = new Page<>(pageNo, pageSize);
         LambdaQueryWrapper<Subject> subjectLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        subjectLambdaQueryWrapper.eq(Subject::getAreaId, areaId);
+        subjectLambdaQueryWrapper.eq(Subject::getAreaId, areaId).groupBy(Subject::getAreaId);
         Page<Subject> subjectPage = this.baseMapper.selectPage(page, subjectLambdaQueryWrapper);
+        PAGE_TOTAL.set(subjectPage.getTotal());
+        return subjectPage.getRecords();
+    }
+
+
+    @Override
+    public List<Subject> getSubject(int pageNo, int pageSize) {
+        Page<Subject> page = new Page<>(pageNo, pageSize);
+        LambdaQueryWrapper<Subject> subjectLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        subjectLambdaQueryWrapper.groupBy(Subject::getSubjectId);
+        Page<Subject> subjectPage = this.page(page, subjectLambdaQueryWrapper);
         PAGE_TOTAL.set(subjectPage.getTotal());
         return subjectPage.getRecords();
     }

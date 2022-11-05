@@ -23,10 +23,16 @@ public interface JournalMapper extends BaseMapper<Journal> {
     LEFT JOIN subject s ON s.id = j.subject_id
     WHERE j.subject_id = 643
     */
-    @Select({"SELECT j.*, pub.name AS publisher, s.ch_name AS subjectName FROM journal j",
+//    @Select({"SELECT j.*, pub.name AS publisher, s.ch_name AS subjectName FROM journal j",
+//            "LEFT JOIN publisher pub ON pub.id = j.publisher_id",
+//            "LEFT JOIN subject s ON s.id = j.subject_id",
+//            "WHERE j.subject_id = #{subjectId}"})
+    @Select({"SELECT j.*, s.subject_id AS sid, pub.name AS publisher, s.ch_name AS subjectName FROM journal j",
             "LEFT JOIN publisher pub ON pub.id = j.publisher_id",
-            "LEFT JOIN subject s ON s.id = j.subject_id",
-            "WHERE j.subject_id = #{subjectId}"})
+            "JOIN subject_journal sj ON sj.journal_id = j.journal_id",
+            "JOIN subject s ON s.subject_id = j.subject_id",
+            "WHERE sj.subject_id = #{subjectId}",
+            "GROUP BY j.journal_id"})
     Page<Journal> getJournalBySubjectId(Page<Journal> page, Long subjectId);
 }
 

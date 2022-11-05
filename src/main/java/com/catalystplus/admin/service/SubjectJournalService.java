@@ -10,4 +10,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface SubjectJournalService extends IService<SubjectJournal> {
 
+    void updateJournalBySubjectId(long journalId, long sourceSubjectId, long targetSubjectId);
+
 }

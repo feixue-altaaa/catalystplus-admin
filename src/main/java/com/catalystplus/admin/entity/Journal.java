@@ -4,15 +4,18 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
 import java.util.Date;
+
 import lombok.Data;
 
 /**
  * 期刊信息表
+ *
  * @TableName journal
  */
-@TableName(value ="journal")
+@TableName(value = "journal")
 @Data
 public class Journal implements Serializable {
     /**
@@ -71,6 +74,7 @@ public class Journal implements Serializable {
      */
     private Long publisherId;
 
+
     /**
      * 出版商的详细信息页链接
      */
@@ -122,6 +126,15 @@ public class Journal implements Serializable {
     private Date updatedTime;
 
     @TableField(exist = false)
+    private String publisher;
+
+    @TableField(exist = false)
+    private String subjectName;
+
+    @TableField(exist = false)
+    private Long sid;
+
+    @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
     @Override
@@ -137,26 +150,26 @@ public class Journal implements Serializable {
         }
         Journal other = (Journal) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-            && (this.getJournalId() == null ? other.getJournalId() == null : this.getJournalId().equals(other.getJournalId()))
-            && (this.getIsbn() == null ? other.getIsbn() == null : this.getIsbn().equals(other.getIsbn()))
-            && (this.getIssn() == null ? other.getIssn() == null : this.getIssn().equals(other.getIssn()))
-            && (this.getIssnPrimaryFormatted() == null ? other.getIssnPrimaryFormatted() == null : this.getIssnPrimaryFormatted().equals(other.getIssnPrimaryFormatted()))
-            && (this.getEnName() == null ? other.getEnName() == null : this.getEnName().equals(other.getEnName()))
-            && (this.getChName() == null ? other.getChName() == null : this.getChName().equals(other.getChName()))
-            && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()))
-            && (this.getCover() == null ? other.getCover() == null : this.getCover().equals(other.getCover()))
-            && (this.getSubjectId() == null ? other.getSubjectId() == null : this.getSubjectId().equals(other.getSubjectId()))
-            && (this.getPublisherId() == null ? other.getPublisherId() == null : this.getPublisherId().equals(other.getPublisherId()))
-            && (this.getInformationPageUrl() == null ? other.getInformationPageUrl() == null : this.getInformationPageUrl().equals(other.getInformationPageUrl()))
-            && (this.getImpactFactor() == null ? other.getImpactFactor() == null : this.getImpactFactor().equals(other.getImpactFactor()))
-            && (this.getTop() == null ? other.getTop() == null : this.getTop().equals(other.getTop()))
-            && (this.getOpenAccess() == null ? other.getOpenAccess() == null : this.getOpenAccess().equals(other.getOpenAccess()))
-            && (this.getReview() == null ? other.getReview() == null : this.getReview().equals(other.getReview()))
-            && (this.getQuartile() == null ? other.getQuartile() == null : this.getQuartile().equals(other.getQuartile()))
-            && (this.getSubQuartile() == null ? other.getSubQuartile() == null : this.getSubQuartile().equals(other.getSubQuartile()))
-            && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
-            && (this.getCreatedTime() == null ? other.getCreatedTime() == null : this.getCreatedTime().equals(other.getCreatedTime()))
-            && (this.getUpdatedTime() == null ? other.getUpdatedTime() == null : this.getUpdatedTime().equals(other.getUpdatedTime()));
+                && (this.getJournalId() == null ? other.getJournalId() == null : this.getJournalId().equals(other.getJournalId()))
+                && (this.getIsbn() == null ? other.getIsbn() == null : this.getIsbn().equals(other.getIsbn()))
+                && (this.getIssn() == null ? other.getIssn() == null : this.getIssn().equals(other.getIssn()))
+                && (this.getIssnPrimaryFormatted() == null ? other.getIssnPrimaryFormatted() == null : this.getIssnPrimaryFormatted().equals(other.getIssnPrimaryFormatted()))
+                && (this.getEnName() == null ? other.getEnName() == null : this.getEnName().equals(other.getEnName()))
+                && (this.getChName() == null ? other.getChName() == null : this.getChName().equals(other.getChName()))
+                && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()))
+                && (this.getCover() == null ? other.getCover() == null : this.getCover().equals(other.getCover()))
+                && (this.getSubjectId() == null ? other.getSubjectId() == null : this.getSubjectId().equals(other.getSubjectId()))
+                && (this.getPublisherId() == null ? other.getPublisherId() == null : this.getPublisherId().equals(other.getPublisherId()))
+                && (this.getInformationPageUrl() == null ? other.getInformationPageUrl() == null : this.getInformationPageUrl().equals(other.getInformationPageUrl()))
+                && (this.getImpactFactor() == null ? other.getImpactFactor() == null : this.getImpactFactor().equals(other.getImpactFactor()))
+                && (this.getTop() == null ? other.getTop() == null : this.getTop().equals(other.getTop()))
+                && (this.getOpenAccess() == null ? other.getOpenAccess() == null : this.getOpenAccess().equals(other.getOpenAccess()))
+                && (this.getReview() == null ? other.getReview() == null : this.getReview().equals(other.getReview()))
+                && (this.getQuartile() == null ? other.getQuartile() == null : this.getQuartile().equals(other.getQuartile()))
+                && (this.getSubQuartile() == null ? other.getSubQuartile() == null : this.getSubQuartile().equals(other.getSubQuartile()))
+                && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
+                && (this.getCreatedTime() == null ? other.getCreatedTime() == null : this.getCreatedTime().equals(other.getCreatedTime()))
+                && (this.getUpdatedTime() == null ? other.getUpdatedTime() == null : this.getUpdatedTime().equals(other.getUpdatedTime()));
     }
 
     @Override
