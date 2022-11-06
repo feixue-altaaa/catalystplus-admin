@@ -40,6 +40,23 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
         PAGE_TOTAL.set(subjectPage.getTotal());
         return subjectPage.getRecords();
     }
+
+    @Override
+    public Subject getSubjectBySubjectName(String subjectName, Long areaId) {
+        LambdaQueryWrapper<Subject> subjectLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        //判断主题名称是英文还是中文
+        if(subjectName.matches("[\u4E00-\u9FA5]+")){
+            subjectLambdaQueryWrapper.eq(Subject::getChName,subjectName);
+        }else{
+            subjectLambdaQueryWrapper.eq(Subject::getEnName,subjectName);
+        }
+        subjectLambdaQueryWrapper.and((wrapper)->{
+            wrapper.eq(Subject::getAreaId,areaId);
+        });
+        subjectLambdaQueryWrapper.groupBy(Subject::getSubjectId);
+        Subject subject = this.baseMapper.selectOne(subjectLambdaQueryWrapper);
+        return subject;
+    }
 }
 
 

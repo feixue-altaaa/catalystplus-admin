@@ -91,7 +91,7 @@ public class Response<T> implements Serializable {
         return new Response<T>(userId, null, ResponseCode.FAIL.getCode(), ResponseCode.FAIL.getMsg());
     }
 
-    public static <T> Response<T> fail(Long userId,ResponseCode responseCode) {
+    public static <T> Response<T> fail(Long userId, ResponseCode responseCode) {
         return new Response<T>(userId, null, responseCode.getCode(), responseCode.getMsg());
     }
 

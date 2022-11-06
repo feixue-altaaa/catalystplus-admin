@@ -2,6 +2,7 @@ package com.catalystplus.admin.controller.api;
 
 import com.catalystplus.admin.response.Response;
 import com.catalystplus.admin.response.subject.SubjectResponse;
+import com.catalystplus.admin.vo.journal.SubjectBySubjectNameVo;
 import com.catalystplus.admin.vo.subject.SubjectByAreaIdVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -33,5 +34,9 @@ public interface SubjectApi {
     @PostMapping("/auth/subject/page")
     @ApiOperation("通过领域ID查找主题")
     Response<List<SubjectResponse>> getSubject(@RequestBody SubjectByAreaIdVo subjectByAreaIdVo);
+
+    @PostMapping("/auth/subject/name")
+    @ApiOperation("通过主题名称查找主题详细信息")
+    Response<SubjectResponse> getSubjectBySubjectName(@RequestBody SubjectBySubjectNameVo subjectBySubjectNameVo);
 
 }

@@ -7,9 +7,9 @@ import com.baomidou.mybatisplus.extension.injector.methods.InsertBatchSomeColumn
 import java.util.List;
 
 /**
- *@Caption mybatisplus批量插入配置
- *@Param
- *@Return
+ * @Caption mybatisplus批量插入配置
+ * @Param
+ * @Return
  */
 
 

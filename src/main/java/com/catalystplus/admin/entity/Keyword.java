@@ -4,19 +4,22 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
 import java.util.Date;
+
 import lombok.Data;
 
 /**
  * 文献关键字
+ *
  * @TableName keyword
  */
-@TableName(value ="keyword")
+@TableName(value = "keyword")
 @Data
 public class Keyword implements Serializable {
     /**
-     * 
+     *
      */
     @TableId(type = IdType.AUTO)
     private Long id;
@@ -62,11 +65,11 @@ public class Keyword implements Serializable {
         }
         Keyword other = (Keyword) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-            && (this.getEnName() == null ? other.getEnName() == null : this.getEnName().equals(other.getEnName()))
-            && (this.getChName() == null ? other.getChName() == null : this.getChName().equals(other.getChName()))
-            && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
-            && (this.getCreatedTime() == null ? other.getCreatedTime() == null : this.getCreatedTime().equals(other.getCreatedTime()))
-            && (this.getUpdatedTime() == null ? other.getUpdatedTime() == null : this.getUpdatedTime().equals(other.getUpdatedTime()));
+                && (this.getEnName() == null ? other.getEnName() == null : this.getEnName().equals(other.getEnName()))
+                && (this.getChName() == null ? other.getChName() == null : this.getChName().equals(other.getChName()))
+                && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
+                && (this.getCreatedTime() == null ? other.getCreatedTime() == null : this.getCreatedTime().equals(other.getCreatedTime()))
+                && (this.getUpdatedTime() == null ? other.getUpdatedTime() == null : this.getUpdatedTime().equals(other.getUpdatedTime()));
     }
 
     @Override

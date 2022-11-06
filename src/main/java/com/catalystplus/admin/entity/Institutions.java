@@ -4,35 +4,36 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
 import java.util.Date;
+
 import lombok.Data;
 
 /**
- * 
  * @TableName institutions
  */
-@TableName(value ="institutions")
+@TableName(value = "institutions")
 @Data
 public class Institutions implements Serializable {
     /**
-     * 
+     *
      */
     @TableId(type = IdType.AUTO)
     private Long id;
 
     /**
-     * 
+     *
      */
     private String type;
 
     /**
-     * 
+     *
      */
     private String enName;
 
     /**
-     * 
+     *
      */
     private String chName;
 
@@ -42,7 +43,7 @@ public class Institutions implements Serializable {
     private String locale;
 
     /**
-     * 
+     *
      */
     private String description;
 
@@ -77,14 +78,14 @@ public class Institutions implements Serializable {
         }
         Institutions other = (Institutions) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-            && (this.getType() == null ? other.getType() == null : this.getType().equals(other.getType()))
-            && (this.getEnName() == null ? other.getEnName() == null : this.getEnName().equals(other.getEnName()))
-            && (this.getChName() == null ? other.getChName() == null : this.getChName().equals(other.getChName()))
-            && (this.getLocale() == null ? other.getLocale() == null : this.getLocale().equals(other.getLocale()))
-            && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()))
-            && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
-            && (this.getCreatedTime() == null ? other.getCreatedTime() == null : this.getCreatedTime().equals(other.getCreatedTime()))
-            && (this.getUpdatedTime() == null ? other.getUpdatedTime() == null : this.getUpdatedTime().equals(other.getUpdatedTime()));
+                && (this.getType() == null ? other.getType() == null : this.getType().equals(other.getType()))
+                && (this.getEnName() == null ? other.getEnName() == null : this.getEnName().equals(other.getEnName()))
+                && (this.getChName() == null ? other.getChName() == null : this.getChName().equals(other.getChName()))
+                && (this.getLocale() == null ? other.getLocale() == null : this.getLocale().equals(other.getLocale()))
+                && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()))
+                && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
+                && (this.getCreatedTime() == null ? other.getCreatedTime() == null : this.getCreatedTime().equals(other.getCreatedTime()))
+                && (this.getUpdatedTime() == null ? other.getUpdatedTime() == null : this.getUpdatedTime().equals(other.getUpdatedTime()));
     }
 
     @Override

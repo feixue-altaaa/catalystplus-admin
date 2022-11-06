@@ -7,6 +7,7 @@ import com.catalystplus.admin.manager.JournalManager;
 import com.catalystplus.admin.response.journal.JournalResponse;
 import com.catalystplus.admin.service.JournalService;
 import com.catalystplus.admin.service.SubjectJournalService;
+import com.catalystplus.admin.vo.journal.JournalByJournalNameVo;
 import com.catalystplus.admin.vo.journal.JournalBySubjectIdVo;
 import com.catalystplus.admin.vo.journal.ModifyPublisherVo;
 import com.catalystplus.admin.vo.journal.ModifySubjectVo;
@@ -102,5 +103,21 @@ public class JournalManagerImpl implements JournalManager {
         //3. 先根据分区排序，再根据英文名排序
         // return journalResponses.parallelStream().sorted(Comparator.comparing(JournalResponse::getQuartile).thenComparing(JournalResponse::getEnName)).collect(Collectors.toList());
         return journalResponses;
+    }
+
+    @Override
+    public JournalResponse getJournalByJournalName(JournalByJournalNameVo journalByJournalNameVo) {
+
+        //1. 初始化
+        JournalResponse journalResponse = new JournalResponse();
+
+        //2. 根据期刊名称查询journal
+        Journal journalByJournalName = journalService.
+                getJournalByJournalName(journalByJournalNameVo.getJournalName());
+
+        //3. 组装响应
+        BeanUtils.copyProperties(journalByJournalName,journalResponse);
+
+        return journalResponse;
     }
 }

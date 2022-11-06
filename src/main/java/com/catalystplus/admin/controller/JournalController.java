@@ -6,6 +6,7 @@ import com.catalystplus.admin.manager.JournalManager;
 import com.catalystplus.admin.response.Response;
 import com.catalystplus.admin.response.ResponseCode;
 import com.catalystplus.admin.response.journal.JournalResponse;
+import com.catalystplus.admin.vo.journal.JournalByJournalNameVo;
 import com.catalystplus.admin.vo.journal.JournalBySubjectIdVo;
 import com.catalystplus.admin.vo.journal.ModifyPublisherVo;
 import com.catalystplus.admin.vo.journal.ModifySubjectVo;
@@ -112,5 +113,26 @@ public class JournalController implements JournalApi {
         }
 
         return Response.success(journalBySubjectIdVo.getUserId(), journalResponses);
+    }
+
+    @Override
+    public Response<JournalResponse> getJournalByJournalName(JournalByJournalNameVo journalByJournalNameVo) {
+
+        //1. 参数验证
+        log.info("journalByJournalNameVo: {}", journalByJournalNameVo);
+        if (Assert.notEmpty(journalByJournalNameVo.getJournalName())) {
+            return Response.fail(journalByJournalNameVo.getUserId(), ResponseCode.JOURNALNAME_ERROR.getCode(), ResponseCode.JOURNALNAME_ERROR.getMsg());
+        }
+        JournalResponse journalResponse;
+
+        //2. 通过journalName查询journal
+        try {
+            journalResponse = journalManager.getJournalByJournalName(journalByJournalNameVo);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return Response.fail(journalByJournalNameVo.getUserId(),e.getMessage());
+        }
+
+        return Response.success(journalByJournalNameVo.getUserId(),journalResponse);
     }
 }

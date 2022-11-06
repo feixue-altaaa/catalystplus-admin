@@ -1,6 +1,8 @@
 package com.catalystplus.admin.manager;
 
+import com.catalystplus.admin.entity.Area;
 import com.catalystplus.admin.response.area.AreaResponse;
+import com.catalystplus.admin.vo.journal.AreaByAreaNameVo;
 
 import java.util.List;
 
@@ -13,5 +15,8 @@ import java.util.List;
 public interface AreaManager {
 
     List<AreaResponse> getArea();
+
+    AreaResponse getAreaByName(AreaByAreaNameVo areaByAreaNameVo);
+
 
 }

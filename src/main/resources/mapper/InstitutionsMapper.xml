@@ -5,15 +5,15 @@
 <mapper namespace="com.catalystplus.admin.mapper.InstitutionsMapper">
 
     <resultMap id="BaseResultMap" type="com.catalystplus.admin.entity.Institutions">
-            <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="type" column="type" jdbcType="VARCHAR"/>
-            <result property="enName" column="en_name" jdbcType="VARCHAR"/>
-            <result property="chName" column="ch_name" jdbcType="VARCHAR"/>
-            <result property="locale" column="locale" jdbcType="VARCHAR"/>
-            <result property="description" column="description" jdbcType="VARCHAR"/>
-            <result property="status" column="status" jdbcType="TINYINT"/>
-            <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
-            <result property="updatedTime" column="updated_time" jdbcType="TIMESTAMP"/>
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="type" column="type" jdbcType="VARCHAR"/>
+        <result property="enName" column="en_name" jdbcType="VARCHAR"/>
+        <result property="chName" column="ch_name" jdbcType="VARCHAR"/>
+        <result property="locale" column="locale" jdbcType="VARCHAR"/>
+        <result property="description" column="description" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="TINYINT"/>
+        <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
+        <result property="updatedTime" column="updated_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">

@@ -6,6 +6,7 @@ import com.catalystplus.admin.manager.SubjectManager;
 import com.catalystplus.admin.response.Response;
 import com.catalystplus.admin.response.ResponseCode;
 import com.catalystplus.admin.response.subject.SubjectResponse;
+import com.catalystplus.admin.vo.journal.SubjectBySubjectNameVo;
 import com.catalystplus.admin.vo.subject.SubjectByAreaIdVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,5 +95,26 @@ public class SubjectController implements SubjectApi {
         }
 
         return Response.success(subjectByAreaIdVo.getUserId(), subjectResponses);
+    }
+
+    @Override
+    public Response<SubjectResponse> getSubjectBySubjectName(SubjectBySubjectNameVo subjectBySubjectNameVo) {
+
+        //1. 参数验证
+        log.info("subjectBySubjectNameVo:{}",subjectBySubjectNameVo);
+        if(Assert.notEmpty(subjectBySubjectNameVo.getSubjectName())){
+            return Response.fail(subjectBySubjectNameVo.getUserId(),ResponseCode.SUBJECTNAME_ERROR.getCode(),ResponseCode.SUBJECTNAME_ERROR.getMsg());
+        }
+        SubjectResponse subjectResponse;
+
+        //2. 通过主题名称查找主题详细信息
+        try {
+            subjectResponse = subjectManager.getSubjectBySubjectName(subjectBySubjectNameVo);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return Response.fail(subjectBySubjectNameVo.getUserId(),e.getMessage());
+        }
+
+        return Response.success(subjectBySubjectNameVo.getUserId(),subjectResponse);
     }
 }

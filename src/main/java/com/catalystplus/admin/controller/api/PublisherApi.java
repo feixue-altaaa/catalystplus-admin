@@ -2,10 +2,10 @@ package com.catalystplus.admin.controller.api;
 
 import com.catalystplus.admin.response.Response;
 import com.catalystplus.admin.response.publisher.PublisherResponse;
+import com.catalystplus.admin.vo.journal.PublisherByPublisherNameVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,5 +21,10 @@ public interface PublisherApi {
     @GetMapping("/auth/publisher")
     @ApiOperation("获取所有的出版商")
     Response<List<PublisherResponse>> getPublisher();
+
+    @PostMapping("/auth/publisher/name")
+    @ApiOperation("通过出版者名称获取其详细信息")
+    Response<PublisherResponse> getJournalByJournalName(@RequestBody PublisherByPublisherNameVo publisherByPublisherNameVo);
+
 
 }

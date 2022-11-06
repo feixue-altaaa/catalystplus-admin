@@ -9,11 +9,11 @@ import org.apache.ibatis.annotations.Select;
 import java.util.List;
 
 /**
-* @author lanran
-* @description 针对表【journal(期刊信息表)】的数据库操作Mapper
-* @createDate 2022-10-24 10:39:49
-* @Entity com.catalystplus.admin.entity.Journal
-*/
+ * @author lanran
+ * @description 针对表【journal(期刊信息表)】的数据库操作Mapper
+ * @createDate 2022-10-24 10:39:49
+ * @Entity com.catalystplus.admin.entity.Journal
+ */
 public interface JournalMapper extends BaseMapper<Journal> {
 
 
@@ -34,6 +34,7 @@ public interface JournalMapper extends BaseMapper<Journal> {
             "WHERE sj.subject_id = #{subjectId}",
             "GROUP BY j.journal_id"})
     Page<Journal> getJournalBySubjectId(Page<Journal> page, Long subjectId);
+
 }
 
 

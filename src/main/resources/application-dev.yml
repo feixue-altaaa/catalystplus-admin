@@ -1,12 +1,12 @@
 spring:
-#  datasource:
-#    driverClassName: com.mysql.cj.jdbc.Driver
-#    url: jdbc:mysql://192.168.207.128:3306/catalystplus?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowMultiQueries=true&serverTimezone=Asia/Shanghai
-#    username: root
-#    password: 123456
+  #  datasource:
+  #    driverClassName: com.mysql.cj.jdbc.Driver
+  #    url: jdbc:mysql://192.168.207.128:3306/catalystplus?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowMultiQueries=true&serverTimezone=Asia/Shanghai
+  #    username: root
+  #    password: 123456
 
   redis:
-    host: 192.168.31.100
+    host: 192.168.3.100
     password:
     port: 6379
     timeout: 15000
@@ -20,6 +20,6 @@ spring:
 
 rocketmq:
   ###连接地址nameServer
-  name-server: 127.0.0.1:9876
+  name-server: 192.168.3.101:9876
   producer:
     group: library_producer

@@ -4,15 +4,16 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
 import java.util.Date;
+
 import lombok.Data;
 
 /**
- * 
  * @TableName visualize
  */
-@TableName(value ="visualize")
+@TableName(value = "visualize")
 @Data
 public class Visualize implements Serializable {
     /**
@@ -42,37 +43,37 @@ public class Visualize implements Serializable {
     private Long ru;
 
     /**
-     * 
+     *
      */
     private Long cu;
 
     /**
-     * 
+     *
      */
     private Long ptl;
 
     /**
-     * 
+     *
      */
     private Long ctl;
 
     /**
-     * 
+     *
      */
     private Long dau;
 
     /**
-     * 
+     *
      */
     private Integer status;
 
     /**
-     * 
+     *
      */
     private Date createdTime;
 
     /**
-     * 
+     *
      */
     private Date updatedTime;
 
@@ -92,17 +93,17 @@ public class Visualize implements Serializable {
         }
         Visualize other = (Visualize) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-            && (this.getPv() == null ? other.getPv() == null : this.getPv().equals(other.getPv()))
-            && (this.getUv() == null ? other.getUv() == null : this.getUv().equals(other.getUv()))
-            && (this.getAu() == null ? other.getAu() == null : this.getAu().equals(other.getAu()))
-            && (this.getRu() == null ? other.getRu() == null : this.getRu().equals(other.getRu()))
-            && (this.getCu() == null ? other.getCu() == null : this.getCu().equals(other.getCu()))
-            && (this.getPtl() == null ? other.getPtl() == null : this.getPtl().equals(other.getPtl()))
-            && (this.getCtl() == null ? other.getCtl() == null : this.getCtl().equals(other.getCtl()))
-            && (this.getDau() == null ? other.getDau() == null : this.getDau().equals(other.getDau()))
-            && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
-            && (this.getCreatedTime() == null ? other.getCreatedTime() == null : this.getCreatedTime().equals(other.getCreatedTime()))
-            && (this.getUpdatedTime() == null ? other.getUpdatedTime() == null : this.getUpdatedTime().equals(other.getUpdatedTime()));
+                && (this.getPv() == null ? other.getPv() == null : this.getPv().equals(other.getPv()))
+                && (this.getUv() == null ? other.getUv() == null : this.getUv().equals(other.getUv()))
+                && (this.getAu() == null ? other.getAu() == null : this.getAu().equals(other.getAu()))
+                && (this.getRu() == null ? other.getRu() == null : this.getRu().equals(other.getRu()))
+                && (this.getCu() == null ? other.getCu() == null : this.getCu().equals(other.getCu()))
+                && (this.getPtl() == null ? other.getPtl() == null : this.getPtl().equals(other.getPtl()))
+                && (this.getCtl() == null ? other.getCtl() == null : this.getCtl().equals(other.getCtl()))
+                && (this.getDau() == null ? other.getDau() == null : this.getDau().equals(other.getDau()))
+                && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
+                && (this.getCreatedTime() == null ? other.getCreatedTime() == null : this.getCreatedTime().equals(other.getCreatedTime()))
+                && (this.getUpdatedTime() == null ? other.getUpdatedTime() == null : this.getUpdatedTime().equals(other.getUpdatedTime()));
     }
 
     @Override

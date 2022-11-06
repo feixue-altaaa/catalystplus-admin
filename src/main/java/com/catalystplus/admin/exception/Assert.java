@@ -1,7 +1,6 @@
 package com.catalystplus.admin.exception;
 
 
-
 import com.catalystplus.admin.response.ResponseCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;

@@ -9,6 +9,7 @@ import com.catalystplus.admin.response.area.AreaResponse;
 import com.catalystplus.admin.response.publisher.PublisherResponse;
 import com.catalystplus.admin.service.AreaService;
 import com.catalystplus.admin.service.PublisherService;
+import com.catalystplus.admin.vo.journal.PublisherByPublisherNameVo;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -42,5 +43,21 @@ public class PublisherManagerImpl implements PublisherManager {
             publisherResponses.add(publisherResponse);
         });
         return publisherResponses;
+    }
+
+    @Override
+    public PublisherResponse getPublisherByPublisherName(PublisherByPublisherNameVo publisherByPublisherNameVo) {
+
+        //1. 初始化
+        PublisherResponse publisherResponse = new PublisherResponse();
+
+        //2. 通过出版者名称获取其详细信息
+        Publisher publisherByPublisherName = publisherService.getPublisherByPublisherName(publisherByPublisherNameVo.getPublisherName());
+
+        //3. 组装响应
+        BeanUtils.copyProperties(publisherByPublisherName,publisherResponse);
+
+        return publisherResponse;
+
     }
 }

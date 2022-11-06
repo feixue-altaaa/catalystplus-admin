@@ -1,14 +1,13 @@
 package com.catalystplus.admin.exception;
 
 
-
 import com.catalystplus.admin.response.ResponseCode;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class BusinessException extends RuntimeException{
+public class BusinessException extends RuntimeException {
 
     //错误码
     private Integer code;
@@ -16,7 +15,6 @@ public class BusinessException extends RuntimeException{
     private String message;
 
     /**
-     *
      * @param message 错误消息
      */
     public BusinessException(String message) {
@@ -24,9 +22,8 @@ public class BusinessException extends RuntimeException{
     }
 
     /**
-     *
      * @param message 错误消息
-     * @param code 错误码
+     * @param code    错误码
      */
     public BusinessException(String message, Integer code) {
         this.message = message;
@@ -34,10 +31,9 @@ public class BusinessException extends RuntimeException{
     }
 
     /**
-     *
      * @param message 错误消息
-     * @param code 错误码
-     * @param cause 原始异常对象
+     * @param code    错误码
+     * @param cause   原始异常对象
      */
     public BusinessException(String message, Integer code, Throwable cause) {
         super(cause);
@@ -46,7 +42,6 @@ public class BusinessException extends RuntimeException{
     }
 
     /**
-     *
      * @param responseCode 接收枚举类型
      */
     public BusinessException(ResponseCode responseCode) {
@@ -55,9 +50,8 @@ public class BusinessException extends RuntimeException{
     }
 
     /**
-     *
      * @param responseCode 接收枚举类型
-     * @param cause 原始异常对象
+     * @param cause        原始异常对象
      */
     public BusinessException(ResponseCode responseCode, Throwable cause) {
         super(cause);

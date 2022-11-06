@@ -2,6 +2,7 @@ package com.catalystplus.admin.controller.api;
 
 import com.catalystplus.admin.response.Response;
 import com.catalystplus.admin.response.journal.JournalResponse;
+import com.catalystplus.admin.vo.journal.JournalByJournalNameVo;
 import com.catalystplus.admin.vo.journal.JournalBySubjectIdVo;
 import com.catalystplus.admin.vo.journal.ModifyPublisherVo;
 import com.catalystplus.admin.vo.journal.ModifySubjectVo;
@@ -37,5 +38,7 @@ public interface JournalApi {
     @ApiOperation("通过主题ID查找期刊")
     Response<List<JournalResponse>> getJournal(@RequestBody JournalBySubjectIdVo journalBySubjectIdVo);
 
-
+    @PostMapping("/auth/journal/journal_name")
+    @ApiOperation("通过期刊名称查找期刊")
+    Response<JournalResponse> getJournalByJournalName(@RequestBody JournalByJournalNameVo journalByJournalNameVo);
 }

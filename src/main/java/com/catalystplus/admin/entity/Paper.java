@@ -4,15 +4,18 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
 import java.util.Date;
+
 import lombok.Data;
 
 /**
  * 文献详细表
+ *
  * @TableName paper
  */
-@TableName(value ="paper")
+@TableName(value = "paper")
 @Data
 public class Paper implements Serializable {
     /**
@@ -157,30 +160,30 @@ public class Paper implements Serializable {
         }
         Paper other = (Paper) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-            && (this.getDetailUrl() == null ? other.getDetailUrl() == null : this.getDetailUrl().equals(other.getDetailUrl()))
-            && (this.getJournalId() == null ? other.getJournalId() == null : this.getJournalId().equals(other.getJournalId()))
-            && (this.getJournalName() == null ? other.getJournalName() == null : this.getJournalName().equals(other.getJournalName()))
-            && (this.getEnName() == null ? other.getEnName() == null : this.getEnName().equals(other.getEnName()))
-            && (this.getChName() == null ? other.getChName() == null : this.getChName().equals(other.getChName()))
-            && (this.getKeyword() == null ? other.getKeyword() == null : this.getKeyword().equals(other.getKeyword()))
-            && (this.getImageUrl() == null ? other.getImageUrl() == null : this.getImageUrl().equals(other.getImageUrl()))
-            && (this.getCoverDateStart() == null ? other.getCoverDateStart() == null : this.getCoverDateStart().equals(other.getCoverDateStart()))
-            && (this.getDoi() == null ? other.getDoi() == null : this.getDoi().equals(other.getDoi()))
-            && (this.getPdfDownloadUrl() == null ? other.getPdfDownloadUrl() == null : this.getPdfDownloadUrl().equals(other.getPdfDownloadUrl()))
-            && (this.getHubJumpUrl() == null ? other.getHubJumpUrl() == null : this.getHubJumpUrl().equals(other.getHubJumpUrl()))
-            && (this.getHubPdfUrl() == null ? other.getHubPdfUrl() == null : this.getHubPdfUrl().equals(other.getHubPdfUrl()))
-            && (this.getAuthors() == null ? other.getAuthors() == null : this.getAuthors().equals(other.getAuthors()))
-            && (this.getEnAbstract() == null ? other.getEnAbstract() == null : this.getEnAbstract().equals(other.getEnAbstract()))
-            && (this.getChAbstract() == null ? other.getChAbstract() == null : this.getChAbstract().equals(other.getChAbstract()))
-            && (this.getHighlights() == null ? other.getHighlights() == null : this.getHighlights().equals(other.getHighlights()))
-            && (this.getGraphicalAbstract() == null ? other.getGraphicalAbstract() == null : this.getGraphicalAbstract().equals(other.getGraphicalAbstract()))
-            && (this.getPopularity() == null ? other.getPopularity() == null : this.getPopularity().equals(other.getPopularity()))
-            && (this.getClickCount() == null ? other.getClickCount() == null : this.getClickCount().equals(other.getClickCount()))
-            && (this.getTimeFrequency() == null ? other.getTimeFrequency() == null : this.getTimeFrequency().equals(other.getTimeFrequency()))
-            && (this.getGood() == null ? other.getGood() == null : this.getGood().equals(other.getGood()))
-            && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
-            && (this.getCreatedTime() == null ? other.getCreatedTime() == null : this.getCreatedTime().equals(other.getCreatedTime()))
-            && (this.getUpdatedTime() == null ? other.getUpdatedTime() == null : this.getUpdatedTime().equals(other.getUpdatedTime()));
+                && (this.getDetailUrl() == null ? other.getDetailUrl() == null : this.getDetailUrl().equals(other.getDetailUrl()))
+                && (this.getJournalId() == null ? other.getJournalId() == null : this.getJournalId().equals(other.getJournalId()))
+                && (this.getJournalName() == null ? other.getJournalName() == null : this.getJournalName().equals(other.getJournalName()))
+                && (this.getEnName() == null ? other.getEnName() == null : this.getEnName().equals(other.getEnName()))
+                && (this.getChName() == null ? other.getChName() == null : this.getChName().equals(other.getChName()))
+                && (this.getKeyword() == null ? other.getKeyword() == null : this.getKeyword().equals(other.getKeyword()))
+                && (this.getImageUrl() == null ? other.getImageUrl() == null : this.getImageUrl().equals(other.getImageUrl()))
+                && (this.getCoverDateStart() == null ? other.getCoverDateStart() == null : this.getCoverDateStart().equals(other.getCoverDateStart()))
+                && (this.getDoi() == null ? other.getDoi() == null : this.getDoi().equals(other.getDoi()))
+                && (this.getPdfDownloadUrl() == null ? other.getPdfDownloadUrl() == null : this.getPdfDownloadUrl().equals(other.getPdfDownloadUrl()))
+                && (this.getHubJumpUrl() == null ? other.getHubJumpUrl() == null : this.getHubJumpUrl().equals(other.getHubJumpUrl()))
+                && (this.getHubPdfUrl() == null ? other.getHubPdfUrl() == null : this.getHubPdfUrl().equals(other.getHubPdfUrl()))
+                && (this.getAuthors() == null ? other.getAuthors() == null : this.getAuthors().equals(other.getAuthors()))
+                && (this.getEnAbstract() == null ? other.getEnAbstract() == null : this.getEnAbstract().equals(other.getEnAbstract()))
+                && (this.getChAbstract() == null ? other.getChAbstract() == null : this.getChAbstract().equals(other.getChAbstract()))
+                && (this.getHighlights() == null ? other.getHighlights() == null : this.getHighlights().equals(other.getHighlights()))
+                && (this.getGraphicalAbstract() == null ? other.getGraphicalAbstract() == null : this.getGraphicalAbstract().equals(other.getGraphicalAbstract()))
+                && (this.getPopularity() == null ? other.getPopularity() == null : this.getPopularity().equals(other.getPopularity()))
+                && (this.getClickCount() == null ? other.getClickCount() == null : this.getClickCount().equals(other.getClickCount()))
+                && (this.getTimeFrequency() == null ? other.getTimeFrequency() == null : this.getTimeFrequency().equals(other.getTimeFrequency()))
+                && (this.getGood() == null ? other.getGood() == null : this.getGood().equals(other.getGood()))
+                && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
+                && (this.getCreatedTime() == null ? other.getCreatedTime() == null : this.getCreatedTime().equals(other.getCreatedTime()))
+                && (this.getUpdatedTime() == null ? other.getUpdatedTime() == null : this.getUpdatedTime().equals(other.getUpdatedTime()));
     }
 
     @Override

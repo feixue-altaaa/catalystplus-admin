@@ -60,7 +60,7 @@ public class GlobalAspect {
                 REQUEST_IP.set(request.getHeader("origin-ip-address"));
                 if (StringUtils.isNotEmpty(globalId)) {
                     GLOBAL_ID.set(globalId);
-               //     log.info("GlobalId:{}", globalId);
+                    //     log.info("GlobalId:{}", globalId);
                 }
             }
         } catch (Exception ex) {

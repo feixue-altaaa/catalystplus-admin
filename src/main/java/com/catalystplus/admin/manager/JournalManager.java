@@ -1,6 +1,7 @@
 package com.catalystplus.admin.manager;
 
 import com.catalystplus.admin.response.journal.JournalResponse;
+import com.catalystplus.admin.vo.journal.JournalByJournalNameVo;
 import com.catalystplus.admin.vo.journal.JournalBySubjectIdVo;
 import com.catalystplus.admin.vo.journal.ModifyPublisherVo;
 import com.catalystplus.admin.vo.journal.ModifySubjectVo;
@@ -22,4 +23,6 @@ public interface JournalManager {
     void updateJournalByPublisherId(ModifyPublisherVo modifyPublisherVo);
 
     List<JournalResponse> getJournal(JournalBySubjectIdVo journalBySubjectIdVo);
+
+    JournalResponse getJournalByJournalName(JournalByJournalNameVo journalByJournalNameVo);
 }

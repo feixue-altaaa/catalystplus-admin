@@ -1,9 +1,12 @@
 package com.catalystplus.admin.controller;
 
 import com.catalystplus.admin.controller.api.AreaApi;
+import com.catalystplus.admin.exception.Assert;
 import com.catalystplus.admin.manager.AreaManager;
 import com.catalystplus.admin.response.Response;
+import com.catalystplus.admin.response.ResponseCode;
 import com.catalystplus.admin.response.area.AreaResponse;
+import com.catalystplus.admin.vo.journal.AreaByAreaNameVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,4 +44,26 @@ public class AreaController implements AreaApi {
 
         return Response.success(null, areaResponses);
     }
+
+    @Override
+    public Response<AreaResponse> getAreaByAreaName(AreaByAreaNameVo areaByAreaNameVo) {
+
+        //1. 参数验证
+        log.info("areaByAreaNameVo: {}",areaByAreaNameVo);
+        if(Assert.notEmpty(areaByAreaNameVo.getAreaName())){
+            return Response.fail(areaByAreaNameVo.getUserId(), ResponseCode.AREANAME_ERROR.getCode(),ResponseCode.AREANAME_ERROR.getMsg());
+        }
+        AreaResponse areaResponse;
+
+        //2. 通过领域名称查询area
+        try {
+            areaResponse = areaManager.getAreaByName(areaByAreaNameVo);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return Response.fail(areaByAreaNameVo.getUserId(),e.getMessage());
+        }
+
+        return Response.success(areaByAreaNameVo.getUserId(),areaResponse);
+    }
+
 }

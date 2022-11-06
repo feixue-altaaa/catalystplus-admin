@@ -66,6 +66,8 @@ public enum ResponseCode {
     KEYWORDID_ERROR(-236, "keywordId不能为空"),
     TITLENAME_ERROR(-237, "titleName不能为空"),
     ABSTRACTNAME_ERROR(-238, "abstractName不能为空"),
+    AREANAME_ERROR(-239,"areaName不能为空"),
+    PUBLISHERNAME_ERROR(-240,"publisherName不能为空"),
 
     USER_BIND_IDCARD_EXIST_ERROR(-301, "身份证号码已绑定"),
     USER_NO_BIND_ERROR(302, "用户未绑定"),

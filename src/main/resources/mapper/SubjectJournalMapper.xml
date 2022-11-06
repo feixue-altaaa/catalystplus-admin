@@ -5,12 +5,12 @@
 <mapper namespace="com.catalystplus.admin.mapper.SubjectJournalMapper">
 
     <resultMap id="BaseResultMap" type="com.catalystplus.admin.entity.SubjectJournal">
-            <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="subjectId" column="subject_id" jdbcType="BIGINT"/>
-            <result property="journalId" column="journal_id" jdbcType="BIGINT"/>
-            <result property="status" column="status" jdbcType="TINYINT"/>
-            <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
-            <result property="updatedTime" column="updated_time" jdbcType="TIMESTAMP"/>
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="subjectId" column="subject_id" jdbcType="BIGINT"/>
+        <result property="journalId" column="journal_id" jdbcType="BIGINT"/>
+        <result property="status" column="status" jdbcType="TINYINT"/>
+        <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
+        <result property="updatedTime" column="updated_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">

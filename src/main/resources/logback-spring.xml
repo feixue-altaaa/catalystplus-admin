@@ -5,15 +5,17 @@
     <!-- 控制台输出 -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread][%X{globalId}] %logger{20}.%M\(%F:%L\): %msg%n</pattern>
-<!--            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(%-5level) [%thread] %logger{20}.%M\(%F:%L\): %msg%n</pattern>-->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread][%X{globalId}] %logger{20}.%M\(%F:%L\): %msg%n
+            </pattern>
+            <!--            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(%-5level) [%thread] %logger{20}.%M\(%F:%L\): %msg%n</pattern>-->
         </layout>
     </appender>
 
     <appender name="appLogAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <encoder>
             <!--            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(%-5level) [%thread] %logger{20}.%M\(%F:%L\): %msg%n</pattern>-->
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread][%X{globalId}] %logger{20}.%M\(%F:%L\): %msg%n</pattern>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread][%X{globalId}] %logger{20}.%M\(%F:%L\): %msg%n
+            </pattern>
         </encoder>
         <file>${BASE_PATH}/admin.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">

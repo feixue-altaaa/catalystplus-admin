@@ -7,6 +7,7 @@ import com.catalystplus.admin.entity.SubjectJournal;
 import com.catalystplus.admin.manager.SubjectManager;
 import com.catalystplus.admin.response.subject.SubjectResponse;
 import com.catalystplus.admin.service.SubjectService;
+import com.catalystplus.admin.vo.journal.SubjectBySubjectNameVo;
 import com.catalystplus.admin.vo.subject.SubjectByAreaIdVo;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
@@ -86,5 +87,21 @@ public class SubjectManagerImpl implements SubjectManager {
         subjects.clear();
         //3. 通过中文名字母排序
         return subjectResponses;
+    }
+
+    @Override
+    public SubjectResponse getSubjectBySubjectName(SubjectBySubjectNameVo subjectBySubjectNameVo) {
+
+        //1. 初始化
+        SubjectResponse subjectResponse = new SubjectResponse();
+
+        //2. 通过主题名称查找主题详细信息
+        Subject subjectBySubjectName = subjectService.
+                getSubjectBySubjectName(subjectBySubjectNameVo.getSubjectName(), subjectBySubjectNameVo.getAreaId());
+
+        //3. 组装响应
+        BeanUtils.copyProperties(subjectBySubjectName,subjectResponse);
+
+        return subjectResponse;
     }
 }

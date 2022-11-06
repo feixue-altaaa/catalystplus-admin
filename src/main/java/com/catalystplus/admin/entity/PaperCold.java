@@ -4,15 +4,18 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
 import java.util.Date;
+
 import lombok.Data;
 
 /**
  * 文献详细表
+ *
  * @TableName paper_cold
  */
-@TableName(value ="paper_cold")
+@TableName(value = "paper_cold")
 @Data
 public class PaperCold implements Serializable {
     /**
@@ -142,27 +145,27 @@ public class PaperCold implements Serializable {
         }
         PaperCold other = (PaperCold) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-            && (this.getPaperId() == null ? other.getPaperId() == null : this.getPaperId().equals(other.getPaperId()))
-            && (this.getVolume() == null ? other.getVolume() == null : this.getVolume().equals(other.getVolume()))
-            && (this.getCoverDateText() == null ? other.getCoverDateText() == null : this.getCoverDateText().equals(other.getCoverDateText()))
-            && (this.getAvailableOnline() == null ? other.getAvailableOnline() == null : this.getAvailableOnline().equals(other.getAvailableOnline()))
-            && (this.getReceived() == null ? other.getReceived() == null : this.getReceived().equals(other.getReceived()))
-            && (this.getRevised() == null ? other.getRevised() == null : this.getRevised().equals(other.getRevised()))
-            && (this.getAccepted() == null ? other.getAccepted() == null : this.getAccepted().equals(other.getAccepted()))
-            && (this.getPublicationDate() == null ? other.getPublicationDate() == null : this.getPublicationDate().equals(other.getPublicationDate()))
-            && (this.getVersionOfRecord() == null ? other.getVersionOfRecord() == null : this.getVersionOfRecord().equals(other.getVersionOfRecord()))
-            && (this.getDetailTimestamp() == null ? other.getDetailTimestamp() == null : this.getDetailTimestamp().equals(other.getDetailTimestamp()))
-            && (this.getCopyrightLine() == null ? other.getCopyrightLine() == null : this.getCopyrightLine().equals(other.getCopyrightLine()))
-            && (this.getCid() == null ? other.getCid() == null : this.getCid().equals(other.getCid()))
-            && (this.getEid() == null ? other.getEid() == null : this.getEid().equals(other.getEid()))
-            && (this.getHubEid() == null ? other.getHubEid() == null : this.getHubEid().equals(other.getHubEid()))
-            && (this.getIssuePii() == null ? other.getIssuePii() == null : this.getIssuePii().equals(other.getIssuePii()))
-            && (this.getPii() == null ? other.getPii() == null : this.getPii().equals(other.getPii()))
-            && (this.getFirstPage() == null ? other.getFirstPage() == null : this.getFirstPage().equals(other.getFirstPage()))
-            && (this.getLastPage() == null ? other.getLastPage() == null : this.getLastPage().equals(other.getLastPage()))
-            && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
-            && (this.getCreatedTime() == null ? other.getCreatedTime() == null : this.getCreatedTime().equals(other.getCreatedTime()))
-            && (this.getUpdatedTime() == null ? other.getUpdatedTime() == null : this.getUpdatedTime().equals(other.getUpdatedTime()));
+                && (this.getPaperId() == null ? other.getPaperId() == null : this.getPaperId().equals(other.getPaperId()))
+                && (this.getVolume() == null ? other.getVolume() == null : this.getVolume().equals(other.getVolume()))
+                && (this.getCoverDateText() == null ? other.getCoverDateText() == null : this.getCoverDateText().equals(other.getCoverDateText()))
+                && (this.getAvailableOnline() == null ? other.getAvailableOnline() == null : this.getAvailableOnline().equals(other.getAvailableOnline()))
+                && (this.getReceived() == null ? other.getReceived() == null : this.getReceived().equals(other.getReceived()))
+                && (this.getRevised() == null ? other.getRevised() == null : this.getRevised().equals(other.getRevised()))
+                && (this.getAccepted() == null ? other.getAccepted() == null : this.getAccepted().equals(other.getAccepted()))
+                && (this.getPublicationDate() == null ? other.getPublicationDate() == null : this.getPublicationDate().equals(other.getPublicationDate()))
+                && (this.getVersionOfRecord() == null ? other.getVersionOfRecord() == null : this.getVersionOfRecord().equals(other.getVersionOfRecord()))
+                && (this.getDetailTimestamp() == null ? other.getDetailTimestamp() == null : this.getDetailTimestamp().equals(other.getDetailTimestamp()))
+                && (this.getCopyrightLine() == null ? other.getCopyrightLine() == null : this.getCopyrightLine().equals(other.getCopyrightLine()))
+                && (this.getCid() == null ? other.getCid() == null : this.getCid().equals(other.getCid()))
+                && (this.getEid() == null ? other.getEid() == null : this.getEid().equals(other.getEid()))
+                && (this.getHubEid() == null ? other.getHubEid() == null : this.getHubEid().equals(other.getHubEid()))
+                && (this.getIssuePii() == null ? other.getIssuePii() == null : this.getIssuePii().equals(other.getIssuePii()))
+                && (this.getPii() == null ? other.getPii() == null : this.getPii().equals(other.getPii()))
+                && (this.getFirstPage() == null ? other.getFirstPage() == null : this.getFirstPage().equals(other.getFirstPage()))
+                && (this.getLastPage() == null ? other.getLastPage() == null : this.getLastPage().equals(other.getLastPage()))
+                && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
+                && (this.getCreatedTime() == null ? other.getCreatedTime() == null : this.getCreatedTime().equals(other.getCreatedTime()))
+                && (this.getUpdatedTime() == null ? other.getUpdatedTime() == null : this.getUpdatedTime().equals(other.getUpdatedTime()));
     }
 
     @Override

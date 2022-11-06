@@ -1,5 +1,6 @@
 package com.catalystplus.admin.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -14,12 +15,12 @@ import java.util.List;
 import static com.catalystplus.admin.config.GlobalAspect.PAGE_TOTAL;
 
 /**
-* @author lanran
-* @description 针对表【journal(期刊信息表)】的数据库操作Service实现
-* @createDate 2022-10-24 10:39:49
-*/
+ * @author lanran
+ * @description 针对表【journal(期刊信息表)】的数据库操作Service实现
+ * @createDate 2022-10-24 10:39:49
+ */
 @Service
-public class JournalServiceImpl extends ServiceImpl<JournalMapper, Journal> implements JournalService{
+public class JournalServiceImpl extends ServiceImpl<JournalMapper, Journal> implements JournalService {
 
 
     @Override
@@ -38,12 +39,25 @@ public class JournalServiceImpl extends ServiceImpl<JournalMapper, Journal> impl
     public void updateJournalByPublisherId(long journalId, long publisherId) {
 
         LambdaUpdateWrapper<Journal> journalLambdaUpdateWrapper = new LambdaUpdateWrapper<>();
-        journalLambdaUpdateWrapper.eq(Journal::getJournalId,journalId)
-                .set(Journal::getPublisherId,publisherId);
-        if(!this.update(journalLambdaUpdateWrapper)){
+        journalLambdaUpdateWrapper.eq(Journal::getJournalId, journalId)
+                .set(Journal::getPublisherId, publisherId);
+        if (!this.update(journalLambdaUpdateWrapper)) {
             throw new RuntimeException("更新Journal失败, journalId: " + journalId + ", publisherId: " + publisherId);
         }
 
+    }
+
+    @Override
+    public Journal getJournalByJournalName(String journalName) {
+        LambdaQueryWrapper<Journal> journalLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        //判断journalName是英文还是中文
+        if(journalName.matches("[\u4E00-\u9FA5]+")){
+            journalLambdaQueryWrapper.eq(Journal::getChName,journalName).groupBy(Journal::getJournalId);
+        }else {
+            journalLambdaQueryWrapper.eq(Journal::getEnName, journalName).groupBy(Journal::getJournalId);
+        }
+        Journal journal = this.baseMapper.selectOne(journalLambdaQueryWrapper);
+        return journal;
     }
 }
 

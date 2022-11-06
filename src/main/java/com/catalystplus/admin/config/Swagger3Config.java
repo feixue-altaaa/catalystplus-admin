@@ -20,7 +20,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 public class Swagger3Config {
 
     @Bean
-    public Docket createRestApi(){
+    public Docket createRestApi() {
         //返回文档概要信息
         return new Docket(DocumentationType.OAS_30)
                 .apiInfo(apiInfo())
@@ -34,13 +34,14 @@ public class Swagger3Config {
 
     /**
      * 生成接口信息，包括标题，联系人等
+     *
      * @return
      */
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("Catalystplus-library接口文档")
                 .description("接口文档属性说明")
-     //           .contact(new Contact("百度","http://www.baidu.com","11017294@qq.com"))
+                //           .contact(new Contact("百度","http://www.baidu.com","11017294@qq.com"))
                 .version("1.0")
                 .build();
     }
