@@ -100,27 +100,31 @@ class CatalystplusAdminApplicationTests {
 //        Subject subject = subjectMapper.selectOne(subjectLambdaQueryWrapper);
 //        log.info("subject:{}",subject);
 
-        SubjectBySubjectNameVo subjectBySubjectNameVo = new SubjectBySubjectNameVo();
-        subjectBySubjectNameVo.setSubjectName("geosciences, multidisciplinary");
-        subjectBySubjectNameVo.setAreaId(2L);
-        Response<SubjectResponse> subject = subjectController.getSubjectBySubjectName(subjectBySubjectNameVo);
-        log.info("subject:{}",subject);
+//        SubjectBySubjectNameVo subjectBySubjectNameVo = new SubjectBySubjectNameVo();
+//        subjectBySubjectNameVo.setSubjectName("geosciences, multidisciplinary");
+//        subjectBySubjectNameVo.setAreaId(2L);
+//        Response<SubjectResponse> subject = subjectController.getSubjectBySubjectName(subjectBySubjectNameVo);
+//        log.info("subject:{}",subject);
+//
+//        JournalByJournalNameVo journalByJournalNameVo = new JournalByJournalNameVo();
+//        journalByJournalNameVo.setJournalName("Nature climate change");
+//        Response<JournalResponse> journal = journalController.getJournalByJournalName(journalByJournalNameVo);
+//        log.info("journal:{}",journal);
+//
+//        AreaByAreaNameVo areaByAreaNameVo = new AreaByAreaNameVo();
+//        areaByAreaNameVo.setAreaName("地球科学");
+//        Response<AreaResponse> area = areaController.getAreaByAreaName(areaByAreaNameVo);
+//        log.info("area:{}",area);
+//
+//        PublisherByPublisherNameVo publisherByPublisherNameVo = new PublisherByPublisherNameVo();
+//        publisherByPublisherNameVo.setPublisherName("elseiver");
+//        Response<PublisherResponse> publisher = publisherController.getJournalByJournalName(publisherByPublisherNameVo);
+//        log.info("publisher:{}",publisher);
 
-        JournalByJournalNameVo journalByJournalNameVo = new JournalByJournalNameVo();
-        journalByJournalNameVo.setJournalName("Nature climate change");
-        Response<JournalResponse> journal = journalController.getJournalByJournalName(journalByJournalNameVo);
-        log.info("journal:{}",journal);
-
-        AreaByAreaNameVo areaByAreaNameVo = new AreaByAreaNameVo();
-        areaByAreaNameVo.setAreaName("地球科学");
-        Response<AreaResponse> area = areaController.getAreaByAreaName(areaByAreaNameVo);
-        log.info("area:{}",area);
-
-        PublisherByPublisherNameVo publisherByPublisherNameVo = new PublisherByPublisherNameVo();
-        publisherByPublisherNameVo.setPublisherName("elseiver");
-        Response<PublisherResponse> publisher = publisherController.getJournalByJournalName(publisherByPublisherNameVo);
-        log.info("publisher:{}",publisher);
-
+        List<Subject> subjectByAreaId = subjectService.getSubjectByAreaId(1);
+        for(Subject subject: subjectByAreaId){
+            log.info("subject:{}",subject);
+        }
 
     }
 
@@ -149,6 +153,29 @@ class CatalystplusAdminApplicationTests {
         journalByJournalNameVo.setJournalName("Nature climate change");
         JournalResponse journal = journalManager.getJournalByJournalName(journalByJournalNameVo);
         log.info("journal:{}",journal);
+    }
+
+//
+//    @Autowired
+//    JournalServiceImpl journalService;
+
+    @Test
+    void likeTest(){
+        String journalName = "nature";
+        LambdaQueryWrapper<Journal> journalLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        //判断journalName是英文还是中文
+//        if(journalName.matches("[\u4E00-\u9FA5]+")){
+//            journalLambdaQueryWrapper.eq(Journal::getChName,journalName).groupBy(Journal::getJournalId);
+//        }else {
+//            journalLambdaQueryWrapper.eq(Journal::getEnName, journalName).groupBy(Journal::getJournalId);
+//        }
+        journalLambdaQueryWrapper.like(true,Journal::getEnName,journalName);
+        List<Journal> journals = journalService.getBaseMapper().selectList(journalLambdaQueryWrapper);
+        System.out.println(journals.size());
+        for(Journal journal : journals){
+            System.out.println(journal);
+        }
+
     }
 
 

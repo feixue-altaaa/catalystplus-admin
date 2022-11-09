@@ -35,6 +35,17 @@ public interface JournalMapper extends BaseMapper<Journal> {
             "GROUP BY j.journal_id"})
     Page<Journal> getJournalBySubjectId(Page<Journal> page, Long subjectId);
 
+
+    /**
+     * 返回具有相同journalID的journal
+     * @param journalId
+     * @return
+     */
+    @Select({
+            "SELECT * from journal where journal_id = #{journalId}"
+            })
+    List<Journal> getJournalByJournalId(Long journalId);
+
 }
 
 

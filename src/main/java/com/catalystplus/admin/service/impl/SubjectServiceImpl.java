@@ -21,13 +21,14 @@ import static com.catalystplus.admin.config.GlobalAspect.PAGE_TOTAL;
 public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> implements SubjectService {
 
     @Override
-    public List<Subject> getSubjectByAreaId(long areaId, int pageNo, int pageSize) {
-        Page<Subject> page = new Page<>(pageNo, pageSize);
+    public List<Subject> getSubjectByAreaId(long areaId) {
         LambdaQueryWrapper<Subject> subjectLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        subjectLambdaQueryWrapper.eq(Subject::getAreaId, areaId).groupBy(Subject::getAreaId);
-        Page<Subject> subjectPage = this.baseMapper.selectPage(page, subjectLambdaQueryWrapper);
-        PAGE_TOTAL.set(subjectPage.getTotal());
-        return subjectPage.getRecords();
+        subjectLambdaQueryWrapper.eq(Subject::getAreaId, areaId).groupBy(Subject::getSubjectId);
+//        Page<Subject> subjectPage = this.baseMapper.selectPage(page, subjectLambdaQueryWrapper);
+//        PAGE_TOTAL.set(subjectPage.getTotal());
+//        return subjectPage.getRecords();
+        List<Subject> subjects = this.baseMapper.selectList(subjectLambdaQueryWrapper);
+        return subjects;
     }
 
 

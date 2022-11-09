@@ -1,12 +1,16 @@
 package com.catalystplus.admin.manager.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.catalystplus.admin.entity.Area;
 import com.catalystplus.admin.entity.Journal;
+import com.catalystplus.admin.entity.Subject;
 import com.catalystplus.admin.entity.SubjectJournal;
 import com.catalystplus.admin.manager.JournalManager;
 import com.catalystplus.admin.response.journal.JournalResponse;
+import com.catalystplus.admin.service.AreaService;
 import com.catalystplus.admin.service.JournalService;
 import com.catalystplus.admin.service.SubjectJournalService;
+import com.catalystplus.admin.service.SubjectService;
 import com.catalystplus.admin.vo.journal.JournalByJournalNameVo;
 import com.catalystplus.admin.vo.journal.JournalBySubjectIdVo;
 import com.catalystplus.admin.vo.journal.ModifyPublisherVo;
@@ -17,10 +21,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static com.catalystplus.admin.config.GlobalAspect.PAGE_TOTAL;
 
@@ -35,9 +37,13 @@ public class JournalManagerImpl implements JournalManager {
 
     @Autowired
     JournalService journalService;
-
     @Autowired
     SubjectJournalService subjectJournalService;
+    @Autowired
+    SubjectService subjectService;
+    @Autowired
+    AreaService areaService;
+
 
     @Override
     public List<JournalResponse> getJournalBySubjectId(JournalBySubjectIdVo journalBySubjectIdVo) {
@@ -114,9 +120,19 @@ public class JournalManagerImpl implements JournalManager {
         //2. 根据期刊名称查询journal
         Journal journalByJournalName = journalService.
                 getJournalByJournalName(journalByJournalNameVo.getJournalName());
+        //3. 根据期刊ID，查找对应领域名称和主题名称
+        Subject subject = subjectService.getById(journalByJournalName.getSubjectId());
+        Area area = areaService.getById(subject.getAreaId());
+        List<Journal> journalByJournalId = journalService.getJournalByJournalId(journalByJournalName.getJournalId());
+        List<String> subejctChNames = new ArrayList<>();
+        for(Journal journal:journalByJournalId){
+            subejctChNames.add(subjectService.getById(journal.getSubjectId()).getChName());
+        }
 
         //3. 组装响应
         BeanUtils.copyProperties(journalByJournalName,journalResponse);
+        journalResponse.setAreaChName(area.getChName());
+        journalResponse.setSubjectChNames(subejctChNames);
 
         return journalResponse;
     }

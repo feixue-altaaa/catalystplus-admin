@@ -8,8 +8,10 @@ import com.catalystplus.admin.response.ResponseCode;
 import com.catalystplus.admin.response.subject.SubjectResponse;
 import com.catalystplus.admin.vo.journal.SubjectBySubjectNameVo;
 import com.catalystplus.admin.vo.subject.SubjectByAreaIdVo;
+import com.catalystplus.admin.vo.subject.SubjectPageVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -23,6 +25,7 @@ import static com.catalystplus.admin.config.GlobalAspect.*;
  */
 @Slf4j
 @RestController
+@CrossOrigin
 public class SubjectController implements SubjectApi {
 
 
@@ -38,8 +41,8 @@ public class SubjectController implements SubjectApi {
         if (Assert.notEmpty(subjectByAreaIdVo.getAreaId())) {
             return Response.fail(subjectByAreaIdVo.getUserId(), ResponseCode.SUBJECT_AREAID_ERROR.getCode(), ResponseCode.SUBJECT_AREAID_ERROR.getMsg());
         }
-        PAGE_NO.set(subjectByAreaIdVo.getPageNo());
-        PAGE_SIZE.set(subjectByAreaIdVo.getPageSize());
+//        PAGE_NO.set(subjectByAreaIdVo.getPageNo());
+//        PAGE_SIZE.set(subjectByAreaIdVo.getPageSize());
         List<SubjectResponse> subjectResponses;
 
         //2. 通过领域ID查询主题
@@ -78,23 +81,23 @@ public class SubjectController implements SubjectApi {
     }
 
     @Override
-    public Response<List<SubjectResponse>> getSubject(SubjectByAreaIdVo subjectByAreaIdVo) {
+    public Response<List<SubjectResponse>> getSubject(SubjectPageVo subjectPageVo) {
 
         //1. 参数验证
-        log.info("subjectByAreaIdVo: {}", subjectByAreaIdVo);
-        PAGE_NO.set(subjectByAreaIdVo.getPageNo());
-        PAGE_SIZE.set(subjectByAreaIdVo.getPageSize());
+        log.info("subjectByAreaIdVo: {}", subjectPageVo);
+        PAGE_NO.set(subjectPageVo.getPageNo());
+        PAGE_SIZE.set(subjectPageVo.getPageSize());
         List<SubjectResponse> subjectResponses;
 
         //2. 通过领域ID查询主题
         try {
-            subjectResponses = subjectManager.getSubject(subjectByAreaIdVo);
+            subjectResponses = subjectManager.getSubject(subjectPageVo);
         } catch (Exception e) {
             log.error(e.getMessage());
-            return Response.fail(subjectByAreaIdVo.getUserId(), e.getMessage());
+            return Response.fail(subjectPageVo.getUserId(), e.getMessage());
         }
 
-        return Response.success(subjectByAreaIdVo.getUserId(), subjectResponses);
+        return Response.success(subjectPageVo.getUserId(), subjectResponses);
     }
 
     @Override

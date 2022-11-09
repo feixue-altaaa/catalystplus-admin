@@ -25,4 +25,5 @@ public interface JournalManager {
     List<JournalResponse> getJournal(JournalBySubjectIdVo journalBySubjectIdVo);
 
     JournalResponse getJournalByJournalName(JournalByJournalNameVo journalByJournalNameVo);
+
 }

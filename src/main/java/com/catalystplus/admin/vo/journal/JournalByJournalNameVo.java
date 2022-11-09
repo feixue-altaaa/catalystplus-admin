@@ -22,4 +22,10 @@ public class JournalByJournalNameVo implements Serializable {
     @ApiModelProperty("期刊名称")
     private String journalName;
 
+    @ApiModelProperty("当前页码")
+    private Integer pageNo = 1;
+
+    @ApiModelProperty("每页数量")
+    private Integer pageSize = 10;
+
 }

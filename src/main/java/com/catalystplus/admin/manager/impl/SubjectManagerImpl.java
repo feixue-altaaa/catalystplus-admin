@@ -9,6 +9,7 @@ import com.catalystplus.admin.response.subject.SubjectResponse;
 import com.catalystplus.admin.service.SubjectService;
 import com.catalystplus.admin.vo.journal.SubjectBySubjectNameVo;
 import com.catalystplus.admin.vo.subject.SubjectByAreaIdVo;
+import com.catalystplus.admin.vo.subject.SubjectPageVo;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -39,7 +40,8 @@ public class SubjectManagerImpl implements SubjectManager {
         //1. 初始化
         Long areaId = subjectByAreaIdVo.getAreaId();
 
-        List<Subject> subjects = subjectService.getSubjectByAreaId(areaId, subjectByAreaIdVo.getPageNo(), subjectByAreaIdVo.getPageSize());
+//        List<Subject> subjects = subjectService.getSubjectByAreaId(areaId, subjectByAreaIdVo.getPageNo(), subjectByAreaIdVo.getPageSize());
+        List<Subject> subjects = subjectService.getSubjectByAreaId(areaId);
         log.info("subjects: {}", subjects);
         List<SubjectResponse> subjectResponses = Lists.newArrayList();
         subjects.forEach(subject -> {
@@ -69,13 +71,13 @@ public class SubjectManagerImpl implements SubjectManager {
     }
 
     @Override
-    public List<SubjectResponse> getSubject(SubjectByAreaIdVo subjectByAreaIdVo) {
+    public List<SubjectResponse> getSubject(SubjectPageVo subjectPageVo) {
 
         //1. 初始化
         List<SubjectResponse> subjectResponses = Lists.newArrayList();
 
         //2. 查询主题
-        List<Subject> subjects = subjectService.getSubject(subjectByAreaIdVo.getPageNo(), subjectByAreaIdVo.getPageSize());
+        List<Subject> subjects = subjectService.getSubject(subjectPageVo.getPageNo(), subjectPageVo.getPageSize());
         subjects.forEach(subject -> {
             SubjectResponse subjectResponse = new SubjectResponse();
             BeanUtils.copyProperties(subject, subjectResponse);

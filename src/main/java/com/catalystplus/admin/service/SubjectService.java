@@ -14,7 +14,7 @@ import java.util.List;
  */
 public interface SubjectService extends IService<Subject> {
 
-    List<Subject> getSubjectByAreaId(long areaId, int pageNo, int pageSize);
+    List<Subject> getSubjectByAreaId(long areaId);
 
     List<Subject> getSubject(int pageNo, int pageSize);
 

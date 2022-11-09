@@ -3,6 +3,7 @@ package com.catalystplus.admin.manager;
 import com.catalystplus.admin.response.subject.SubjectResponse;
 import com.catalystplus.admin.vo.journal.SubjectBySubjectNameVo;
 import com.catalystplus.admin.vo.subject.SubjectByAreaIdVo;
+import com.catalystplus.admin.vo.subject.SubjectPageVo;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ public interface SubjectManager {
 
     void updateSubjectByAreaId(Long subjectId, Long areaId);
 
-    List<SubjectResponse> getSubject(SubjectByAreaIdVo subjectByAreaIdVo);
+    List<SubjectResponse> getSubject(SubjectPageVo subjectPageVo);
 
     SubjectResponse getSubjectBySubjectName(SubjectBySubjectNameVo subjectBySubjectNameVo);
 }

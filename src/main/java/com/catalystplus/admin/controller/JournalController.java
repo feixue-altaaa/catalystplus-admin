@@ -12,6 +12,7 @@ import com.catalystplus.admin.vo.journal.ModifyPublisherVo;
 import com.catalystplus.admin.vo.journal.ModifySubjectVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,6 +27,7 @@ import static com.catalystplus.admin.config.GlobalAspect.*;
  */
 @RestController
 @Slf4j
+@CrossOrigin
 public class JournalController implements JournalApi {
 
     @Autowired

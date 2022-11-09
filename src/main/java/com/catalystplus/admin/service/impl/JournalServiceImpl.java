@@ -8,6 +8,7 @@ import com.catalystplus.admin.entity.Journal;
 import com.catalystplus.admin.entity.SubjectJournal;
 import com.catalystplus.admin.service.JournalService;
 import com.catalystplus.admin.mapper.JournalMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +23,9 @@ import static com.catalystplus.admin.config.GlobalAspect.PAGE_TOTAL;
 @Service
 public class JournalServiceImpl extends ServiceImpl<JournalMapper, Journal> implements JournalService {
 
+
+    @Autowired
+    JournalMapper journalMapper;
 
     @Override
     public List<Journal> getJournalBySubjectId(long subjectId, int pageNo, int pageSize) {
@@ -59,6 +63,13 @@ public class JournalServiceImpl extends ServiceImpl<JournalMapper, Journal> impl
         Journal journal = this.baseMapper.selectOne(journalLambdaQueryWrapper);
         return journal;
     }
+
+    @Override
+    public List<Journal> getJournalByJournalId(Long journalId) {
+        return journalMapper.getJournalByJournalId(journalId);
+    }
+
+
 }
 
 
