@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.catalystplus.library.mapper.SysUserMapper">
+
+    <resultMap id="BaseResultMap" type="com.catalystplus.admin.entity.SysUser">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="loginId" column="login_id" jdbcType="VARCHAR"/>
+            <result property="username" column="username" jdbcType="VARCHAR"/>
+            <result property="nickname" column="nickname" jdbcType="VARCHAR"/>
+            <result property="gender" column="gender" jdbcType="TINYINT"/>
+            <result property="password" column="password" jdbcType="VARCHAR"/>
+            <result property="avatar" column="avatar" jdbcType="VARCHAR"/>
+            <result property="mobile" column="mobile" jdbcType="VARCHAR"/>
+            <result property="email" column="email" jdbcType="VARCHAR"/>
+            <result property="birth" column="birth" jdbcType="TIMESTAMP"/>
+            <result property="city" column="city" jdbcType="VARCHAR"/>
+            <result property="job" column="job" jdbcType="VARCHAR"/>
+            <result property="jobTitle" column="job_title" jdbcType="VARCHAR"/>
+            <result property="sourceType" column="source_type" jdbcType="TINYINT"/>
+            <result property="accessToken" column="access_token" jdbcType="VARCHAR"/>
+            <result property="expiresIn" column="expires_in" jdbcType="BIGINT"/>
+            <result property="socialUid" column="social_uid" jdbcType="VARCHAR"/>
+            <result property="institution" column="institution" jdbcType="VARCHAR"/>
+            <result property="institutionId" column="institution_id" jdbcType="BIGINT"/>
+            <result property="status" column="status" jdbcType="TINYINT"/>
+            <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
+            <result property="updatedTime" column="updated_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,login_id,username,
+        nickname,gender,password,
+        avatar,mobile,email,
+        birth,city,job,
+        job_title,source_type,access_token,
+        expires_in,social_uid,institution,institutionId,
+        status,created_time,updated_time
+    </sql>
+</mapper>

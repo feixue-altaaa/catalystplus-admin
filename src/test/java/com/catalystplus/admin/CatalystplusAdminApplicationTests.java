@@ -14,6 +14,7 @@ import com.catalystplus.admin.response.area.AreaResponse;
 import com.catalystplus.admin.response.journal.JournalResponse;
 import com.catalystplus.admin.response.publisher.PublisherResponse;
 import com.catalystplus.admin.response.subject.SubjectResponse;
+import com.catalystplus.admin.service.SysUserService;
 import com.catalystplus.admin.service.VisualizeService;
 import com.catalystplus.admin.service.impl.AreaServiceImpl;
 import com.catalystplus.admin.service.impl.JournalServiceImpl;
@@ -66,9 +67,9 @@ class CatalystplusAdminApplicationTests {
     @Test
     void journalTest() {
         Journal journal = journalService.getJournalByJournalName("Nature climate change");
-        log.info("journal:{}",journal);
+        log.info("journal:{}", journal);
         Journal journal1 = journalService.getJournalByJournalName("地球未来");
-        log.info("journal:{}",journal1);
+        log.info("journal:{}", journal1);
 
     }
 
@@ -83,7 +84,7 @@ class CatalystplusAdminApplicationTests {
     PublisherController publisherController;
 
     @Test
-    void subjectTest(){
+    void subjectTest() {
 //        Page<Subject> page = new Page<>(1, 10);
 //        LambdaQueryWrapper<Subject> subjectLambdaQueryWrapper = new LambdaQueryWrapper<>();
 //        subjectLambdaQueryWrapper.groupBy(Subject::getSubjectId);
@@ -122,8 +123,8 @@ class CatalystplusAdminApplicationTests {
 //        log.info("publisher:{}",publisher);
 
         List<Subject> subjectByAreaId = subjectService.getSubjectByAreaId(1);
-        for(Subject subject: subjectByAreaId){
-            log.info("subject:{}",subject);
+        for (Subject subject : subjectByAreaId) {
+            log.info("subject:{}", subject);
         }
 
     }
@@ -134,13 +135,13 @@ class CatalystplusAdminApplicationTests {
     AreaServiceImpl areaService;
 
     @Test
-    void publisherTest(){
+    void publisherTest() {
 //        Publisher elseiver = publisherService.getPublisherByPublisherName("elseiver");
 //        log.info("publisher:{}",elseiver);
         Area areaByName = areaService.getAreaByName("物理与天体物理");
-        log.info("area：{}",areaByName);
+        log.info("area：{}", areaByName);
         Area areaByName1 = areaService.getAreaByName("Mathematics");
-        log.info("area：{}",areaByName1);
+        log.info("area：{}", areaByName1);
     }
 
 
@@ -148,11 +149,11 @@ class CatalystplusAdminApplicationTests {
     JournalManagerImpl journalManager;
 
     @Test
-    void test(){
+    void test() {
         JournalByJournalNameVo journalByJournalNameVo = new JournalByJournalNameVo();
         journalByJournalNameVo.setJournalName("Nature climate change");
         JournalResponse journal = journalManager.getJournalByJournalName(journalByJournalNameVo);
-        log.info("journal:{}",journal);
+        log.info("journal:{}", journal);
     }
 
 //
@@ -160,7 +161,7 @@ class CatalystplusAdminApplicationTests {
 //    JournalServiceImpl journalService;
 
     @Test
-    void likeTest(){
+    void likeTest() {
         String journalName = "nature";
         LambdaQueryWrapper<Journal> journalLambdaQueryWrapper = new LambdaQueryWrapper<>();
         //判断journalName是英文还是中文
@@ -169,17 +170,23 @@ class CatalystplusAdminApplicationTests {
 //        }else {
 //            journalLambdaQueryWrapper.eq(Journal::getEnName, journalName).groupBy(Journal::getJournalId);
 //        }
-        journalLambdaQueryWrapper.like(true,Journal::getEnName,journalName);
+        journalLambdaQueryWrapper.like(true, Journal::getEnName, journalName);
         List<Journal> journals = journalService.getBaseMapper().selectList(journalLambdaQueryWrapper);
         System.out.println(journals.size());
-        for(Journal journal : journals){
+        for (Journal journal : journals) {
             System.out.println(journal);
         }
 
     }
 
+    @Autowired
+    SysUserService sysUserService;
 
-
+    @Test
+    void userTest() {
+        SysUser byId = sysUserService.getById(10L);
+        log.info("byId: {}", byId);
+    }
 
 
 }
