@@ -16,7 +16,13 @@ public interface UserDataManager {
     // 统计NNUT
     void recordNNUT(String dateKey, Integer userId);
 
-    Map<String, Long> getDWMAU(String dateKey);
+    Map<String, Object> getDWMAU(String dateKey);
 
     void recordDWMAU(String dateKey, Integer userId);
+
+    void recordNNACU(Integer userId, Integer status);
+
+    Long getNACU();
+
+    Long getNNCU();
 }

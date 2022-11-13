@@ -11,9 +11,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-@RocketMQMessageListener(consumerGroup = "data-user-nnut",
-        topic = "data", selectorExpression = "nnut")
-public class NNUTConsumer implements RocketMQListener<String> {
+@RocketMQMessageListener(consumerGroup = "data-user-cu",
+        topic = "data", selectorExpression = "cu")
+public class CUConsumer implements RocketMQListener<String>  {
 
     @Autowired
     private UserDataManagerImpl userDataManager;
@@ -24,8 +24,8 @@ public class NNUTConsumer implements RocketMQListener<String> {
         Message message = JsonUtils.jsonToPojo(json, Message.class);
         if (message != null) {
             Integer userId = (Integer) message.getData().get("userId");
-            String createTime = (String) message.getData().get("createTime");
-            userDataManager.recordNNUT(createTime, userId);
+            Integer flag = (Integer) message.getData().get("flag");
+            userDataManager.recordNNACU(userId, flag);
         }
     }
 }

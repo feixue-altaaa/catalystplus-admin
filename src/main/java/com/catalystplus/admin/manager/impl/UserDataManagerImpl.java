@@ -5,13 +5,13 @@ import com.catalystplus.admin.entity.SysUser;
 import com.catalystplus.admin.manager.UserDataManager;
 import com.catalystplus.admin.service.SysUserService;
 import com.catalystplus.admin.util.RedisKeyUtil;
-import io.swagger.models.auth.In;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
@@ -50,8 +50,8 @@ public class UserDataManagerImpl implements UserDataManager {
     }
 
     @Override
-    public Map<String, Long> getDWMAU(String dateKey) {
-        Map<String, Long> res = new HashMap<>();
+    public Map<String, Object> getDWMAU(String dateKey) {
+        Map<String, Object> res = new HashMap<>();
 
         String dauKey = RedisKeyUtil.getDAUKey(dateKey);
 
@@ -75,9 +75,17 @@ public class UserDataManagerImpl implements UserDataManager {
         Long wau = redisTemplate.execute((RedisCallback<Long>) connection -> connection.bitCount(wauKey.getBytes()));
         Long mau = redisTemplate.execute((RedisCallback<Long>) connection -> connection.bitCount(mauKey.getBytes()));
 
+        Long tnu = getTNU();
+        DecimalFormat df = new DecimalFormat("0.00");
+        String pdau = df.format(dau / (double) tnu);
+        String pwau = df.format(wau / (double) tnu);
+        String pmau = df.format(mau / (double) tnu);
         res.put("dau", dau);
         res.put("wau", wau);
         res.put("mau", mau);
+        res.put("pdau", pdau);
+        res.put("pwau", pwau);
+        res.put("pmau", pmau);
 
         return res;
     }
@@ -108,5 +116,41 @@ public class UserDataManagerImpl implements UserDataManager {
 
     }
 
+    @Override
+    public void recordNNACU(Integer userId, Integer status) {
+        SysUser user = sysUserService.getById(userId);
+        String nncuKey = null;
+        if (LocalDate.now().toString().equals(user.getCreatedTime().toString())) {
+            // 新用户
+            nncuKey = RedisKeyUtil.getNNCUKey();
+        }
+        String nacuKey = RedisKeyUtil.getNACUKey();
+
+        if (status == 1) {
+            // 用户上线
+            if (nncuKey != null) {
+                redisTemplate.opsForValue().setBit(nncuKey, userId, true);
+            }
+            redisTemplate.opsForValue().setBit(nacuKey, userId, true);
+        } else if (status == 0) {
+            // 用户下线
+            if (nncuKey != null) {
+                redisTemplate.opsForValue().setBit(nncuKey, userId, false);
+            }
+            redisTemplate.opsForValue().setBit(nacuKey, userId, false);
+        }
+    }
+
+    @Override
+    public Long getNACU() {
+        String nacuKey = RedisKeyUtil.getNACUKey();
+        return redisTemplate.execute((RedisCallback<Long>) connection -> connection.bitCount(nacuKey.getBytes()));
+    }
+
+    @Override
+    public Long getNNCU() {
+        String nncuKey = RedisKeyUtil.getNNCUKey();
+        return redisTemplate.execute((RedisCallback<Long>) connection -> connection.bitCount(nncuKey.getBytes()));
+    }
 
 }

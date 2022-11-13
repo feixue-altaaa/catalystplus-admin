@@ -1,11 +1,8 @@
 package com.catalystplus.admin.util;
 
+import static com.catalystplus.admin.constant.Constant.*;
+
 public final class RedisKeyUtil {
-    private static final String SPLIT = ":";
-    private static final String PREFIX_DATA_NNUT = "data:nnut";
-    private static final String PREFIX_DATA_DAU = "data:dau";
-    private static final String PREFIX_DATA_WAU = "data:wau";
-    private static final String PREFIX_DATA_MAU = "data:mau";
 
     public static String getNNUTKey(String dateKey) {
         return PREFIX_DATA_NNUT + SPLIT + dateKey;
@@ -21,6 +18,14 @@ public final class RedisKeyUtil {
 
     public static String getMAUKey(String monthStart, String monthEnd) {
         return PREFIX_DATA_MAU + SPLIT + monthStart + SPLIT + monthEnd;
+    }
+
+    public static String getNACUKey() {
+        return PREFIX_DATA_NACU;
+    }
+
+    public static String getNNCUKey() {
+        return PREFIX_DATA_NNCU;
     }
 
 

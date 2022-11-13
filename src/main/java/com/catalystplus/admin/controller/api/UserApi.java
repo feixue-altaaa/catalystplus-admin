@@ -20,7 +20,15 @@ public interface UserApi {
     Response<UserDataResponse> getNNUT(String dateKey);
 
     @PostMapping("/auth/user/au")
-    @ApiOperation("查询日周月用户活跃数")
+    @ApiOperation("查询日周月用户活跃数，日周月活占比")
     Response<UserDataResponse> getDWMAU(String dateKey);
+
+    @GetMapping("/auth/user/nacu")
+    @ApiOperation("查询同时在线活跃用户数")
+    Response<UserDataResponse> getNACU();
+
+    @GetMapping("/auth/user/nncu")
+    @ApiOperation("查询同时在线新用户数")
+    Response<UserDataResponse> getNNCU();
 
 }

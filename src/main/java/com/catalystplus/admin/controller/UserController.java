@@ -51,11 +51,30 @@ public class UserController implements UserApi {
             return Response.fail(null, "参数为空");
         }
 
-        Map<String, Long> res = userDataManager.getDWMAU(dateKey);
+        Map<String, Object> res = userDataManager.getDWMAU(dateKey);
         UserDataResponse userDataResponse = new UserDataResponse();
-        userDataResponse.setDau(res.get("dau"));
-        userDataResponse.setWau(res.get("wau"));
-        userDataResponse.setMau(res.get("mau"));
+        userDataResponse.setDau((Long) res.get("dau"));
+        userDataResponse.setWau((Long) res.get("wau"));
+        userDataResponse.setMau((Long) res.get("mau"));
+        userDataResponse.setPdau((String) res.get("pdau"));
+        userDataResponse.setPwau((String) res.get("pwau"));
+        userDataResponse.setPmau((String) res.get("pmau"));
+        return Response.success(null, userDataResponse);
+    }
+
+    @Override
+    public Response<UserDataResponse> getNACU() {
+        Long nacu = userDataManager.getNACU();
+        UserDataResponse userDataResponse = new UserDataResponse();
+        userDataResponse.setNacu(nacu);
+        return Response.success(null, userDataResponse);
+    }
+
+    @Override
+    public Response<UserDataResponse> getNNCU() {
+        Long nncu = userDataManager.getNNCU();
+        UserDataResponse userDataResponse = new UserDataResponse();
+        userDataResponse.setNncu(nncu);
         return Response.success(null, userDataResponse);
     }
 

@@ -1,8 +1,6 @@
 package com.catalystplus.admin;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.catalystplus.admin.entity.Message;
-import com.catalystplus.admin.entity.SysUser;
 import com.catalystplus.admin.message.producer.MessageProducer;
 import com.catalystplus.admin.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
@@ -10,11 +8,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
-import java.util.Date;
 
 @Slf4j
 @SpringBootTest
@@ -29,7 +25,7 @@ class UserDataMessageTests {
     @Test
     void testNNUTProducer() {
         Integer userId = 10;
-        String str = "2022-11-12";
+        String str = "2022-11-13";
 
         String[] split = str.split("-");
         int year = Integer.parseInt(split[0]);
@@ -45,20 +41,12 @@ class UserDataMessageTests {
                 .setData("createTime", createTime);
 
         messageProducer.produceMessage(message);
-
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Test
     void testAUProducer() {
-        // 测试数据
-        Integer userId = 10;
-
-        String str = "2022-11-19";
+        Integer userId = 12;
+        String str = "2022-11-13";
 
         String[] split = str.split("-");
         int year = Integer.parseInt(split[0]);
@@ -74,12 +62,6 @@ class UserDataMessageTests {
                 .setData("loginTime", loginTime);
 
         messageProducer.produceMessage(message);
-
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Test
@@ -103,5 +85,21 @@ class UserDataMessageTests {
         System.out.println(monthStart.toString());
         System.out.println(monthEnd.toString());
     }
+
+
+    @Test
+    void testOnline() {
+        Integer userId = 16;
+        Integer flag = 1;
+
+        Message message = new Message();
+        message.setTopic("data")
+                .setTags("cu")
+                .setData("userId", userId)
+                .setData("flag", flag);
+
+        messageProducer.produceMessage(message);
+    }
+
 
 }

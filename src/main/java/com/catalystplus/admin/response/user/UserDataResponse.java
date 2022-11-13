@@ -37,7 +37,7 @@ public class UserDataResponse implements Serializable {
      * 日活占比
      */
     @ApiModelProperty("日活占比")
-    private Long pdau;
+    private String pdau;
 
     /**
      * 周活跃用户数
@@ -49,7 +49,7 @@ public class UserDataResponse implements Serializable {
      * 周活占比
      */
     @ApiModelProperty("周活占比")
-    private Long pwau;
+    private String pwau;
 
     /**
      * 月活跃用户数
@@ -61,6 +61,18 @@ public class UserDataResponse implements Serializable {
      * 月活占比
      */
     @ApiModelProperty("月活占比")
-    private Long pmau;
+    private String pmau;
+
+    /**
+     * 同时在线活跃用户数
+     */
+    @ApiModelProperty("同时在线活跃用户数")
+    private Long nacu;
+
+    /**
+     * 同时在线新用户数
+     */
+    @ApiModelProperty("同时在线新用户数")
+    private Long nncu;
 
 }
