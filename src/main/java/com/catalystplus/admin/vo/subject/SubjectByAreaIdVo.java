@@ -15,7 +15,6 @@ import java.io.Serializable;
 @ApiModel("通过areaId查询主题接口")
 public class SubjectByAreaIdVo implements Serializable {
 
-
     private static final long serialVersionUID = -2476099675993487324L;
 
     @ApiModelProperty("用户ID")

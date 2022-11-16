@@ -7,6 +7,7 @@ import com.catalystplus.admin.entity.Subject;
 import com.catalystplus.admin.entity.SubjectJournal;
 import com.catalystplus.admin.manager.JournalManager;
 import com.catalystplus.admin.response.journal.JournalResponse;
+import com.catalystplus.admin.response.journal.JournalSimpleResponse;
 import com.catalystplus.admin.service.AreaService;
 import com.catalystplus.admin.service.JournalService;
 import com.catalystplus.admin.service.SubjectJournalService;
@@ -46,7 +47,7 @@ public class JournalManagerImpl implements JournalManager {
 
 
     @Override
-    public List<JournalResponse> getJournalBySubjectId(JournalBySubjectIdVo journalBySubjectIdVo) {
+    public List<JournalSimpleResponse> getJournalBySubjectId(JournalBySubjectIdVo journalBySubjectIdVo) {
 
         //1. 初始化
         Long subjectId = journalBySubjectIdVo.getSubjectId();
@@ -55,19 +56,18 @@ public class JournalManagerImpl implements JournalManager {
         //2. 是否喜欢期刊，喜欢在期刊里面把favourite置为true
         List<Journal> journals = journalService.getJournalBySubjectId(subjectId, journalBySubjectIdVo.getPageNo(), journalBySubjectIdVo.getPageSize());
         log.info("journals: {}", journals);
-        List<JournalResponse> journalResponses = Lists.newArrayList();
+        List<JournalSimpleResponse> journalSimpleResponses = Lists.newArrayList();
 
         journals.forEach(journal -> {
-            JournalResponse journalResponse = new JournalResponse();
-            BeanUtils.copyProperties(journal, journalResponse);
-            journalResponse.setSubjectId(journal.getSid());
-            journalResponses.add(journalResponse);
+            JournalSimpleResponse journalSimpleResponse = new JournalSimpleResponse();
+            BeanUtils.copyProperties(journal, journalSimpleResponse);
+            journalSimpleResponses.add(journalSimpleResponse);
         });
         journals.clear();
 
         //3. 先根据分区排序，再根据英文名排序
         // return journalResponses.parallelStream().sorted(Comparator.comparing(JournalResponse::getQuartile).thenComparing(JournalResponse::getEnName)).collect(Collectors.toList());
-        return journalResponses;
+        return journalSimpleResponses;
     }
 
     @Override
@@ -125,15 +125,40 @@ public class JournalManagerImpl implements JournalManager {
         Area area = areaService.getById(subject.getAreaId());
         List<Journal> journalByJournalId = journalService.getJournalByJournalId(journalByJournalName.getJournalId());
         List<String> subejctChNames = new ArrayList<>();
+        List<Long> subjectIds = new ArrayList<>();
         for(Journal journal:journalByJournalId){
             subejctChNames.add(subjectService.getById(journal.getSubjectId()).getChName());
+            subjectIds.add(subjectService.getById(journal.getSubjectId()).getId());
         }
 
-        //3. 组装响应
+        //4. 组装响应
         BeanUtils.copyProperties(journalByJournalName,journalResponse);
         journalResponse.setAreaChName(area.getChName());
         journalResponse.setSubjectChNames(subejctChNames);
+        journalResponse.setSubjectIds(subjectIds);
 
         return journalResponse;
     }
+
+    @Override
+    public List<JournalSimpleResponse> getJournalByFuzzyQuery(JournalByJournalNameVo journalByJournalNameVo) {
+
+        //1. 初始化
+        List<JournalSimpleResponse> journalSimpleResponses = new ArrayList<>();
+
+        //2. 根据名称模糊查询期刊
+        List<Journal> journalsByFuzzyQuery = journalService.getJournalByFuzzyQuery(journalByJournalNameVo);
+
+        //3. 组装响应
+        journalsByFuzzyQuery.forEach(journal -> {
+            JournalSimpleResponse journalSimpleResponse = new JournalSimpleResponse();
+            BeanUtils.copyProperties(journal,journalSimpleResponse);
+            journalSimpleResponses.add(journalSimpleResponse);
+        });
+        journalsByFuzzyQuery.clear();
+
+        return journalSimpleResponses;
+    }
+
+
 }

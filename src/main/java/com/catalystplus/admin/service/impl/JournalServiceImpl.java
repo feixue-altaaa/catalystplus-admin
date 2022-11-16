@@ -8,6 +8,7 @@ import com.catalystplus.admin.entity.Journal;
 import com.catalystplus.admin.entity.SubjectJournal;
 import com.catalystplus.admin.service.JournalService;
 import com.catalystplus.admin.mapper.JournalMapper;
+import com.catalystplus.admin.vo.journal.JournalByJournalNameVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -67,6 +68,21 @@ public class JournalServiceImpl extends ServiceImpl<JournalMapper, Journal> impl
     @Override
     public List<Journal> getJournalByJournalId(Long journalId) {
         return journalMapper.getJournalByJournalId(journalId);
+    }
+
+    @Override
+    public List<Journal> getJournalByFuzzyQuery(JournalByJournalNameVo journalByJournalNameVo) {
+        LambdaQueryWrapper<Journal> journalLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        //判断journalName是英文还是中文
+        if(journalByJournalNameVo.getJournalName().matches("[\u4E00-\u9FA5]+")){
+            journalLambdaQueryWrapper.like(true, Journal::getEnName, journalByJournalNameVo.getJournalName()).groupBy(Journal::getJournalId);
+        }else {
+            journalLambdaQueryWrapper.like(true, Journal::getEnName, journalByJournalNameVo.getJournalName()).groupBy(Journal::getJournalId);
+        }
+        Page<Journal> journalPage = new Page<>(journalByJournalNameVo.getPageNo(), journalByJournalNameVo.getPageSize());
+        Page<Journal> page = this.page(journalPage,journalLambdaQueryWrapper);
+        List<Journal> journals = page.getRecords();
+        return journals;
     }
 
 

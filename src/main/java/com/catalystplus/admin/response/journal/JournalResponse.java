@@ -48,7 +48,7 @@ public class JournalResponse implements Serializable {
      * 期刊关联subject主题表
      */
     @ApiModelProperty("关联表主题subjectId")
-    private Long subjectId;
+    private List<Long> subjectIds;
 
 
     /**
