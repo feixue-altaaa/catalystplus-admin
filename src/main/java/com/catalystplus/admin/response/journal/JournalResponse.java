@@ -59,16 +59,9 @@ public class JournalResponse implements Serializable {
 
 
     /**
-     * 关联publisher出版商表
+     * 带横杠版的issn
      */
-    @ApiModelProperty("期刊出版商")
-    private String publisher;
-
-    /**
-     * ISSN编号, 标准国际刊号
-     */
-    @ApiModelProperty("带横杆版期刊ISSN")
-    private String issn;
+    private String issnPrimaryFormatted;
 
     /**
      * Area Quartile in Category分区，1为一区，2为二区，3为三区，4为四区，以Area分区为标准
@@ -97,6 +90,17 @@ public class JournalResponse implements Serializable {
      */
     @ApiModelProperty("期刊官方网址")
     private String informationPageUrl;
+
+
+    /**
+     * 下面字段需要手动设置值
+     */
+
+    /**
+     * 关联publisher出版商表
+     */
+    @ApiModelProperty("期刊出版商")
+    private String publisher;
 
     /**
      * 领域名字, cn_name:中文名

@@ -1,17 +1,11 @@
 package com.catalystplus.admin.manager.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.catalystplus.admin.entity.Area;
-import com.catalystplus.admin.entity.Journal;
-import com.catalystplus.admin.entity.Subject;
-import com.catalystplus.admin.entity.SubjectJournal;
+import com.catalystplus.admin.entity.*;
 import com.catalystplus.admin.manager.JournalManager;
 import com.catalystplus.admin.response.journal.JournalResponse;
 import com.catalystplus.admin.response.journal.JournalSimpleResponse;
-import com.catalystplus.admin.service.AreaService;
-import com.catalystplus.admin.service.JournalService;
-import com.catalystplus.admin.service.SubjectJournalService;
-import com.catalystplus.admin.service.SubjectService;
+import com.catalystplus.admin.service.*;
 import com.catalystplus.admin.vo.journal.JournalByJournalNameVo;
 import com.catalystplus.admin.vo.journal.JournalBySubjectIdVo;
 import com.catalystplus.admin.vo.journal.ModifyPublisherVo;
@@ -44,6 +38,8 @@ public class JournalManagerImpl implements JournalManager {
     SubjectService subjectService;
     @Autowired
     AreaService areaService;
+    @Autowired
+    PublisherService publisherService;
 
 
     @Override
@@ -130,12 +126,14 @@ public class JournalManagerImpl implements JournalManager {
             subejctChNames.add(subjectService.getById(journal.getSubjectId()).getChName());
             subjectIds.add(subjectService.getById(journal.getSubjectId()).getId());
         }
+        Publisher publisher = publisherService.getById(journalByJournalName.getPublisherId());
 
         //4. 组装响应
         BeanUtils.copyProperties(journalByJournalName,journalResponse);
         journalResponse.setAreaChName(area.getChName());
         journalResponse.setSubjectChNames(subejctChNames);
         journalResponse.setSubjectIds(subjectIds);
+        journalResponse.setPublisher(publisher.getName());
 
         return journalResponse;
     }

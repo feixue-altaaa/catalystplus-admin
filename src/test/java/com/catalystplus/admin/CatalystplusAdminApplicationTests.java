@@ -168,18 +168,19 @@ class CatalystplusAdminApplicationTests {
     void likeTest() {
         String journalName = "nature";
         LambdaQueryWrapper<Journal> journalLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        //判断journalName是英文还是中文
-//        if(journalName.matches("[\u4E00-\u9FA5]+")){
-//            journalLambdaQueryWrapper.eq(Journal::getChName,journalName).groupBy(Journal::getJournalId);
-//        }else {
-//            journalLambdaQueryWrapper.eq(Journal::getEnName, journalName).groupBy(Journal::getJournalId);
-//        }
-//        journalLambdaQueryWrapper.like(true, Journal::getEnName, journalName);
-//        List<Journal> journals = journalService.getBaseMapper().selectList(journalLambdaQueryWrapper);
-//        System.out.println(journals.size());
-//        for (Journal journal : journals) {
-//            System.out.println(journal);
-//        }
+//        判断journalName是英文还是中文
+        if(journalName.matches("[\u4E00-\u9FA5]+")){
+            journalLambdaQueryWrapper.eq(Journal::getChName,journalName).groupBy(Journal::getJournalId);
+        }else {
+            journalLambdaQueryWrapper.eq(Journal::getEnName, journalName).groupBy(Journal::getJournalId);
+        }
+        journalLambdaQueryWrapper.like(true, Journal::getEnName, journalName);
+        journalLambdaQueryWrapper.like(true, Journal::getEnName, "energy").groupBy(Journal::getJournalId);
+        List<Journal> journals = journalService.getBaseMapper().selectList(journalLambdaQueryWrapper);
+        System.out.println(journals.size());
+        for (Journal journal : journals) {
+            System.out.println(journal);
+        }
 
 //        List<Journal> nature = journalService.getJournalByFuzzyQuery("nature");
 //        nature.forEach(System.out::println);
