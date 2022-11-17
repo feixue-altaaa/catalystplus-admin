@@ -2,6 +2,7 @@ package com.catalystplus.admin.controller.api;
 
 import com.catalystplus.admin.response.Response;
 import com.catalystplus.admin.response.journal.JournalResponse;
+import com.catalystplus.admin.response.journal.JournalSimpleResponse;
 import com.catalystplus.admin.vo.journal.JournalByJournalNameVo;
 import com.catalystplus.admin.vo.journal.JournalBySubjectIdVo;
 import com.catalystplus.admin.vo.journal.ModifyPublisherVo;
@@ -23,8 +24,7 @@ public interface JournalApi {
 
     @PostMapping("/auth/journal")
     @ApiOperation("通过主题ID查找期刊")
-    Response<List<JournalResponse>> getJournalBySubjectId(@RequestBody JournalBySubjectIdVo journalBySubjectIdVo);
-
+    Response<List<JournalSimpleResponse>> getJournalBySubjectId(@RequestBody JournalBySubjectIdVo journalBySubjectIdVo);
 
     @PutMapping("/auth/modify/journal/subject")
     @ApiOperation("修改期刊关联的主题")
@@ -41,4 +41,8 @@ public interface JournalApi {
     @PostMapping("/auth/journal/journal_name")
     @ApiOperation("通过期刊名称查找期刊")
     Response<JournalResponse> getJournalByJournalName(@RequestBody JournalByJournalNameVo journalByJournalNameVo);
+
+    @PostMapping("/auth/journal/name")
+    @ApiOperation("根据名称模糊查询期刊")
+    Response<List<JournalSimpleResponse>> getJournalByFuzzyQuery(@RequestBody JournalByJournalNameVo journalByJournalNameVo);
 }

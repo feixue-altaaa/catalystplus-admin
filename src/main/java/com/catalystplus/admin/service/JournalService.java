@@ -2,6 +2,7 @@ package com.catalystplus.admin.service;
 
 import com.catalystplus.admin.entity.Journal;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.catalystplus.admin.vo.journal.JournalByJournalNameVo;
 
 import java.util.List;
 
@@ -19,5 +20,7 @@ public interface JournalService extends IService<Journal> {
     Journal getJournalByJournalName(String journalName);
 
     List<Journal> getJournalByJournalId(Long journalId);
+
+    List<Journal> getJournalByFuzzyQuery(JournalByJournalNameVo journalByJournalNameVo);
 
 }

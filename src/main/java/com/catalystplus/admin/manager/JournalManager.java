@@ -1,6 +1,7 @@
 package com.catalystplus.admin.manager;
 
 import com.catalystplus.admin.response.journal.JournalResponse;
+import com.catalystplus.admin.response.journal.JournalSimpleResponse;
 import com.catalystplus.admin.vo.journal.JournalByJournalNameVo;
 import com.catalystplus.admin.vo.journal.JournalBySubjectIdVo;
 import com.catalystplus.admin.vo.journal.ModifyPublisherVo;
@@ -16,7 +17,7 @@ import java.util.List;
 
 public interface JournalManager {
 
-    List<JournalResponse> getJournalBySubjectId(JournalBySubjectIdVo journalBySubjectIdVo);
+    List<JournalSimpleResponse> getJournalBySubjectId(JournalBySubjectIdVo journalBySubjectIdVo);
 
     void updateJournalBySubjectId(ModifySubjectVo modifySubjectVo);
 
@@ -26,4 +27,5 @@ public interface JournalManager {
 
     JournalResponse getJournalByJournalName(JournalByJournalNameVo journalByJournalNameVo);
 
+    List<JournalSimpleResponse> getJournalByFuzzyQuery(JournalByJournalNameVo journalByJournalNameVo);
 }

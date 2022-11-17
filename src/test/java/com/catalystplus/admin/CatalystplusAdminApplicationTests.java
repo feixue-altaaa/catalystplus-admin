@@ -14,6 +14,7 @@ import com.catalystplus.admin.response.area.AreaResponse;
 import com.catalystplus.admin.response.journal.JournalResponse;
 import com.catalystplus.admin.response.publisher.PublisherResponse;
 import com.catalystplus.admin.response.subject.SubjectResponse;
+import com.catalystplus.admin.service.JournalService;
 import com.catalystplus.admin.service.SysUserService;
 import com.catalystplus.admin.service.VisualizeService;
 import com.catalystplus.admin.service.impl.AreaServiceImpl;
@@ -43,10 +44,10 @@ class CatalystplusAdminApplicationTests {
     @Test
     void journalBySubjectTest() {
 
-        JournalBySubjectIdVo journalBySubjectIdVo = new JournalBySubjectIdVo();
-        journalBySubjectIdVo.setSubjectId(643L);
-        Response<List<JournalResponse>> journal = journalController.getJournalBySubjectId(journalBySubjectIdVo);
-        log.info("journal: {}", journal);
+//        JournalBySubjectIdVo journalBySubjectIdVo = new JournalBySubjectIdVo();
+//        journalBySubjectIdVo.setSubjectId(643L);
+//        Response<List<JournalResponse>> journal = journalController.getJournalBySubjectId(journalBySubjectIdVo);
+//        log.info("journal: {}", journal);
     }
 
 
@@ -160,22 +161,29 @@ class CatalystplusAdminApplicationTests {
 //    @Autowired
 //    JournalServiceImpl journalService;
 
+//    @Autowired
+//    JournalService journalService;
+
     @Test
     void likeTest() {
         String journalName = "nature";
         LambdaQueryWrapper<Journal> journalLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        //判断journalName是英文还是中文
-//        if(journalName.matches("[\u4E00-\u9FA5]+")){
-//            journalLambdaQueryWrapper.eq(Journal::getChName,journalName).groupBy(Journal::getJournalId);
-//        }else {
-//            journalLambdaQueryWrapper.eq(Journal::getEnName, journalName).groupBy(Journal::getJournalId);
-//        }
+//        判断journalName是英文还是中文
+        if(journalName.matches("[\u4E00-\u9FA5]+")){
+            journalLambdaQueryWrapper.eq(Journal::getChName,journalName).groupBy(Journal::getJournalId);
+        }else {
+            journalLambdaQueryWrapper.eq(Journal::getEnName, journalName).groupBy(Journal::getJournalId);
+        }
         journalLambdaQueryWrapper.like(true, Journal::getEnName, journalName);
+        journalLambdaQueryWrapper.like(true, Journal::getEnName, "energy").groupBy(Journal::getJournalId);
         List<Journal> journals = journalService.getBaseMapper().selectList(journalLambdaQueryWrapper);
         System.out.println(journals.size());
         for (Journal journal : journals) {
             System.out.println(journal);
         }
+
+//        List<Journal> nature = journalService.getJournalByFuzzyQuery("nature");
+//        nature.forEach(System.out::println);
 
     }
 
