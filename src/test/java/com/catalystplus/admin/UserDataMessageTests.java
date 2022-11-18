@@ -1,6 +1,7 @@
 package com.catalystplus.admin;
 
 import com.catalystplus.admin.entity.Message;
+import com.catalystplus.admin.mapper.SysUserMapper;
 import com.catalystplus.admin.message.producer.MessageProducer;
 import com.catalystplus.admin.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
@@ -100,6 +101,5 @@ class UserDataMessageTests {
 
         messageProducer.produceMessage(message);
     }
-
 
 }

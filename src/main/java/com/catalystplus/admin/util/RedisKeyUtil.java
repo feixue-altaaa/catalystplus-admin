@@ -1,6 +1,6 @@
 package com.catalystplus.admin.util;
 
-import static com.catalystplus.admin.constant.Constant.*;
+import static com.catalystplus.admin.constant.UserDataConstant.*;
 
 public final class RedisKeyUtil {
 

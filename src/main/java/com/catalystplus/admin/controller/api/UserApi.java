@@ -2,6 +2,8 @@ package com.catalystplus.admin.controller.api;
 
 
 import com.catalystplus.admin.response.Response;
+import com.catalystplus.admin.response.user.AUResponse;
+import com.catalystplus.admin.vo.user.AUByDateVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
@@ -19,11 +21,11 @@ public interface UserApi {
 
     @PostMapping("/auth/user/nnut")
     @ApiOperation("查询今日新增的用户数")
-    Response<Long> getNNUT(String dateKey);
+    Response<Long> getNNUT(@RequestBody AUByDateVo auByDateVo);
 
     @PostMapping("/auth/user/au")
     @ApiOperation("查询日周月用户活跃数，日周月活占比")
-    Response<List<Map<String, Object>>> getDWMAU(String dateKey);
+    Response<List<AUResponse>> getDWMAU(@RequestBody AUByDateVo auByDateVo);
 
     @GetMapping("/auth/user/nacu")
     @ApiOperation("查询同时在线活跃用户数")

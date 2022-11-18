@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import static com.catalystplus.admin.config.GlobalAspect.GLOBAL_ID;
-
 /**
  * @Author 蓝染
  * @Date 2022/9/30 15:47

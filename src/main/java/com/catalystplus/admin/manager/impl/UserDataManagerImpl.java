@@ -3,19 +3,21 @@ package com.catalystplus.admin.manager.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.catalystplus.admin.entity.SysUser;
 import com.catalystplus.admin.manager.UserDataManager;
+import com.catalystplus.admin.response.user.AUResponse;
 import com.catalystplus.admin.service.SysUserService;
 import com.catalystplus.admin.util.RedisKeyUtil;
+import com.catalystplus.admin.vo.user.AUByDateVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-
-import java.text.DecimalFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -38,8 +40,8 @@ public class UserDataManagerImpl implements UserDataManager {
     }
 
     @Override
-    public Long getNNUT(String dateKey) {
-        String redisKey = RedisKeyUtil.getNNUTKey(dateKey);
+    public Long getNNUT(AUByDateVo auByDateVo) {
+        String redisKey = RedisKeyUtil.getNNUTKey(auByDateVo.getDateKey());
         return redisTemplate.execute((RedisCallback<Long>) connection -> connection.bitCount(redisKey.getBytes()));
     }
 
@@ -50,66 +52,41 @@ public class UserDataManagerImpl implements UserDataManager {
     }
 
     @Override
-    public Map<String, Object> getDWMAU(String dateKey) {
-        Map<String, Object> res = new HashMap<>();
+    public List<AUResponse> getDWMAU(AUByDateVo auByDateVo) {
+        String dauKey = RedisKeyUtil.getDAUKey(auByDateVo.getDateKey());
+        Map<String, String> dateInfo = getDateInfo(auByDateVo.getDateKey());
+        String wauKey = RedisKeyUtil.getWAUKey(dateInfo.get("weekStart"), dateInfo.get("weekEnd"));
+        String mauKey = RedisKeyUtil.getMAUKey(dateInfo.get("monthStart"), dateInfo.get("monthEnd"));
+        return getAUInfo(dauKey, wauKey, mauKey);
+    }
 
-        String dauKey = RedisKeyUtil.getDAUKey(dateKey);
-
-        String[] split = dateKey.split("-");
-        int year = Integer.parseInt(split[0]);
-        int month = Integer.parseInt(split[1]);
-        int day = Integer.parseInt(split[2]);
-
-        LocalDate date = LocalDate.of(year, month, day);
-        LocalDate parse = LocalDate.parse(date.toString());
-
-        String weekStart = parse.with(DayOfWeek.MONDAY).toString();
-        String weekEnd = parse.with(DayOfWeek.SUNDAY).toString();
-        String wauKey = RedisKeyUtil.getWAUKey(weekStart, weekEnd);
-
-        String monthStart = parse.with(TemporalAdjusters.firstDayOfMonth()).toString();
-        String monthEnd = parse.with(TemporalAdjusters.lastDayOfMonth()).toString();
-        String mauKey = RedisKeyUtil.getMAUKey(monthStart, monthEnd);
-
+    private List<AUResponse> getAUInfo(String dauKey, String wauKey, String mauKey) {
         Long dau = redisTemplate.execute((RedisCallback<Long>) connection -> connection.bitCount(dauKey.getBytes()));
         Long wau = redisTemplate.execute((RedisCallback<Long>) connection -> connection.bitCount(wauKey.getBytes()));
         Long mau = redisTemplate.execute((RedisCallback<Long>) connection -> connection.bitCount(mauKey.getBytes()));
-
         Long tnu = getTNU();
-        DecimalFormat df = new DecimalFormat("0.00");
-        String pdau = df.format(dau / (double) tnu);
-        String pwau = df.format(wau / (double) tnu);
-        String pmau = df.format(mau / (double) tnu);
-        res.put("dau", dau);
-        res.put("wau", wau);
-        res.put("mau", mau);
-        res.put("pdau", pdau);
-        res.put("pwau", pwau);
-        res.put("pmau", pmau);
-
-        return res;
+        Double pdau = null, pwau = null, pmau = null;
+        if (dau != null && wau != null && mau != null) {
+            pdau = Double.parseDouble(String.format("%.2f", dau.doubleValue() / tnu.doubleValue()));
+            pwau = Double.parseDouble(String.format("%.2f", wau.doubleValue() / tnu.doubleValue()));
+            pmau = Double.parseDouble(String.format("%.2f", mau.doubleValue() / tnu.doubleValue()));
+        }
+        List<AUResponse> list = new ArrayList<>();
+        AUResponse dauResponse = new AUResponse(), wauResponse = new AUResponse(), mauResponse = new AUResponse();
+        dauResponse.setId("dau"); dauResponse.setNum(dau); dauResponse.setPercent(pdau);
+        wauResponse.setId("wau"); wauResponse.setNum(wau); wauResponse.setPercent(pwau);
+        mauResponse.setId("mau"); mauResponse.setNum(mau); mauResponse.setPercent(pmau);
+        list.add(dauResponse); list.add(wauResponse); list.add(mauResponse);
+        return list;
     }
 
     @Override
     public void recordDWMAU(String dateKey, Integer userId) {
         String dauKey = RedisKeyUtil.getDAUKey(dateKey);
-
-        String[] split = dateKey.split("-");
-        int year = Integer.parseInt(split[0]);
-        int month = Integer.parseInt(split[1]);
-        int day = Integer.parseInt(split[2]);
-
-        LocalDate date = LocalDate.of(year, month, day);
-        LocalDate parse = LocalDate.parse(date.toString());
-
-        String weekStart = parse.with(DayOfWeek.MONDAY).toString();
-        String weekEnd = parse.with(DayOfWeek.SUNDAY).toString();
-        String wauKey = RedisKeyUtil.getWAUKey(weekStart, weekEnd);
-
-        String monthStart = parse.with(TemporalAdjusters.firstDayOfMonth()).toString();
-        String monthEnd = parse.with(TemporalAdjusters.lastDayOfMonth()).toString();
-        String mauKey = RedisKeyUtil.getMAUKey(monthStart, monthEnd);
-
+        Map<String, String> dateInfo = getDateInfo(dateKey);
+        String wauKey = RedisKeyUtil.getWAUKey(dateInfo.get("weekStart"), dateInfo.get("weekEnd"));
+        String mauKey = RedisKeyUtil.getMAUKey(dateInfo.get("monthStart"), dateInfo.get("monthEnd"));
+        // 统计
         redisTemplate.opsForValue().setBit(dauKey, userId, true);
         redisTemplate.opsForValue().setBit(wauKey, userId, true);
         redisTemplate.opsForValue().setBit(mauKey, userId, true);
@@ -151,6 +128,29 @@ public class UserDataManagerImpl implements UserDataManager {
     public Long getNNCU() {
         String nncuKey = RedisKeyUtil.getNNCUKey();
         return redisTemplate.execute((RedisCallback<Long>) connection -> connection.bitCount(nncuKey.getBytes()));
+    }
+
+    private Map<String, String> getDateInfo(String dateKey) {
+        // 1.获取日期的年、月、日
+        String[] split = dateKey.split("-");
+        int year = Integer.parseInt(split[0]);
+        int month = Integer.parseInt(split[1]);
+        int day = Integer.parseInt(split[2]);
+        // 2.构造当前日期
+        LocalDate date = LocalDate.of(year, month, day);
+        LocalDate parse = LocalDate.parse(date.toString());
+        // 3.根据当前日期获取所在周和所在月的起始和结束日期
+        String weekStart = parse.with(DayOfWeek.MONDAY).toString();
+        String weekEnd = parse.with(DayOfWeek.SUNDAY).toString();
+        String monthStart = parse.with(TemporalAdjusters.firstDayOfMonth()).toString();
+        String monthEnd = parse.with(TemporalAdjusters.lastDayOfMonth()).toString();
+        // 4.返回结果
+        Map<String, String> map = new HashMap<>();
+        map.put("weekStart", weekStart);
+        map.put("weekEnd", weekEnd);
+        map.put("monthStart", monthStart);
+        map.put("monthEnd", monthEnd);
+        return map;
     }
 
 }
