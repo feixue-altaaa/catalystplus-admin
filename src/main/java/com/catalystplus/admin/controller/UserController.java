@@ -2,17 +2,17 @@ package com.catalystplus.admin.controller;
 
 import com.catalystplus.admin.controller.api.UserApi;
 import com.catalystplus.admin.exception.Assert;
-import com.catalystplus.admin.manager.UserDataManager;
 import com.catalystplus.admin.manager.impl.UserDataManagerImpl;
 import com.catalystplus.admin.response.Response;
-import com.catalystplus.admin.response.ResponseCode;
-import com.catalystplus.admin.response.user.UserDataResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.LifecycleState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -24,58 +24,56 @@ public class UserController implements UserApi {
     private UserDataManagerImpl userDataManager;
 
     @Override
-    public Response<UserDataResponse> getTNU() {
+    public Response<Long> getTNU() {
         Long tnu = userDataManager.getTNU();
-
-        UserDataResponse userDataResponse = new UserDataResponse();
-        userDataResponse.setTnu(tnu);
-        return Response.success(null, userDataResponse);
+        return Response.success(null, tnu);
     }
 
     @Override
-    public Response<UserDataResponse> getNNUT(String dateKey) {
+    public Response<Long> getNNUT(String dateKey) {
         if (Assert.notEmpty(dateKey)) {
             return Response.fail(null, "参数为空");
         }
-
         Long nnut = userDataManager.getNNUT(dateKey);
-
-        UserDataResponse userDataResponse = new UserDataResponse();
-        userDataResponse.setNnut(nnut);
-        return Response.success(null, userDataResponse);
+        return Response.success(null, nnut);
     }
 
     @Override
-    public Response<UserDataResponse> getDWMAU(String dateKey) {
+    public Response<List<Map<String, Object>>> getDWMAU(String dateKey) {
         if (Assert.notEmpty(dateKey)) {
             return Response.fail(null, "参数为空");
         }
-
         Map<String, Object> res = userDataManager.getDWMAU(dateKey);
-        UserDataResponse userDataResponse = new UserDataResponse();
-        userDataResponse.setDau((Long) res.get("dau"));
-        userDataResponse.setWau((Long) res.get("wau"));
-        userDataResponse.setMau((Long) res.get("mau"));
-        userDataResponse.setPdau((String) res.get("pdau"));
-        userDataResponse.setPwau((String) res.get("pwau"));
-        userDataResponse.setPmau((String) res.get("pmau"));
-        return Response.success(null, userDataResponse);
+        List<Map<String, Object>> list = new ArrayList<>();
+        Map<String, Object> dauMap = new HashMap<>();
+        Map<String, Object> wauMap = new HashMap<>();
+        Map<String, Object> mauMap = new HashMap<>();
+        dauMap.put("title", "dau");
+        dauMap.put("num", res.get("dau"));
+        dauMap.put("precent", res.get("pdau"));
+        wauMap.put("title", "wau");
+        wauMap.put("num", res.get("wau"));
+        wauMap.put("precent", res.get("pwau"));
+        mauMap.put("title", "mau");
+        mauMap.put("num", res.get("mau"));
+        mauMap.put("precent", res.get("pmau"));
+        list.add(dauMap);
+        list.add(wauMap);
+        list.add(mauMap);
+
+        return Response.success(null, list);
     }
 
     @Override
-    public Response<UserDataResponse> getNACU() {
+    public Response<Long> getNACU() {
         Long nacu = userDataManager.getNACU();
-        UserDataResponse userDataResponse = new UserDataResponse();
-        userDataResponse.setNacu(nacu);
-        return Response.success(null, userDataResponse);
+        return Response.success(null, nacu);
     }
 
     @Override
-    public Response<UserDataResponse> getNNCU() {
+    public Response<Long> getNNCU() {
         Long nncu = userDataManager.getNNCU();
-        UserDataResponse userDataResponse = new UserDataResponse();
-        userDataResponse.setNncu(nncu);
-        return Response.success(null, userDataResponse);
+        return Response.success(null, nncu);
     }
 
 
