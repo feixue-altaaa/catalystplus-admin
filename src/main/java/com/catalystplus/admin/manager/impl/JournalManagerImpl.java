@@ -124,7 +124,7 @@ public class JournalManagerImpl implements JournalManager {
         List<Long> subjectIds = new ArrayList<>();
         for(Journal journal:journalByJournalId){
             subejctChNames.add(subjectService.getById(journal.getSubjectId()).getChName());
-            subjectIds.add(subjectService.getById(journal.getSubjectId()).getId());
+            subjectIds.add(subjectService.getById(journal.getSubjectId()).getSubjectId());
         }
         Publisher publisher = publisherService.getById(journalByJournalName.getPublisherId());
 

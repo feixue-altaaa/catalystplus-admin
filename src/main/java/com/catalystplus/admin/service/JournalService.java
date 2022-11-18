@@ -3,6 +3,7 @@ package com.catalystplus.admin.service;
 import com.catalystplus.admin.entity.Journal;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.catalystplus.admin.vo.journal.JournalByJournalNameVo;
+import com.catalystplus.admin.vo.journal.ModifyJournalVo;
 
 import java.util.List;
 
@@ -16,6 +17,8 @@ public interface JournalService extends IService<Journal> {
     List<Journal> getJournalBySubjectId(long subjectId, int pageNo, int pageSize);
 
     void updateJournalByPublisherId(long journalId, long publisherId);
+
+    void updateJournal(ModifyJournalVo modifyJournalVo);
 
     Journal getJournalByJournalName(String journalName);
 

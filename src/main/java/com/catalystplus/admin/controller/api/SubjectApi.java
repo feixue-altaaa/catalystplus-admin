@@ -40,5 +40,4 @@ public interface SubjectApi {
     @ApiOperation("通过主题名称查找主题详细信息")
     Response<SubjectResponse> getSubjectBySubjectName(@RequestBody SubjectBySubjectNameVo subjectBySubjectNameVo);
 
-
 }

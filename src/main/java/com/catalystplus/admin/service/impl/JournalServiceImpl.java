@@ -9,6 +9,7 @@ import com.catalystplus.admin.entity.SubjectJournal;
 import com.catalystplus.admin.service.JournalService;
 import com.catalystplus.admin.mapper.JournalMapper;
 import com.catalystplus.admin.vo.journal.JournalByJournalNameVo;
+import com.catalystplus.admin.vo.journal.ModifyJournalVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,6 +51,21 @@ public class JournalServiceImpl extends ServiceImpl<JournalMapper, Journal> impl
             throw new RuntimeException("更新Journal失败, journalId: " + journalId + ", publisherId: " + publisherId);
         }
 
+    }
+
+    @Override
+    public void updateJournal(ModifyJournalVo modifyJournalVo) {
+        LambdaUpdateWrapper<Journal> journalLambdaUpdateWrapper = new LambdaUpdateWrapper<>();
+        journalLambdaUpdateWrapper.eq(Journal::getJournalId,modifyJournalVo.getJournalId())
+//                .eq(Journal::getReview,modifyJournalVo.getSourceReview())
+//                .set(Journal::getReview,modifyJournalVo.getTargetReview())
+                .eq(Journal::getQuartile,modifyJournalVo.getSourceQuartile())
+                .set(Journal::getQuartile,modifyJournalVo.getTargetQuartile());
+//                .eq(Journal::getTop,modifyJournalVo.getSourceTop())
+//                .set(Journal::getTop,modifyJournalVo.getTargetTop());
+        if(!this.update(journalLambdaUpdateWrapper)){
+            throw  new RuntimeException("更新journal信息失败，journalId: "+modifyJournalVo.getJournalId());
+        }
     }
 
     @Override

@@ -196,5 +196,16 @@ class CatalystplusAdminApplicationTests {
         log.info("byId: {}", byId);
     }
 
+    @Test
+    void updateTest(){
+        ModifyJournalVo modifyJournalVo = new ModifyJournalVo();
+        modifyJournalVo.setJournalId(1);
+        modifyJournalVo.setSourceQuartile(1);
+        modifyJournalVo.setTargetQuartile(2);
+
+        journalService.updateJournal(modifyJournalVo);
+        log.info("更新结束");
+    }
+
 
 }
