@@ -3,13 +3,12 @@ package com.catalystplus.admin.manager.impl;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.catalystplus.admin.entity.*;
 import com.catalystplus.admin.manager.JournalManager;
+import com.catalystplus.admin.response.area.AreaResponse;
 import com.catalystplus.admin.response.journal.JournalResponse;
 import com.catalystplus.admin.response.journal.JournalSimpleResponse;
+import com.catalystplus.admin.response.subject.SubjectSimpleResponse;
 import com.catalystplus.admin.service.*;
-import com.catalystplus.admin.vo.journal.JournalByJournalNameVo;
-import com.catalystplus.admin.vo.journal.JournalBySubjectIdVo;
-import com.catalystplus.admin.vo.journal.ModifyPublisherVo;
-import com.catalystplus.admin.vo.journal.ModifySubjectVo;
+import com.catalystplus.admin.vo.journal.*;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -73,12 +72,20 @@ public class JournalManagerImpl implements JournalManager {
         Long sourceSubjectId = modifySubjectVo.getSourceSubjectId();
         Long targetSubjectId = modifySubjectVo.getTargetSubjectId();
 
-        subjectJournalService.updateJournalBySubjectId(journalId, sourceSubjectId, targetSubjectId);
+//        subjectJournalService.updateJournalBySubjectId(journalId, sourceSubjectId, targetSubjectId);
     }
 
     @Override
     public void updateJournalByPublisherId(ModifyPublisherVo modifyPublisherVo) {
 
+
+    }
+
+    @Override
+    public void updateJournal(ModifyJournalVo modifyJournalVo) {
+
+        //修改期刊top、review、quartile
+        journalService.updateJournal(modifyJournalVo);
 
     }
 
@@ -119,20 +126,23 @@ public class JournalManagerImpl implements JournalManager {
         //3. 根据期刊ID，查找对应领域名称和主题名称
         Subject subject = subjectService.getById(journalByJournalName.getSubjectId());
         Area area = areaService.getById(subject.getAreaId());
+        AreaResponse areaResponse = new AreaResponse();
+        areaResponse.setChName(area.getChName());
+        areaResponse.setId(area.getId());
         List<Journal> journalByJournalId = journalService.getJournalByJournalId(journalByJournalName.getJournalId());
-        List<String> subejctChNames = new ArrayList<>();
-        List<Long> subjectIds = new ArrayList<>();
+        List<SubjectSimpleResponse> subjectSimpleResponses = new ArrayList<>();
         for(Journal journal:journalByJournalId){
-            subejctChNames.add(subjectService.getById(journal.getSubjectId()).getChName());
-            subjectIds.add(subjectService.getById(journal.getSubjectId()).getSubjectId());
+            SubjectSimpleResponse subjectSimpleResponse = new SubjectSimpleResponse();
+            subjectSimpleResponse.setChName(subjectService.getById(journal.getSubjectId()).getChName());
+            subjectSimpleResponse.setId(subjectService.getById(journal.getSubjectId()).getSubjectId());
+            subjectSimpleResponses.add(subjectSimpleResponse);
         }
         Publisher publisher = publisherService.getById(journalByJournalName.getPublisherId());
 
         //4. 组装响应
         BeanUtils.copyProperties(journalByJournalName,journalResponse);
-        journalResponse.setAreaChName(area.getChName());
-        journalResponse.setSubjectChNames(subejctChNames);
-        journalResponse.setSubjectIds(subjectIds);
+        journalResponse.setAreaResponse(areaResponse);
+        journalResponse.setSubjectSimpleResponses(subjectSimpleResponses);
         journalResponse.setPublisher(publisher.getName());
 
         return journalResponse;

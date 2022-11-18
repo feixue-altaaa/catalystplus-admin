@@ -1,6 +1,7 @@
 package com.catalystplus.admin;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.catalystplus.admin.controller.AreaController;
 import com.catalystplus.admin.controller.JournalController;
@@ -8,6 +9,7 @@ import com.catalystplus.admin.controller.PublisherController;
 import com.catalystplus.admin.controller.SubjectController;
 import com.catalystplus.admin.entity.*;
 import com.catalystplus.admin.manager.impl.JournalManagerImpl;
+import com.catalystplus.admin.mapper.SubjectJournalMapper;
 import com.catalystplus.admin.mapper.SubjectMapper;
 import com.catalystplus.admin.response.Response;
 import com.catalystplus.admin.response.area.AreaResponse;
@@ -67,10 +69,13 @@ class CatalystplusAdminApplicationTests {
 
     @Test
     void journalTest() {
-        Journal journal = journalService.getJournalByJournalName("Nature climate change");
-        log.info("journal:{}", journal);
-        Journal journal1 = journalService.getJournalByJournalName("地球未来");
-        log.info("journal:{}", journal1);
+//        Journal journal = journalService.getJournalByJournalName("Nature climate change");
+//        log.info("journal:{}", journal);
+//        Journal journal1 = journalService.getJournalByJournalName("地球未来");
+//        log.info("journal:{}", journal1);
+
+        List<Journal> journalBySubjectId = journalService.getJournalBySubjectId(100L, 1, 12);
+        journalBySubjectId.forEach(System.out::println);
 
     }
 
@@ -200,11 +205,35 @@ class CatalystplusAdminApplicationTests {
     void updateTest(){
         ModifyJournalVo modifyJournalVo = new ModifyJournalVo();
         modifyJournalVo.setJournalId(1);
-        modifyJournalVo.setSourceQuartile(1);
-        modifyJournalVo.setTargetQuartile(2);
+//        modifyJournalVo.setSourceQuartile(1);
+//        modifyJournalVo.setTargetQuartile(2);
+        modifyJournalVo.setSourceReview(0);
+        modifyJournalVo.setTargetReview(0);
+//        modifyJournalVo.setSourceTop(1);
+//        modifyJournalVo.setTargetTop(0);
 
-        journalService.updateJournal(modifyJournalVo);
-        log.info("更新结束");
+//        journalService.updateJournal(modifyJournalVo);
+//        log.info("更新结束");
+        journalController.updateJournal(modifyJournalVo);
+//        journalManager.updateJournal(modifyJournalVo);
+
+
+    }
+
+    @Autowired
+    SubjectJournalMapper subjectJournalMapper;
+
+    @Test
+    void insertTest(){
+//        SubjectJournal subjectJournal = new SubjectJournal();
+//        subjectJournal.setJournalId(0L);
+//        subjectJournal.setSubjectId(1L);
+//        subjectJournalMapper.insert(subjectJournal);
+
+        Long subjectId = 100L;
+        LambdaQueryWrapper<SubjectJournal> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(SubjectJournal::getSubjectId,subjectId);
+        subjectJournalMapper.delete(lambdaQueryWrapper);
     }
 
 

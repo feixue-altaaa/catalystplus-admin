@@ -32,10 +32,10 @@ public class JournalServiceImpl extends ServiceImpl<JournalMapper, Journal> impl
     @Override
     public List<Journal> getJournalBySubjectId(long subjectId, int pageNo, int pageSize) {
         Page<Journal> page = new Page<>(pageNo, pageSize);
-//        LambdaQueryWrapper<Journal> subjectLambdaQueryWrapper = new LambdaQueryWrapper<>();
-//        subjectLambdaQueryWrapper.eq(Journal::getSubjectId, subjectId);
-//        Page<Journal> journalPage = this.baseMapper.selectPage(page, subjectLambdaQueryWrapper);
-        Page<Journal> journalPage = this.baseMapper.getJournalBySubjectId(page, subjectId);
+        LambdaQueryWrapper<Journal> subjectLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        subjectLambdaQueryWrapper.eq(Journal::getSubjectId, subjectId);
+        Page<Journal> journalPage = this.baseMapper.selectPage(page, subjectLambdaQueryWrapper);
+//        Page<Journal> journalPage = this.baseMapper.getJournalBySubjectId(page, subjectId);
         PAGE_TOTAL.set(journalPage.getTotal());
 
         return journalPage.getRecords();
@@ -56,13 +56,23 @@ public class JournalServiceImpl extends ServiceImpl<JournalMapper, Journal> impl
     @Override
     public void updateJournal(ModifyJournalVo modifyJournalVo) {
         LambdaUpdateWrapper<Journal> journalLambdaUpdateWrapper = new LambdaUpdateWrapper<>();
-        journalLambdaUpdateWrapper.eq(Journal::getJournalId,modifyJournalVo.getJournalId())
-//                .eq(Journal::getReview,modifyJournalVo.getSourceReview())
-//                .set(Journal::getReview,modifyJournalVo.getTargetReview())
-                .eq(Journal::getQuartile,modifyJournalVo.getSourceQuartile())
-                .set(Journal::getQuartile,modifyJournalVo.getTargetQuartile());
-//                .eq(Journal::getTop,modifyJournalVo.getSourceTop())
-//                .set(Journal::getTop,modifyJournalVo.getTargetTop());
+        journalLambdaUpdateWrapper.eq(Journal::getJournalId,modifyJournalVo.getJournalId());
+        if(modifyJournalVo.getSourceReview() != null && modifyJournalVo.getTargetReview() != null){
+            journalLambdaUpdateWrapper
+                    .eq(Journal::getReview,modifyJournalVo.getSourceReview())
+                    .set(Journal::getReview,modifyJournalVo.getTargetReview());
+        }
+        if(modifyJournalVo.getSourceQuartile() != null && modifyJournalVo.getTargetQuartile()!=null){
+            journalLambdaUpdateWrapper
+            .eq(Journal::getQuartile,modifyJournalVo.getSourceQuartile())
+                    .set(Journal::getQuartile,modifyJournalVo.getTargetQuartile());
+        }
+        if(modifyJournalVo.getSourceTop() != null && modifyJournalVo.getTargetTop() != null){
+            journalLambdaUpdateWrapper
+                    .eq(Journal::getTop,modifyJournalVo.getSourceTop())
+                    .set(Journal::getTop,modifyJournalVo.getTargetTop());
+        }
+
         if(!this.update(journalLambdaUpdateWrapper)){
             throw  new RuntimeException("更新journal信息失败，journalId: "+modifyJournalVo.getJournalId());
         }

@@ -1,6 +1,8 @@
 package com.catalystplus.admin.response.journal;
 
 import com.catalystplus.admin.entity.Subject;
+import com.catalystplus.admin.response.area.AreaResponse;
+import com.catalystplus.admin.response.subject.SubjectSimpleResponse;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -42,13 +44,6 @@ public class JournalResponse implements Serializable {
      */
     @ApiModelProperty("期刊中文文字")
     private String chName;
-
-
-    /**
-     * 期刊关联subject主题表
-     */
-    @ApiModelProperty("关联表主题subjectId")
-    private List<Long> subjectIds;
 
 
     /**
@@ -105,13 +100,14 @@ public class JournalResponse implements Serializable {
     /**
      * 领域名字, cn_name:中文名
      */
-    @ApiModelProperty("领域中文名称")
-    private String areaChName;
+    @ApiModelProperty("领域ID及中文名称")
+    private AreaResponse areaResponse;
 
     /**
-     * 主题中文名字ch_name
+     * 期刊关联subject主题表
      */
-    @ApiModelProperty("关联表主题subjectChName名字")
-    private List<String> subjectChNames;
+    @ApiModelProperty("关联表主题subject名称及ID")
+    private List<SubjectSimpleResponse> subjectSimpleResponses;
+
 
 }

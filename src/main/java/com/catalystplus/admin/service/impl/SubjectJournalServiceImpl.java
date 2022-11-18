@@ -1,11 +1,15 @@
 package com.catalystplus.admin.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.catalystplus.admin.entity.SubjectJournal;
 import com.catalystplus.admin.service.SubjectJournalService;
 import com.catalystplus.admin.mapper.SubjectJournalMapper;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author lanran
@@ -15,15 +19,24 @@ import org.springframework.stereotype.Service;
 @Service
 public class SubjectJournalServiceImpl extends ServiceImpl<SubjectJournalMapper, SubjectJournal> implements SubjectJournalService {
 
+//    @Override
+//    public void updateJournalBySubjectId(long journalId, long sourceSubjectId, long targetSubjectId) {
+//        LambdaUpdateWrapper<SubjectJournal> subjectJournalLambdaUpdateWrapper = new LambdaUpdateWrapper<>();
+//        subjectJournalLambdaUpdateWrapper.eq(SubjectJournal::getJournalId, journalId)
+//                .eq(SubjectJournal::getSubjectId, sourceSubjectId)
+//                .set(SubjectJournal::getSubjectId, targetSubjectId);
+//        if (!this.update(subjectJournalLambdaUpdateWrapper)) {
+//            throw new RuntimeException("更新SubjectJournal失败, journalId: " + journalId + ", sourceSubjectId: " + sourceSubjectId);
+//        }
+//    }
+
     @Override
-    public void updateJournalBySubjectId(long journalId, long sourceSubjectId, long targetSubjectId) {
-        LambdaUpdateWrapper<SubjectJournal> subjectJournalLambdaUpdateWrapper = new LambdaUpdateWrapper<>();
-        subjectJournalLambdaUpdateWrapper.eq(SubjectJournal::getJournalId, journalId)
-                .eq(SubjectJournal::getSubjectId, sourceSubjectId)
-                .set(SubjectJournal::getSubjectId, targetSubjectId);
-        if (!this.update(subjectJournalLambdaUpdateWrapper)) {
-            throw new RuntimeException("更新SubjectJournal失败, journalId: " + journalId + ", sourceSubjectId: " + sourceSubjectId);
-        }
+    public void updateJournalBySubjectId(long journalId, List<Long> sourceSubjectIds, List<Long> targetSubjectIds) {
+        LambdaQueryWrapper<SubjectJournal> subjectJournalLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        //根据sourceSubjectIds批量删除原数据
+        QueryWrapper<SubjectJournal> subjectJournalQueryWrapper = new QueryWrapper<>();
+//        subjectJournalLambdaQueryWrapper.in("id",);
+//        subjectJournalLambdaQueryWrapper.
     }
 }
 

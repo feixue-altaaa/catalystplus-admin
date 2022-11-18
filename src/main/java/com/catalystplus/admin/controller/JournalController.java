@@ -7,10 +7,7 @@ import com.catalystplus.admin.response.Response;
 import com.catalystplus.admin.response.ResponseCode;
 import com.catalystplus.admin.response.journal.JournalResponse;
 import com.catalystplus.admin.response.journal.JournalSimpleResponse;
-import com.catalystplus.admin.vo.journal.JournalByJournalNameVo;
-import com.catalystplus.admin.vo.journal.JournalBySubjectIdVo;
-import com.catalystplus.admin.vo.journal.ModifyPublisherVo;
-import com.catalystplus.admin.vo.journal.ModifySubjectVo;
+import com.catalystplus.admin.vo.journal.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -95,6 +92,25 @@ public class JournalController implements JournalApi {
             return Response.fail(null, e.getMessage());
         }
 
+        return Response.success(null, null);
+    }
+
+    @Override
+    public Response<Void> updateJournal(ModifyJournalVo modifyJournalVo) {
+
+        //1. 参数验证
+        log.info("modifyJournalVo: {}", modifyJournalVo);
+        if (Assert.notEmpty(modifyJournalVo.getJournalId())) {
+            return Response.fail(null, ResponseCode.JOURNAL_SUBSCRIBE_ERROR.getCode(), ResponseCode.JOURNAL_SUBSCRIBE_ERROR.getMsg());
+        }
+
+        //2. 修改期刊top、review、quartile
+        try {
+            journalManager.updateJournal(modifyJournalVo);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return Response.fail(null, e.getMessage());
+        }
         return Response.success(null, null);
     }
 

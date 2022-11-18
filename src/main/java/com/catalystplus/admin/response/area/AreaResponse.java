@@ -29,8 +29,8 @@ public class AreaResponse implements Serializable {
     /**
      * 领域名字, en_name:英文名
      */
-    @ApiModelProperty("领域英文名")
-    private String enName;
+//    @ApiModelProperty("领域英文名")
+//    private String enName;
 
     /**
      * 领域名字, cn_name:中文名
