@@ -3,7 +3,7 @@ package com.catalystplus.admin.constant;
 /**
  * 常量
  */
-public interface Constant {
+public interface UserDataConstant {
     String SPLIT = ":";
     String PREFIX_DATA_NNUT = "data:nnut";
     String PREFIX_DATA_DAU = "data:dau";
