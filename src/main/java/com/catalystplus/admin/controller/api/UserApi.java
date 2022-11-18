@@ -6,6 +6,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @Api(value = "UserApi", tags = "用户数据统计接口")
@@ -22,7 +23,7 @@ public interface UserApi {
 
     @PostMapping("/auth/user/au")
     @ApiOperation("查询日周月用户活跃数，日周月活占比")
-    Response<Map<String, Object>> getDWMAU(String dateKey);
+    Response<List<Map<String, Object>>> getDWMAU(String dateKey);
 
     @GetMapping("/auth/user/nacu")
     @ApiOperation("查询同时在线活跃用户数")
