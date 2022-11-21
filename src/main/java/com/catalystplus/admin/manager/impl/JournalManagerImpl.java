@@ -53,13 +53,14 @@ public class JournalManagerImpl implements JournalManager {
         log.info("journals: {}", journals);
         List<JournalSimpleResponse> journalSimpleResponses = Lists.newArrayList();
 
-        journals.forEach(journal -> {
-            JournalSimpleResponse journalSimpleResponse = new JournalSimpleResponse();
-            BeanUtils.copyProperties(journal, journalSimpleResponse);
-            journalSimpleResponses.add(journalSimpleResponse);
-        });
-        journals.clear();
-
+       if(journals != null){
+           journals.forEach(journal -> {
+               JournalSimpleResponse journalSimpleResponse = new JournalSimpleResponse();
+               BeanUtils.copyProperties(journal, journalSimpleResponse);
+               journalSimpleResponses.add(journalSimpleResponse);
+           });
+           journals.clear();
+       }
         //3. 先根据分区排序，再根据英文名排序
         // return journalResponses.parallelStream().sorted(Comparator.comparing(JournalResponse::getQuartile).thenComparing(JournalResponse::getEnName)).collect(Collectors.toList());
         return journalSimpleResponses;
@@ -68,11 +69,9 @@ public class JournalManagerImpl implements JournalManager {
     @Override
     public void updateJournalBySubjectId(ModifySubjectVo modifySubjectVo) {
 
-        Long journalId = modifySubjectVo.getJournalId();
-        Long sourceSubjectId = modifySubjectVo.getSourceSubjectId();
-        Long targetSubjectId = modifySubjectVo.getTargetSubjectId();
+        subjectJournalService.updateJournalBySubjectId
+                (modifySubjectVo.getJournalId(),modifySubjectVo.getSourceSubjectIds(),modifySubjectVo.getTargetSubjectIds());
 
-//        subjectJournalService.updateJournalBySubjectId(journalId, sourceSubjectId, targetSubjectId);
     }
 
     @Override
@@ -123,18 +122,19 @@ public class JournalManagerImpl implements JournalManager {
         //2. 根据期刊名称查询journal
         Journal journalByJournalName = journalService.
                 getJournalByJournalName(journalByJournalNameVo.getJournalName());
+
         //3. 根据期刊ID，查找对应领域名称和主题名称
-        Subject subject = subjectService.getById(journalByJournalName.getSubjectId());
-        Area area = areaService.getById(subject.getAreaId());
+        Long subjectIdByJournalId = subjectJournalService.getSubjectIdByJournalId(journalByJournalName.getJournalId());
+        Area area = areaService.getById(subjectService.getSubjectBySubjectId(subjectIdByJournalId).getAreaId());
         AreaResponse areaResponse = new AreaResponse();
         areaResponse.setChName(area.getChName());
         areaResponse.setId(area.getId());
-        List<Journal> journalByJournalId = journalService.getJournalByJournalId(journalByJournalName.getJournalId());
+        List<SubjectJournal> journalByJournalId = subjectJournalService.getSubjectJournalByJournalId(journalByJournalName.getJournalId());
         List<SubjectSimpleResponse> subjectSimpleResponses = new ArrayList<>();
-        for(Journal journal:journalByJournalId){
+        for(SubjectJournal subjectJournal :journalByJournalId){
             SubjectSimpleResponse subjectSimpleResponse = new SubjectSimpleResponse();
-            subjectSimpleResponse.setChName(subjectService.getById(journal.getSubjectId()).getChName());
-            subjectSimpleResponse.setId(subjectService.getById(journal.getSubjectId()).getSubjectId());
+            subjectSimpleResponse.setChName(subjectService.getSubjectBySubjectId(subjectJournal.getSubjectId()).getChName());
+            subjectSimpleResponse.setId(subjectJournal.getSubjectId());
             subjectSimpleResponses.add(subjectSimpleResponse);
         }
         Publisher publisher = publisherService.getById(journalByJournalName.getPublisherId());

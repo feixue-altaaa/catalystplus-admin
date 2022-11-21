@@ -58,6 +58,13 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
         Subject subject = this.baseMapper.selectOne(subjectLambdaQueryWrapper);
         return subject;
     }
+
+    @Override
+    public Subject getSubjectBySubjectId(Long subjectId) {
+        LambdaQueryWrapper<Subject> subjectLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        subjectLambdaQueryWrapper.eq(Subject::getSubjectId,subjectId).groupBy(Subject::getSubjectId);
+        return this.baseMapper.selectOne(subjectLambdaQueryWrapper);
+    }
 }
 
 

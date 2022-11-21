@@ -22,8 +22,6 @@ public interface JournalService extends IService<Journal> {
 
     Journal getJournalByJournalName(String journalName);
 
-    List<Journal> getJournalByJournalId(Long journalId);
-
     List<Journal> getJournalByFuzzyQuery(JournalByJournalNameVo journalByJournalNameVo);
 
 }

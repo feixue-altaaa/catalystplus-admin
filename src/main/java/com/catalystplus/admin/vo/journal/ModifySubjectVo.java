@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @Author 蓝染
@@ -22,9 +23,9 @@ public class ModifySubjectVo implements Serializable {
     private Long journalId;
 
     @ApiModelProperty("源主题ID")
-    private Long sourceSubjectId;
+    private List<Long> sourceSubjectIds;
 
     @ApiModelProperty("目标主题ID")
-    private Long targetSubjectId;
+    private List<Long> targetSubjectIds;
 
 }

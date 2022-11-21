@@ -1,5 +1,6 @@
 package com.catalystplus.admin.service;
 
+import com.catalystplus.admin.entity.Journal;
 import com.catalystplus.admin.entity.SubjectJournal;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -13,5 +14,11 @@ import java.util.List;
 public interface SubjectJournalService extends IService<SubjectJournal> {
 
     void updateJournalBySubjectId(long journalId, List<Long> sourceSubjectIds,List<Long> targetSubjectIds);
+
+    List<Long> getJournalIdBySubjectId(Long subjectId);
+
+    List<SubjectJournal> getSubjectJournalByJournalId(Long journalId);
+
+    Long getSubjectIdByJournalId(Long journalId);
 
 }

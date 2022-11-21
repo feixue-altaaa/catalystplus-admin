@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.catalystplus.admin.entity.Journal;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ import java.util.List;
  * @createDate 2022-10-24 10:39:49
  * @Entity com.catalystplus.admin.entity.Journal
  */
+@Repository
 public interface JournalMapper extends BaseMapper<Journal> {
 
 
@@ -45,6 +47,20 @@ public interface JournalMapper extends BaseMapper<Journal> {
             "SELECT * from journal where journal_id = #{journalId}"
             })
     List<Journal> getJournalByJournalId(Long journalId);
+
+    @Select("SELECT COUNT(*) from (SELECT * from journal GROUP BY journal_id) as j")
+    Long getJournalTotal();
+
+    @Select("SELECT COUNT(*) from (SELECT * FROM journal WHERE TO_DAYS(NOW()) - TO_DAYS(created_time) <= 1) as j")
+    Long getTodayJournalTotal();
+
+    @Select("SELECT COUNT(*) from (SELECT * FROM journal WHERE TO_DAYS(NOW()) - TO_DAYS(created_time) <= 1 GROUP BY journal_id) as j " +
+            "where subject_id in (SELECT subject_id from `subject` WHERE area_id = #{areaId} GROUP BY subject_id)")
+    Long getTodayJournalTotalByArea(Long areaId);
+
+    @Select("SELECT COUNT(*) from (SELECT * FROM journal GROUP BY journal_id) as j " +
+            "where subject_id in (SELECT subject_id from `subject` WHERE area_id = #{areaId} GROUP BY subject_id);")
+    Long getJournalTotalByArea(Long areaId);
 
 }
 

@@ -16,10 +16,10 @@ public class ModifyJournalVo implements Serializable {
     @ApiModelProperty("期刊ID")
     private long journalId;
 
-//    @ApiModelProperty("源领域ID")
-//    private long sourceAreaId;
-//    @ApiModelProperty("目标领域ID")
-//    private long targetAreaId;
+    @ApiModelProperty("源领域ID")
+    private long sourceAreaId;
+    @ApiModelProperty("目标领域ID")
+    private long targetAreaId;
 
     @ApiModelProperty("源review")
     private Integer sourceReview;

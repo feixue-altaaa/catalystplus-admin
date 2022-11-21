@@ -19,4 +19,6 @@ public interface SubjectService extends IService<Subject> {
     List<Subject> getSubject(int pageNo, int pageSize);
 
     Subject getSubjectBySubjectName(String subjectName,Long areaId);
+
+    Subject getSubjectBySubjectId(Long subjectId);
 }

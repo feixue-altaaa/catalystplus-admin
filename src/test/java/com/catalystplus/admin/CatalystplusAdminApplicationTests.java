@@ -8,15 +8,20 @@ import com.catalystplus.admin.controller.JournalController;
 import com.catalystplus.admin.controller.PublisherController;
 import com.catalystplus.admin.controller.SubjectController;
 import com.catalystplus.admin.entity.*;
+import com.catalystplus.admin.manager.PaperJournalManager;
 import com.catalystplus.admin.manager.impl.JournalManagerImpl;
+import com.catalystplus.admin.mapper.JournalMapper;
 import com.catalystplus.admin.mapper.SubjectJournalMapper;
 import com.catalystplus.admin.mapper.SubjectMapper;
 import com.catalystplus.admin.response.Response;
 import com.catalystplus.admin.response.area.AreaResponse;
 import com.catalystplus.admin.response.journal.JournalResponse;
+import com.catalystplus.admin.response.journal.JournalSimpleResponse;
+import com.catalystplus.admin.response.paper.PaperJournalResponse;
 import com.catalystplus.admin.response.publisher.PublisherResponse;
 import com.catalystplus.admin.response.subject.SubjectResponse;
 import com.catalystplus.admin.service.JournalService;
+import com.catalystplus.admin.service.SubjectJournalService;
 import com.catalystplus.admin.service.SysUserService;
 import com.catalystplus.admin.service.VisualizeService;
 import com.catalystplus.admin.service.impl.AreaServiceImpl;
@@ -24,11 +29,13 @@ import com.catalystplus.admin.service.impl.JournalServiceImpl;
 import com.catalystplus.admin.service.impl.PublisherServiceImpl;
 import com.catalystplus.admin.service.impl.SubjectServiceImpl;
 import com.catalystplus.admin.vo.journal.*;
+import com.catalystplus.admin.vo.subject.SubjectByAreaIdVo;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -66,16 +73,44 @@ class CatalystplusAdminApplicationTests {
 
     @Autowired
     JournalServiceImpl journalService;
+    @Autowired
+    JournalMapper journalMapper;
 
     @Test
     void journalTest() {
+
+        Long journalTotalByArea = journalMapper.getJournalTotalByArea(2L);
+        log.info("journalTotalByArea:{}",journalTotalByArea);
+
 //        Journal journal = journalService.getJournalByJournalName("Nature climate change");
 //        log.info("journal:{}", journal);
 //        Journal journal1 = journalService.getJournalByJournalName("地球未来");
 //        log.info("journal:{}", journal1);
 
-        List<Journal> journalBySubjectId = journalService.getJournalBySubjectId(100L, 1, 12);
-        journalBySubjectId.forEach(System.out::println);
+//        List<Journal> journalBySubjectId = journalService.getJournalBySubjectId(101L, 1, 12);
+//        journalBySubjectId.forEach(System.out::println);
+
+//        JournalByJournalNameVo journalByJournalNameVo = new JournalByJournalNameVo();
+//        journalByJournalNameVo.setJournalName("Nature climate change");
+//
+//        JournalResponse journalByJournalName = journalManager.getJournalByJournalName(journalByJournalNameVo);
+//        log.info("journalByJournalName:{}",journalByJournalName);
+
+//        List<Journal> journalBySubjectId = journalService.getJournalBySubjectId(104L, 1, 10);
+//        if(journalBySubjectId != null){
+//
+//            journalBySubjectId.forEach(System.out::println);
+//        }
+//        JournalBySubjectIdVo journalBySubjectIdVo = new JournalBySubjectIdVo();
+//        journalBySubjectIdVo.setPageNo(1);
+//        journalBySubjectIdVo.setPageSize(10);
+//        journalBySubjectIdVo.setSubjectId(104L);
+//        Response<List<JournalSimpleResponse>> journalBySubjectId = journalController.getJournalBySubjectId(journalBySubjectIdVo);
+//        journalBySubjectId.getData().forEach(System.out::println);
+
+//        Long journalTotal = journalMapper.getTodayJournalTotal();
+//        log.info("journalTotal:{}",journalTotal);
+
 
     }
 
@@ -88,6 +123,8 @@ class CatalystplusAdminApplicationTests {
     AreaController areaController;
     @Autowired
     PublisherController publisherController;
+    @Autowired
+    SubjectJournalMapper subjectJournalMapper;
 
     @Test
     void subjectTest() {
@@ -128,10 +165,18 @@ class CatalystplusAdminApplicationTests {
 //        Response<PublisherResponse> publisher = publisherController.getJournalByJournalName(publisherByPublisherNameVo);
 //        log.info("publisher:{}",publisher);
 
-        List<Subject> subjectByAreaId = subjectService.getSubjectByAreaId(1);
-        for (Subject subject : subjectByAreaId) {
-            log.info("subject:{}", subject);
-        }
+//        List<Subject> subjectByAreaId = subjectService.getSubjectByAreaId(1);
+//        for (Subject subject : subjectByAreaId) {
+//            log.info("subject:{}", subject);
+//        }
+
+//        SubjectByAreaIdVo subjectByAreaIdVo = new SubjectByAreaIdVo();
+//        subjectByAreaIdVo.setAreaId(1L);
+//        Response<List<SubjectResponse>> subjectByAreaId = subjectController.getSubjectByAreaId(subjectByAreaIdVo);
+//        subjectByAreaId.getData().forEach(System.out::println);
+
+        List<Long> journalIdBySubjectId = subjectJournalMapper.getJournalIdBySubjectId(101L);
+        journalIdBySubjectId.forEach(System.out::println);
 
     }
 
@@ -220,8 +265,6 @@ class CatalystplusAdminApplicationTests {
 
     }
 
-    @Autowired
-    SubjectJournalMapper subjectJournalMapper;
 
     @Test
     void insertTest(){
@@ -234,6 +277,37 @@ class CatalystplusAdminApplicationTests {
         LambdaQueryWrapper<SubjectJournal> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(SubjectJournal::getSubjectId,subjectId);
         subjectJournalMapper.delete(lambdaQueryWrapper);
+    }
+
+    @Autowired
+    SubjectJournalService subjectJournalService;
+
+    @Test
+    void subjectJournalTest(){
+        List<Long> sourceSubjectIds = new ArrayList<>();
+        sourceSubjectIds.add(101L);
+        sourceSubjectIds.add(102L);
+        subjectJournalService.updateJournalBySubjectId(1,sourceSubjectIds,sourceSubjectIds);
+    }
+
+    @Autowired
+    PaperJournalManager paperJournalManager;
+
+    @Test
+    void paperJournalTest(){
+        PaperJournalResponse totalDataByArea = paperJournalManager.getTotalDataByArea(1L);
+        PaperJournalData totalPaperJournalData = totalDataByArea.getTotalPaperJournalData();
+        List<PaperJournalData> paperJournalDatas = totalDataByArea.getPaperJournalDatas();
+        log.info("totalPaperJournalData:{}",totalPaperJournalData.getJournalTotal()+"******"+totalPaperJournalData.getTodayJournalTotal());
+        log.info("****************************************");
+        for (PaperJournalData paperJournalData : paperJournalDatas) {
+            log.info("paperJournalData:{}",paperJournalData.getJournalTotal()+"******"+paperJournalData.getTodayJournalTotal());
+            log.info("paperJournalData:{}",paperJournalData.getPaperTotal()+"**********"+paperJournalData.getTodayPaperTotal());
+            System.out.println();
+        }
+
+//        Long journalTotalByArea = journalMapper.getJournalTotalByArea(1L);
+//        log.info("journalTotalByArea:{}",journalTotalByArea);
     }
 
 
