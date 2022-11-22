@@ -5,6 +5,7 @@ import com.catalystplus.admin.exception.Assert;
 import com.catalystplus.admin.manager.SubjectManager;
 import com.catalystplus.admin.response.Response;
 import com.catalystplus.admin.response.ResponseCode;
+import com.catalystplus.admin.response.area.AreaResponse;
 import com.catalystplus.admin.response.subject.SubjectResponse;
 import com.catalystplus.admin.vo.journal.SubjectBySubjectNameVo;
 import com.catalystplus.admin.vo.subject.SubjectByAreaIdVo;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.catalystplus.admin.config.GlobalAspect.*;
@@ -119,5 +121,26 @@ public class SubjectController implements SubjectApi {
         }
 
         return Response.success(subjectBySubjectNameVo.getUserId(),subjectResponse);
+    }
+
+    @Override
+    public Response<List<AreaResponse>> getAreaIdsBySubjectName(SubjectBySubjectNameVo subjectBySubjectNameVo) {
+
+        //1. 参数验证
+        log.info("subjectBySubjectNameVo:{}",subjectBySubjectNameVo);
+        if(Assert.notEmpty(subjectBySubjectNameVo.getSubjectName())){
+            return Response.fail(subjectBySubjectNameVo.getUserId(),ResponseCode.SUBJECTNAME_ERROR.getCode(),ResponseCode.SUBJECTNAME_ERROR.getMsg());
+        }
+        List<AreaResponse> areaResponses = new ArrayList<>();
+
+        //2. 通过主题名称模糊查询
+        try {
+            areaResponses = subjectManager.getAreaByFuzzyQuery(subjectBySubjectNameVo);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return Response.fail(subjectBySubjectNameVo.getUserId(),e.getMessage());
+        }
+
+        return Response.success(subjectBySubjectNameVo.getUserId(),areaResponses);
     }
 }

@@ -1,5 +1,7 @@
 package com.catalystplus.admin.manager;
 
+import com.catalystplus.admin.entity.Area;
+import com.catalystplus.admin.response.area.AreaResponse;
 import com.catalystplus.admin.response.subject.SubjectResponse;
 import com.catalystplus.admin.vo.journal.SubjectBySubjectNameVo;
 import com.catalystplus.admin.vo.subject.SubjectByAreaIdVo;
@@ -22,4 +24,6 @@ public interface SubjectManager {
     List<SubjectResponse> getSubject(SubjectPageVo subjectPageVo);
 
     SubjectResponse getSubjectBySubjectName(SubjectBySubjectNameVo subjectBySubjectNameVo);
+
+    List<AreaResponse> getAreaByFuzzyQuery(SubjectBySubjectNameVo subjectBySubjectNameVo);
 }

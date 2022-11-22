@@ -2,9 +2,11 @@ package com.catalystplus.admin.manager.impl;
 
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.catalystplus.admin.entity.Area;
 import com.catalystplus.admin.entity.Subject;
 import com.catalystplus.admin.entity.SubjectJournal;
 import com.catalystplus.admin.manager.SubjectManager;
+import com.catalystplus.admin.response.area.AreaResponse;
 import com.catalystplus.admin.response.subject.SubjectResponse;
 import com.catalystplus.admin.service.SubjectService;
 import com.catalystplus.admin.vo.journal.SubjectBySubjectNameVo;
@@ -16,6 +18,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.catalystplus.admin.config.GlobalAspect.PAGE_TOTAL;
@@ -39,9 +42,14 @@ public class SubjectManagerImpl implements SubjectManager {
 
         //1. 初始化
         Long areaId = subjectByAreaIdVo.getAreaId();
+        List<Subject> subjects = new ArrayList<>();
 
 //        List<Subject> subjects = subjectService.getSubjectByAreaId(areaId, subjectByAreaIdVo.getPageNo(), subjectByAreaIdVo.getPageSize());
-        List<Subject> subjects = subjectService.getSubjectByAreaId(areaId);
+        if(subjectByAreaIdVo.getSubjectName() == null){
+            subjects = subjectService.getSubjectByAreaId(areaId);
+        }else {
+            subjects = subjectService.getSubjectByFuzzyQuery(subjectByAreaIdVo.getAreaId(),subjectByAreaIdVo.getSubjectName());
+        }
         log.info("subjects: {}", subjects);
         List<SubjectResponse> subjectResponses = Lists.newArrayList();
         subjects.forEach(subject -> {
@@ -105,5 +113,25 @@ public class SubjectManagerImpl implements SubjectManager {
         BeanUtils.copyProperties(subjectBySubjectName,subjectResponse);
 
         return subjectResponse;
+    }
+
+    @Override
+    public List<AreaResponse> getAreaByFuzzyQuery(SubjectBySubjectNameVo subjectBySubjectNameVo) {
+
+        //1. 初始化
+        List<Area> areas = new ArrayList<>();
+        List<AreaResponse> areaResponses = new ArrayList<>();
+
+        //2. 通过主题名称模糊查询
+        areas = subjectService.getAreaByFuzzyQuery(subjectBySubjectNameVo.getSubjectName());
+
+        //3. 组装响应
+        for (Area area : areas) {
+            AreaResponse areaResponse = new AreaResponse();
+            BeanUtils.copyProperties(area,areaResponse);
+            areaResponses.add(areaResponse);
+        }
+
+        return areaResponses;
     }
 }

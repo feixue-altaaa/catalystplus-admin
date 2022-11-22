@@ -128,6 +128,14 @@ class CatalystplusAdminApplicationTests {
 
     @Test
     void subjectTest() {
+
+
+        SubjectByAreaIdVo subjectByAreaIdVo = new SubjectByAreaIdVo();
+        subjectByAreaIdVo.setAreaId(1L);
+        subjectByAreaIdVo.setSubjectName("geo");
+        Response<List<SubjectResponse>> subjectByAreaId = subjectController.getSubjectByAreaId(subjectByAreaIdVo);
+        subjectByAreaId.getData().forEach(System.out::println);
+
 //        Page<Subject> page = new Page<>(1, 10);
 //        LambdaQueryWrapper<Subject> subjectLambdaQueryWrapper = new LambdaQueryWrapper<>();
 //        subjectLambdaQueryWrapper.groupBy(Subject::getSubjectId);

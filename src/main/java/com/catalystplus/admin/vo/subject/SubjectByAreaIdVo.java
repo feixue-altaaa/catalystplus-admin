@@ -23,4 +23,7 @@ public class SubjectByAreaIdVo implements Serializable {
     @ApiModelProperty("领域ID")
     private Long areaId;
 
+    @ApiModelProperty("主题模糊名称")
+    private String subjectName;
+
 }

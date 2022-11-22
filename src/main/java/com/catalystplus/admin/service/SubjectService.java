@@ -2,6 +2,7 @@ package com.catalystplus.admin.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.catalystplus.admin.entity.Area;
 import com.catalystplus.admin.entity.Subject;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -21,4 +22,9 @@ public interface SubjectService extends IService<Subject> {
     Subject getSubjectBySubjectName(String subjectName,Long areaId);
 
     Subject getSubjectBySubjectId(Long subjectId);
+
+    List<Subject> getSubjectByFuzzyQuery(Long areaId,String subjectName);
+
+    List<Area> getAreaByFuzzyQuery(String subjectName);
+
 }

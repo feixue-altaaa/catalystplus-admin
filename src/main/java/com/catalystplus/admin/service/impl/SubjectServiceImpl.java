@@ -3,11 +3,15 @@ package com.catalystplus.admin.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.catalystplus.admin.entity.Area;
 import com.catalystplus.admin.entity.Subject;
+import com.catalystplus.admin.service.AreaService;
 import com.catalystplus.admin.service.SubjectService;
 import com.catalystplus.admin.mapper.SubjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.catalystplus.admin.config.GlobalAspect.PAGE_TOTAL;
@@ -20,13 +24,13 @@ import static com.catalystplus.admin.config.GlobalAspect.PAGE_TOTAL;
 @Service
 public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> implements SubjectService {
 
+    @Autowired
+    AreaService areaService;
+
     @Override
     public List<Subject> getSubjectByAreaId(long areaId) {
         LambdaQueryWrapper<Subject> subjectLambdaQueryWrapper = new LambdaQueryWrapper<>();
         subjectLambdaQueryWrapper.eq(Subject::getAreaId, areaId).groupBy(Subject::getSubjectId);
-//        Page<Subject> subjectPage = this.baseMapper.selectPage(page, subjectLambdaQueryWrapper);
-//        PAGE_TOTAL.set(subjectPage.getTotal());
-//        return subjectPage.getRecords();
         List<Subject> subjects = this.baseMapper.selectList(subjectLambdaQueryWrapper);
         return subjects;
     }
@@ -64,6 +68,38 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
         LambdaQueryWrapper<Subject> subjectLambdaQueryWrapper = new LambdaQueryWrapper<>();
         subjectLambdaQueryWrapper.eq(Subject::getSubjectId,subjectId).groupBy(Subject::getSubjectId);
         return this.baseMapper.selectOne(subjectLambdaQueryWrapper);
+    }
+
+    @Override
+    public List<Subject> getSubjectByFuzzyQuery(Long areaId,String subjectName) {
+
+        LambdaQueryWrapper<Subject> subjectLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        subjectLambdaQueryWrapper.eq(Subject::getAreaId, areaId);
+        //判断subjectName是英文还是中文
+        if(subjectName.matches("[\u4E00-\u9FA5]+")){
+            subjectLambdaQueryWrapper.like(true,Subject::getChName,subjectName).groupBy(Subject::getSubjectId);
+        }else {
+            subjectLambdaQueryWrapper.like(true,Subject::getEnName,subjectName).groupBy(Subject::getSubjectId);
+        }
+        return this.baseMapper.selectList(subjectLambdaQueryWrapper);
+    }
+
+    @Override
+    public List<Area> getAreaByFuzzyQuery(String subjectName) {
+        LambdaQueryWrapper<Subject> subjectLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        //判断subjectName是英文还是中文
+        if(subjectName.matches("[\u4E00-\u9FA5]+")){
+            subjectLambdaQueryWrapper.like(true,Subject::getChName,subjectName).groupBy(Subject::getAreaId);
+        }else {
+            subjectLambdaQueryWrapper.like(true,Subject::getEnName,subjectName).groupBy(Subject::getAreaId);
+        }
+        List<Subject> subjects = this.baseMapper.selectList(subjectLambdaQueryWrapper);
+        List<Area> areas = new ArrayList<>();
+        for (Subject subject : subjects) {
+            Area area = areaService.getById(subject.getAreaId());
+            areas.add(area);
+        }
+        return areas;
     }
 }
 
