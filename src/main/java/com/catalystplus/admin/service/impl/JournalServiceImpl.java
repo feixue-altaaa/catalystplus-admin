@@ -27,8 +27,7 @@ import static com.catalystplus.admin.config.GlobalAspect.PAGE_TOTAL;
 public class JournalServiceImpl extends ServiceImpl<JournalMapper, Journal> implements JournalService {
 
 
-    @Autowired
-    JournalMapper journalMapper;
+
     @Autowired
     SubjectJournalService subjectJournalService;
 
@@ -109,8 +108,7 @@ public class JournalServiceImpl extends ServiceImpl<JournalMapper, Journal> impl
         }
         Page<Journal> journalPage = new Page<>(journalByJournalNameVo.getPageNo(), journalByJournalNameVo.getPageSize());
         Page<Journal> page = this.page(journalPage,journalLambdaQueryWrapper);
-        List<Journal> journals = page.getRecords();
-        return journals;
+        return page.getRecords();
     }
 
 

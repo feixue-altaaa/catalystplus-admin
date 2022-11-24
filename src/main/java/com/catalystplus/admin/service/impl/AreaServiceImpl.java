@@ -26,8 +26,7 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area>
         }else {
             areaLambdaQueryWrapper.eq(Area::getEnName,areaName);
         }
-        Area area = this.baseMapper.selectOne(areaLambdaQueryWrapper);
-        return area;
+        return this.baseMapper.selectOne(areaLambdaQueryWrapper);
     }
 
 }

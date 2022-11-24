@@ -1,15 +1,10 @@
 package com.catalystplus.admin.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.catalystplus.admin.entity.Journal;
 import com.catalystplus.admin.entity.SubjectJournal;
-import com.catalystplus.admin.service.SubjectJournalService;
 import com.catalystplus.admin.mapper.SubjectJournalMapper;
-import org.apache.ibatis.reflection.wrapper.BaseWrapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.catalystplus.admin.service.SubjectJournalService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,8 +18,7 @@ import java.util.List;
 @Service
 public class SubjectJournalServiceImpl extends ServiceImpl<SubjectJournalMapper, SubjectJournal> implements SubjectJournalService {
 
-    @Autowired
-    SubjectJournalMapper subjectJournalMapper;
+
 
 //    @Override
 //    public void updateJournalBySubjectId(long journalId, long sourceSubjectId, long targetSubjectId) {
@@ -58,18 +52,18 @@ public class SubjectJournalServiceImpl extends ServiceImpl<SubjectJournalMapper,
     @Override
     public List<Long> getJournalIdBySubjectId(Long subjectId) {
 
-        return  subjectJournalMapper.getJournalIdBySubjectId(subjectId);
+        return  this.baseMapper.getJournalIdBySubjectId(subjectId);
 
     }
 
     @Override
     public List<SubjectJournal> getSubjectJournalByJournalId(Long journalId) {
-        return subjectJournalMapper.getSubjectJournalByJournalId(journalId);
+        return this.baseMapper.getSubjectJournalByJournalId(journalId);
     }
 
     @Override
     public Long getSubjectIdByJournalId(Long journalId) {
-        return subjectJournalMapper.getSubjectIdByJournalId(journalId);
+        return this.baseMapper.getSubjectIdByJournalId(journalId);
     }
 }
 

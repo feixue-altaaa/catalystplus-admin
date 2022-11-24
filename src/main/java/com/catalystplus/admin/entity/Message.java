@@ -12,6 +12,7 @@ public class Message {
     private String topic;
     // 标签
     private String tags;
+
     // 消息数据
     private final Map<String, Object> data = new HashMap<>();
 

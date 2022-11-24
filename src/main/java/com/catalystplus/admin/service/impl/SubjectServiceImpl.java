@@ -59,8 +59,7 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
             wrapper.eq(Subject::getAreaId,areaId);
         });
         subjectLambdaQueryWrapper.groupBy(Subject::getSubjectId);
-        Subject subject = this.baseMapper.selectOne(subjectLambdaQueryWrapper);
-        return subject;
+        return this.baseMapper.selectOne(subjectLambdaQueryWrapper);
     }
 
     @Override

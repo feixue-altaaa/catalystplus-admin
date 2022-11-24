@@ -42,7 +42,7 @@ public class SubjectManagerImpl implements SubjectManager {
 
         //1. 初始化
         Long areaId = subjectByAreaIdVo.getAreaId();
-        List<Subject> subjects = new ArrayList<>();
+        List<Subject> subjects;
 
 //        List<Subject> subjects = subjectService.getSubjectByAreaId(areaId, subjectByAreaIdVo.getPageNo(), subjectByAreaIdVo.getPageSize());
         if(subjectByAreaIdVo.getSubjectName() == null){
@@ -50,7 +50,6 @@ public class SubjectManagerImpl implements SubjectManager {
         }else {
             subjects = subjectService.getSubjectByFuzzyQuery(subjectByAreaIdVo.getAreaId(),subjectByAreaIdVo.getSubjectName());
         }
-        log.info("subjects: {}", subjects);
         List<SubjectResponse> subjectResponses = Lists.newArrayList();
         subjects.forEach(subject -> {
             SubjectResponse subjectResponse = new SubjectResponse();
@@ -119,7 +118,7 @@ public class SubjectManagerImpl implements SubjectManager {
     public List<AreaResponse> getAreaByFuzzyQuery(SubjectBySubjectNameVo subjectBySubjectNameVo) {
 
         //1. 初始化
-        List<Area> areas = new ArrayList<>();
+        List<Area> areas;
         List<AreaResponse> areaResponses = new ArrayList<>();
 
         //2. 通过主题名称模糊查询

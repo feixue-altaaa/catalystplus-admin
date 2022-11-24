@@ -15,6 +15,8 @@ import java.util.Map;
 @RequestMapping("/admin")
 public interface UserApi {
 
+    // TODO: 2022/11/24 每个指标用的什么技术方案，开一个子文档，写清楚
+
     @GetMapping("/auth/user/tun")
     @ApiOperation("查询所有的用户数")
     Response<Long> getTNU();

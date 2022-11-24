@@ -12,8 +12,7 @@ import org.springframework.stereotype.Service;
  * @createDate 2022-11-04 13:17:19
  */
 @Service
-public class VisualizeServiceImpl extends ServiceImpl<VisualizeMapper, Visualize>
-        implements VisualizeService {
+public class VisualizeServiceImpl extends ServiceImpl<VisualizeMapper, Visualize> implements VisualizeService {
 
 }
 

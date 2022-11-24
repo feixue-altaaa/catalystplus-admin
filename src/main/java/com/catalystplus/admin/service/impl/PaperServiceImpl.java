@@ -12,8 +12,7 @@ import org.springframework.stereotype.Service;
  * @createDate 2022-11-04 13:15:12
  */
 @Service
-public class PaperServiceImpl extends ServiceImpl<PaperMapper, Paper>
-        implements PaperService {
+public class PaperServiceImpl extends ServiceImpl<PaperMapper, Paper> implements PaperService {
 
 }
 

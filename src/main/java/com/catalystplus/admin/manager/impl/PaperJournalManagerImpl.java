@@ -15,6 +15,7 @@ import java.util.List;
 @Service
 public class PaperJournalManagerImpl implements PaperJournalManager {
 
+    // TODO: 2022/11/24 mapper改成service
     @Autowired
     JournalMapper journalMapper;
     @Autowired
@@ -36,7 +37,7 @@ public class PaperJournalManagerImpl implements PaperJournalManager {
 
         //3. 获取不同领域下期刊文章总数
         List<PaperJournalData> paperJournalDatas = new ArrayList<>();
-        for(Long i = 1L;i<= 18;i++){
+        for (Long i = 1L; i <= 18; i++) {
             PaperJournalData data = new PaperJournalData();
             data.setAreaId(i);
             data.setJournalTotal(journalMapper.getJournalTotalByArea(i));

@@ -13,15 +13,13 @@ import org.springframework.stereotype.Service;
  * @createDate 2022-10-24 10:40:01
  */
 @Service
-public class PublisherServiceImpl extends ServiceImpl<PublisherMapper, Publisher>
-        implements PublisherService {
+public class PublisherServiceImpl extends ServiceImpl<PublisherMapper, Publisher> implements PublisherService {
 
     @Override
     public Publisher getPublisherByPublisherName(String publisherName) {
         LambdaQueryWrapper<Publisher> publisherLambdaQueryWrapper = new LambdaQueryWrapper<>();
         publisherLambdaQueryWrapper.eq(Publisher::getName,publisherName);
-        Publisher publisher = this.baseMapper.selectOne(publisherLambdaQueryWrapper);
-        return publisher;
+        return this.baseMapper.selectOne(publisherLambdaQueryWrapper);
     }
 }
 

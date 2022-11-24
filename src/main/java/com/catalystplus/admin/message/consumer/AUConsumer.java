@@ -15,6 +15,8 @@ import org.springframework.stereotype.Component;
         topic = "data", selectorExpression = "au")
 public class AUConsumer implements RocketMQListener<String> {
 
+    // TODO: 2022/11/24 data改成admin
+
     @Autowired
     private UserDataManagerImpl userDataManager;
 

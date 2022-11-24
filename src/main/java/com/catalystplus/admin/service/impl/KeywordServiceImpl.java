@@ -12,8 +12,7 @@ import org.springframework.stereotype.Service;
  * @createDate 2022-11-04 13:16:18
  */
 @Service
-public class KeywordServiceImpl extends ServiceImpl<KeywordMapper, Keyword>
-        implements KeywordService {
+public class KeywordServiceImpl extends ServiceImpl<KeywordMapper, Keyword> implements KeywordService {
 
 }
 

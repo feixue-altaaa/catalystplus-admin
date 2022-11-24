@@ -34,6 +34,7 @@ public class PublisherManagerImpl implements PublisherManager {
 
     @Override
     public List<PublisherResponse> getPublisher() {
+
         List<Publisher> publishers = publisherService.list();
         log.info("publishers: {}", publishers);
         List<PublisherResponse> publisherResponses = Lists.newArrayList();
@@ -42,6 +43,7 @@ public class PublisherManagerImpl implements PublisherManager {
             BeanUtils.copyProperties(area, publisherResponse);
             publisherResponses.add(publisherResponse);
         });
+
         return publisherResponses;
     }
 
@@ -55,7 +57,7 @@ public class PublisherManagerImpl implements PublisherManager {
         Publisher publisherByPublisherName = publisherService.getPublisherByPublisherName(publisherByPublisherNameVo.getPublisherName());
 
         //3. 组装响应
-        BeanUtils.copyProperties(publisherByPublisherName,publisherResponse);
+        BeanUtils.copyProperties(publisherByPublisherName, publisherResponse);
 
         return publisherResponse;
 
