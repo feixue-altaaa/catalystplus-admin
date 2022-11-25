@@ -19,6 +19,7 @@ spring:
 
 rocketmq:
   ###连接地址nameServer
-  name-server: 127.0.0.1:9876
+  #name-server: 127.0.0.1:9876
+  name-server: 116.62.104.15:6789
   producer:
-    group: library_producer
+    group: admin-producer
