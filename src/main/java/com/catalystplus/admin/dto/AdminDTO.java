@@ -20,7 +20,9 @@ public class AdminDTO implements Serializable {
 
     private Long paperId;
 
-    private Integer flag;
+    private Integer onlineFlag;
+
+    private Integer deviceFlag;
 
     private LocalDateTime loginTime;
 
