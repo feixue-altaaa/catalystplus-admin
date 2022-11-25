@@ -16,7 +16,7 @@ public class AdminDTO implements Serializable {
 
     private static final long serialVersionUID = 7754458787662051239L;
 
-    private Integer userId;
+    private Long userId;
 
     private Long paperId;
 

@@ -24,7 +24,7 @@ public class NNUTConsumer implements RocketMQListener<String> {
         Message message = JsonUtils.jsonToPojo(json, Message.class);
         if (message != null) {
             Integer userId = (Integer) message.getData().get("userId");
-            String createTime = (String) message.getData().get("createTime");
+            String createTime = (String) message.getData().get("createdTime");
             userDataManager.recordNNUT(createTime, userId);
         }
     }
