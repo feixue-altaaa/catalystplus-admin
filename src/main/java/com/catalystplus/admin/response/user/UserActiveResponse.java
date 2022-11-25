@@ -10,8 +10,7 @@ import java.io.Serializable;
 @ToString
 @Data
 @ApiModel("用户活跃信息响应")
-public class AUResponse implements Serializable {
-
+public class UserActiveResponse implements Serializable {
     private static final long serialVersionUID = -1418217707640693576L;
 
     @ApiModelProperty("id")

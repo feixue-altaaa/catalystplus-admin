@@ -20,9 +20,9 @@ public class AdminDTO implements Serializable {
 
     private Long paperId;
 
-    private Integer onlineFlag;
+    private Integer onlineFlag; // onlineFlag = 1表示在线  0表示下线
 
-    private Integer deviceFlag;
+    private Integer deviceFlag; // deviceFlag = 0 表示移动端  1表示桌面端
 
     private LocalDateTime loginTime;
 

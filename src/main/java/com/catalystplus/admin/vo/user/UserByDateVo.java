@@ -6,16 +6,18 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Data
-@ApiModel("通过日期查询用户活跃指标")
-public class AUByDateVo implements Serializable {
+@ApiModel("通过日期查询用户数据")
+public class UserByDateVo implements Serializable {
+
     private static final long serialVersionUID = -234238929472968170L;
 
     @ApiModelProperty("用户ID")
     private Long userId;
 
     @ApiModelProperty("日期")
-    private String dateKey;
+    private LocalDateTime localDateTime;
 
 }
