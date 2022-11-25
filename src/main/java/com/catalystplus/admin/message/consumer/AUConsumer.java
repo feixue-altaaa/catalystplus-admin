@@ -17,6 +17,8 @@ public class AUConsumer implements RocketMQListener<String> {
 
     // TODO: 2022/11/24 data改成admin
 
+    // TODO: 2022/11/25 String类型改成AdminDTO  我已经放在程序里了 
+
     @Autowired
     private UserDataManagerImpl userDataManager;
 
