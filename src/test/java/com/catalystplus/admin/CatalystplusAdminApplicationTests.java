@@ -3,14 +3,13 @@ package com.catalystplus.admin;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.catalystplus.admin.controller.AreaController;
-import com.catalystplus.admin.controller.JournalController;
-import com.catalystplus.admin.controller.PublisherController;
-import com.catalystplus.admin.controller.SubjectController;
+import com.catalystplus.admin.controller.*;
 import com.catalystplus.admin.entity.*;
+import com.catalystplus.admin.manager.PaperCountManager;
 import com.catalystplus.admin.manager.PaperJournalManager;
 import com.catalystplus.admin.manager.impl.JournalManagerImpl;
 import com.catalystplus.admin.mapper.JournalMapper;
+import com.catalystplus.admin.mapper.PaperCountMapper;
 import com.catalystplus.admin.mapper.SubjectJournalMapper;
 import com.catalystplus.admin.mapper.SubjectMapper;
 import com.catalystplus.admin.response.Response;
@@ -18,17 +17,16 @@ import com.catalystplus.admin.response.area.AreaResponse;
 import com.catalystplus.admin.response.journal.JournalResponse;
 import com.catalystplus.admin.response.journal.JournalSimpleResponse;
 import com.catalystplus.admin.response.paper.PaperJournalResponse;
+import com.catalystplus.admin.response.paperCount.PaperCountResponse;
 import com.catalystplus.admin.response.publisher.PublisherResponse;
 import com.catalystplus.admin.response.subject.SubjectResponse;
-import com.catalystplus.admin.service.JournalService;
-import com.catalystplus.admin.service.SubjectJournalService;
-import com.catalystplus.admin.service.SysUserService;
-import com.catalystplus.admin.service.VisualizeService;
+import com.catalystplus.admin.service.*;
 import com.catalystplus.admin.service.impl.AreaServiceImpl;
 import com.catalystplus.admin.service.impl.JournalServiceImpl;
 import com.catalystplus.admin.service.impl.PublisherServiceImpl;
 import com.catalystplus.admin.service.impl.SubjectServiceImpl;
 import com.catalystplus.admin.vo.journal.*;
+import com.catalystplus.admin.vo.paperCount.PaperCountVo;
 import com.catalystplus.admin.vo.subject.SubjectByAreaIdVo;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -75,6 +73,47 @@ class CatalystplusAdminApplicationTests {
     JournalServiceImpl journalService;
     @Autowired
     JournalMapper journalMapper;
+    @Autowired
+    PaperCountMapper paperCountMapper;
+    @Autowired
+    PaperCountManager paperCountManager;
+    @Autowired
+    PaperService paperService;
+    @Autowired
+    PaperCountController paperCountController;
+
+    @Test
+    void paperCountTest(){
+
+        PaperCountVo paperCountVo = new PaperCountVo();
+        paperCountVo.setAreaId(5L);
+        Response<PaperCountResponse> paperCountResponseResponse = paperCountController.getpaperJournalCount(paperCountVo);
+        log.info("getpaperJournalCount:{}",paperCountResponseResponse.getData());
+
+        Response<List<PaperCountResponse>> paperJournalCountByArea = paperCountController.getPaperJournalCountByArea(paperCountVo);
+        log.info("***********************");
+        paperJournalCountByArea.getData().forEach(System.out::println);
+
+        Response<List<PaperCountResponse>> paperJournalCountBySubject = paperCountController.getPaperJournalCountBySubject(paperCountVo);
+        log.info("***********************");
+        paperJournalCountBySubject.getData().forEach(System.out::println);
+
+
+//        paperCountManager.insertPaperCountByAreaAndSubject();
+
+//        Long journalTotal = journalService.getJournalTotal();
+//        log.info("journalTotal:{}",journalTotal);
+//        Long aLong = paperService.getpaperTotal();
+//        log.info("aLong:{}",aLong);
+
+
+//        PaperCount paperCount = new PaperCount();
+//        paperCount.setType(3);
+//        paperCount.setPaperTotal(1456L);
+//
+//        paperCountMapper.insert(paperCount);
+
+    }
 
     @Test
     void journalTest() {
@@ -316,6 +355,10 @@ class CatalystplusAdminApplicationTests {
 
 //        Long journalTotalByArea = journalMapper.getJournalTotalByArea(1L);
 //        log.info("journalTotalByArea:{}",journalTotalByArea);
+    }
+
+    public static void main(String[] args) {
+
     }
 
 

@@ -12,10 +12,9 @@ import org.springframework.stereotype.Repository;
  * @Entity com.catalystplus.admin.entity.Paper
  */
 
-@Repository
 public interface PaperMapper extends BaseMapper<Paper> {
 
-    @Select("SELECT COUNT(*) from paper0")
+    @Select("SELECT COUNT(*) from paper")
     Long getpaperTotal();
 
     @Select("SELECT COUNT(*) from paper0 WHERE TO_DAYS(NOW()) - TO_DAYS(created_time) <= 1")
@@ -23,16 +22,25 @@ public interface PaperMapper extends BaseMapper<Paper> {
 
 
     @Select("SELECT COUNT(*) from paper0 where journal_id in " +
-            "(SELECT journal_id from (SELECT * FROM journal GROUP BY journal_id) as j " +
-            "where subject_id in (SELECT subject_id from `subject` WHERE area_id = #{areaId} GROUP BY subject_id))")
+            "(SELECT journal_id from subject_journal where subject_id in " +
+            "(SELECT subject_id from `subject` WHERE area_id = #{areaId} GROUP BY subject_id))")
     Long getPaperTotalByArea(Long areaId);
 
 
     @Select("SELECT COUNT(*) from paper0 where journal_id in " +
-            "(SELECT journal_id from (SELECT * FROM journal GROUP BY journal_id) as j " +
-            "where subject_id in (SELECT subject_id from `subject` WHERE area_id = #{areaId} GROUP BY subject_id)) " +
+            "(SELECT journal_id from subject_journal where subject_id in " +
+            "(SELECT subject_id from `subject` WHERE area_id = #{areaId} GROUP BY subject_id))" +
             "and TO_DAYS(NOW()) - TO_DAYS(created_time) <= 1")
     Long getTodayPaperTotalByArea(Long areaId);
+
+    @Select("SELECT COUNT(*) from paper where journal_id IN " +
+            "(SELECT journal_id from subject_journal where subject_id = #{subjectId}) " +
+            "and TO_DAYS(NOW()) - TO_DAYS(created_time) <= 1")
+    Long getTodayPaperTotalBySubject(Long subjectId);
+
+    @Select("SELECT COUNT(*) from paper where journal_id IN " +
+            "(SELECT journal_id from subject_journal where subject_id = #{subjectId})")
+    Long getPaperTotalBySubject(Long subjectId);
 
 }
 

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.catalystplus.admin.entity.Paper;
 import com.catalystplus.admin.service.PaperService;
 import com.catalystplus.admin.mapper.PaperMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -14,6 +15,39 @@ import org.springframework.stereotype.Service;
 @Service
 public class PaperServiceImpl extends ServiceImpl<PaperMapper, Paper> implements PaperService {
 
+    @Autowired
+    PaperMapper paperMapper;
+
+
+    @Override
+    public Long getpaperTotal() {
+        return paperMapper.getpaperTotal();
+    }
+
+    @Override
+    public Long getTodayPaperTotal() {
+        return paperMapper.getTodayPaperTotal();
+    }
+
+    @Override
+    public Long getPaperTotalByArea(Long areaId) {
+        return paperMapper.getPaperTotalByArea(areaId);
+    }
+
+    @Override
+    public Long getTodayPaperTotalByArea(Long areaId) {
+        return paperMapper.getTodayPaperTotalByArea(areaId);
+    }
+
+    @Override
+    public Long getTodayPaperTotalBySubject(Long subjectId) {
+        return paperMapper.getTodayPaperTotalBySubject(subjectId);
+    }
+
+    @Override
+    public Long getPaperTotalBySubject(Long subjectId) {
+        return paperMapper.getPaperTotalBySubject(subjectId);
+    }
 }
 
 

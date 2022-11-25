@@ -2,6 +2,7 @@ package com.catalystplus.admin.service;
 
 import com.catalystplus.admin.entity.Paper;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.apache.ibatis.annotations.Select;
 
 /**
  * @author lanran
@@ -10,5 +11,15 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface PaperService extends IService<Paper> {
 
+    Long getpaperTotal();
 
+    Long getTodayPaperTotal();
+
+    Long getPaperTotalByArea(Long areaId);
+
+    Long getTodayPaperTotalByArea(Long areaId);
+
+    Long getTodayPaperTotalBySubject(Long subjectId);
+
+    Long getPaperTotalBySubject(Long subjectId);
 }

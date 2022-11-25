@@ -30,6 +30,8 @@ public class JournalServiceImpl extends ServiceImpl<JournalMapper, Journal> impl
 
     @Autowired
     SubjectJournalService subjectJournalService;
+    @Autowired
+    JournalMapper journalMapper;
 
     @Override
     public List<Journal> getJournalBySubjectId(long subjectId, int pageNo, int pageSize) {
@@ -111,6 +113,35 @@ public class JournalServiceImpl extends ServiceImpl<JournalMapper, Journal> impl
         return page.getRecords();
     }
 
+    @Override
+    public Long getJournalTotal() {
+        return  journalMapper.getJournalTotal();
+    }
+
+    @Override
+    public Long getTodayJournalTotal() {
+        return journalMapper.getTodayJournalTotal();
+    }
+
+    @Override
+    public Long getTodayJournalTotalByArea(Long areaId) {
+        return journalMapper.getTodayJournalTotalByArea(areaId);
+    }
+
+    @Override
+    public Long getJournalTotalByArea(Long areaId) {
+        return journalMapper.getJournalTotalByArea(areaId);
+    }
+
+    @Override
+    public Long getJournalTotalBySubject(Long subjectId) {
+        return journalMapper.getJournalTotalBySubject(subjectId);
+    }
+
+    @Override
+    public Long getTodayJournalTotalBySubject(Long subjectId) {
+        return journalMapper.getTodayJournalTotalBySubject(subjectId);
+    }
 
 }
 
