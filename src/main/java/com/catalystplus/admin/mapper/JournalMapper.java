@@ -15,7 +15,6 @@ import java.util.List;
  * @createDate 2022-10-24 10:39:49
  * @Entity com.catalystplus.admin.entity.Journal
  */
-@Repository
 public interface JournalMapper extends BaseMapper<Journal> {
 
 
@@ -54,13 +53,25 @@ public interface JournalMapper extends BaseMapper<Journal> {
     @Select("SELECT COUNT(*) from (SELECT * FROM journal WHERE TO_DAYS(NOW()) - TO_DAYS(created_time) <= 1) as j")
     Long getTodayJournalTotal();
 
-    @Select("SELECT COUNT(*) from (SELECT * FROM journal WHERE TO_DAYS(NOW()) - TO_DAYS(created_time) <= 1 GROUP BY journal_id) as j " +
-            "where subject_id in (SELECT subject_id from `subject` WHERE area_id = #{areaId} GROUP BY subject_id)")
+    @Select("SELECT COUNT(*) FROM journal where journal_id IN " +
+            "(SELECT journal_id from subject_journal WHERE subject_id in " +
+            "(SELECT subject_id from `subject` WHERE area_id = #{areaId} GROUP BY subject_id))")
     Long getTodayJournalTotalByArea(Long areaId);
 
-    @Select("SELECT COUNT(*) from (SELECT * FROM journal GROUP BY journal_id) as j " +
-            "where subject_id in (SELECT subject_id from `subject` WHERE area_id = #{areaId} GROUP BY subject_id);")
+    @Select("SELECT COUNT(*) FROM journal where journal_id IN " +
+            "(SELECT journal_id from subject_journal WHERE subject_id in " +
+            "(SELECT subject_id from `subject` WHERE area_id = #{areaId} GROUP BY subject_id))" +
+            "and TO_DAYS(NOW()) - TO_DAYS(created_time) <= 1")
     Long getJournalTotalByArea(Long areaId);
+
+    @Select("SELECT COUNT(*) from journal where journal_id IN " +
+            "(SELECT journal_id from subject_journal where subject_id = #{subjectId})")
+    Long getJournalTotalBySubject(Long subjectId);
+
+    @Select("SELECT COUNT(*) from journal where journal_id IN " +
+            "(SELECT journal_id from subject_journal where subject_id = #{subjectId}) " +
+            "and TO_DAYS(NOW()) - TO_DAYS(created_time) <= 1")
+    Long getTodayJournalTotalBySubject(Long subjectId);
 
 }
 

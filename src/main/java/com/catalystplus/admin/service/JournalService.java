@@ -4,6 +4,7 @@ import com.catalystplus.admin.entity.Journal;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.catalystplus.admin.vo.journal.JournalByJournalNameVo;
 import com.catalystplus.admin.vo.journal.ModifyJournalVo;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -23,5 +24,17 @@ public interface JournalService extends IService<Journal> {
     Journal getJournalByJournalName(String journalName);
 
     List<Journal> getJournalByFuzzyQuery(JournalByJournalNameVo journalByJournalNameVo);
+
+    Long getJournalTotal();
+
+    Long getTodayJournalTotal();
+
+    Long getTodayJournalTotalByArea(Long areaId);
+
+    Long getJournalTotalByArea(Long areaId);
+
+    Long getJournalTotalBySubject(Long subjectId);
+
+    Long getTodayJournalTotalBySubject(Long subjectId);
 
 }
