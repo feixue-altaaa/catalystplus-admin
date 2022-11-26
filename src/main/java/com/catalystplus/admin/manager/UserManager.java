@@ -11,56 +11,52 @@ public interface UserManager {
 
     /**
      *
-     * @return 截至今日用户总数
+     * @return 获取截至今日用户总数
      */
-    Long queryUserTNU();
+    Long getTotalNumberOfUsers();
 
     /**
-     * 统计今日新增用户数
-     * @param userId 新注册的用户id
-     * @param createdTime 用户的注册时间
+     * 记录今日新增用户数
+     * @param userId 新注册用户id
+     * @param createdTime 注册时间
      */
-    void recordUserNNUT(Long userId, LocalDateTime createdTime);
+    void recordNewUsersToday(Long userId, LocalDateTime createdTime);
 
     /**
-     * 根据当日日期查询今日新增用户数
-     * @param dateTime 当日日期
-     * @return 今日新增用户数
+     * 根据日期获取今日新增用户数
+     * @param dateTime 日期
      */
-    Long queryUserNNUT(LocalDateTime dateTime);
+    Long getNewUsersToday(String dateTime);
 
     /**
-     * 统计日活跃数、周活跃数、月活跃数、日活跃占比、周活跃占比、月活跃占比
-     * @param userId 登录用户的id
-     * @param loginTime 用户的登录时间
+     * 记录日活跃用户数、周活跃用户数、月活跃用户数、日活占比、周活占比、月活占比
+     * @param userId 登录用户id
+     * @param loginTime 登录时间
      */
-    void recordUserAU(Long userId, LocalDateTime loginTime);
+    void recordActiveUsersInfo(Long userId, LocalDateTime loginTime);
 
     /**
-     * 根据当日日期查询日活跃数、周活跃数、月活跃数、日活跃占比、周活跃占比、月活跃占比
-     * @param dateTime 当日日期
-     * @return 日活跃数、周活跃数、月活跃数、日活跃占比、周活跃占比、月活跃占比
+     * 根据日期获取日活跃用户数、周活跃用户数、月活跃用户数、日活占比、周活占比、月活占比
+     * @param dateTime 日期
      */
-    List<UserActiveResponse> queryUserAU(LocalDateTime dateTime);
+    List<UserActiveResponse> getActiveUsersInfo(String dateTime);
 
     /**
-     * 统计同时在线活跃用户数和同时在线新用户数
+     * 记录用户（或者新用户）的在线情况
      * @param userId 用户id
-     * @param onlineFlag 用户在线标志
+     * @param onlineFlag 在线标志位（0：下线，1：在线）
      */
-    void recordUserCU(Long userId, Integer onlineFlag);
+    void recordConcurrentUsersInfo(Long userId, Integer onlineFlag);
 
     /**
-     * 查询同时在线活跃用户数和同时在线新用户数
-     * @return 同时在线活跃用户数和同时在线新用户数
+     * 获取同时在线用户（或者新用户）数
      */
-    List<UserConcurrentResponse> queryUserCU();
+    List<UserConcurrentResponse> getConcurrentUsersInfo();
 
     /**
-     * 根据当日日期查询七天前用户留存数、留存率和一周前用户留存数和留存率
-     * @param dateTime 当日日期
-     * @return 七天前用户留存数、留存率和一周前用户留存数和留存率
+     * 根据日期获取七天前用户留存数、七天前用户留存率、一个月前用户留存数、一个月前用户留存率
+     * @param dateTime 日期
      */
-    List<UserRetainedResponse> queryUserRU(LocalDateTime dateTime);
+    List<UserRetainedResponse> getRetainedUsersInfo(String dateTime);
 
 }

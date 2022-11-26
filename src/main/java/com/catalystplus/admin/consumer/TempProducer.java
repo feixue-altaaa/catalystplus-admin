@@ -11,7 +11,7 @@ public class TempProducer {
     @Autowired
     private RocketMQTemplate rocketMQTemplate;
 
-    public void sendMessage(AdminDTO adminDTO) {
-        rocketMQTemplate.convertAndSend("AdminTopic:nnut", adminDTO);
+    public void sendMessage(String topic, AdminDTO adminDTO) {
+        rocketMQTemplate.convertAndSend(topic, adminDTO);
     }
 }

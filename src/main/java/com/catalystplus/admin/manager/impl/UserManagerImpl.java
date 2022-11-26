@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,29 +35,28 @@ public class UserManagerImpl implements UserManager {
     private SysUserService sysUserService;
 
     @Override
-    public Long queryUserTNU() {
+    public Long getTotalNumberOfUsers() {
         QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
         queryWrapper.select("id").eq("status", 1);
         return (long) sysUserService.count(queryWrapper);
     }
 
     @Override
-    public void recordUserNNUT(Long userId, LocalDateTime createdTime) {
-        String redisKey = RedisKeyUtil.getNNUTKey(createdTime);
-        // 当userId超过Integer的范围，会报错
+    public void recordNewUsersToday(Long userId, LocalDateTime createdTime) {
+        String redisKey = RedisKeyUtil.getNNUTKey(createdTime.format(DateTimeFormatter.ISO_LOCAL_DATE));
         redisTemplate.opsForValue().setBit(redisKey, userId, true);
     }
 
     @Override
-    public Long queryUserNNUT(LocalDateTime dateTime) {
+    public Long getNewUsersToday(String dateTime) {
         String redisKey = RedisKeyUtil.getNNUTKey(dateTime);
         return redisTemplate.execute((RedisCallback<Long>) connection -> connection.bitCount(redisKey.getBytes()));
     }
 
     @Override
-    public void recordUserAU(Long userId, LocalDateTime loginTime) {
-        Map<String, String> weekAndMonth = getWeekAndMonth(loginTime);
-        String dauKey = RedisKeyUtil.getDAUKey(loginTime);
+    public void recordActiveUsersInfo(Long userId, LocalDateTime loginTime) {
+        Map<String, String> weekAndMonth = getWeekAndMonth(loginTime.format(DateTimeFormatter.ISO_LOCAL_DATE));
+        String dauKey = RedisKeyUtil.getDAUKey(loginTime.format(DateTimeFormatter.ISO_LOCAL_DATE));
         String wauKey = RedisKeyUtil.getWAUKey(weekAndMonth.get("weekStart"), weekAndMonth.get("weekEnd"));
         String mauKey = RedisKeyUtil.getMAUKey(weekAndMonth.get("monthStart"), weekAndMonth.get("monthEnd"));
         redisTemplate.opsForValue().setBit(dauKey, userId, true);
@@ -65,7 +65,7 @@ public class UserManagerImpl implements UserManager {
     }
 
     @Override
-    public List<UserActiveResponse> queryUserAU(LocalDateTime dateTime) {
+    public List<UserActiveResponse> getActiveUsersInfo(String dateTime) {
         List<UserActiveResponse> userAu = new ArrayList<>();
         Map<String, String> weekAndMonth = getWeekAndMonth(dateTime);
         String dauKey = RedisKeyUtil.getDAUKey(dateTime);
@@ -74,7 +74,7 @@ public class UserManagerImpl implements UserManager {
         Long dau = redisTemplate.execute((RedisCallback<Long>) connection -> connection.bitCount(dauKey.getBytes()));
         Long wau = redisTemplate.execute((RedisCallback<Long>) connection -> connection.bitCount(wauKey.getBytes()));
         Long mau = redisTemplate.execute((RedisCallback<Long>) connection -> connection.bitCount(mauKey.getBytes()));
-        Long tnu = queryUserTNU();
+        Long tnu = getTotalNumberOfUsers();
         Double pdau = Double.parseDouble(String.format("%.2f", dau.doubleValue() / tnu.doubleValue()));
         Double pwau = Double.parseDouble(String.format("%.2f", wau.doubleValue() / tnu.doubleValue()));
         Double pmau = Double.parseDouble(String.format("%.2f", mau.doubleValue() / tnu.doubleValue()));
@@ -95,7 +95,7 @@ public class UserManagerImpl implements UserManager {
     }
 
     @Override
-    public void recordUserCU(Long userId, Integer onlineFlag) {
+    public void recordConcurrentUsersInfo(Long userId, Integer onlineFlag) {
         SysUser sysUser = sysUserService.getById(userId);
         String nacuKey = RedisKeyUtil.getNACUKey();
         String nncuKey = RedisKeyUtil.getNNCUKey();
@@ -116,7 +116,7 @@ public class UserManagerImpl implements UserManager {
     }
 
     @Override
-    public List<UserConcurrentResponse> queryUserCU() {
+    public List<UserConcurrentResponse> getConcurrentUsersInfo() {
         List<UserConcurrentResponse> userCu = new ArrayList<>();
         String nacuKey = RedisKeyUtil.getNACUKey();
         String nncuKey = RedisKeyUtil.getNNCUKey();
@@ -134,38 +134,41 @@ public class UserManagerImpl implements UserManager {
     }
 
     @Override
-    public List<UserRetainedResponse> queryUserRU(LocalDateTime dateTime) {
+    public List<UserRetainedResponse> getRetainedUsersInfo(String dateTime) {
         List<UserRetainedResponse> userRetention = new ArrayList<>();
+        String[] split = dateTime.split("-");
+        LocalDate localDate = LocalDate.of(Integer.parseInt(split[0]), Integer.parseInt(split[1]), Integer.parseInt(split[2]));
+
         // 1.获取七天前用户留存数
         String wnruKey = RedisKeyUtil.getWNRUKey(dateTime);
-
         Long wnru = redisTemplate.execute((RedisCallback<Long>) redisConnection -> {
             redisConnection.bitOp(RedisStringCommands.BitOperation.AND,
                     wnruKey.getBytes(),
-                    RedisKeyUtil.getNNUTKey(dateTime.minusDays(7)).getBytes(),
+                    RedisKeyUtil.getNNUTKey(localDate.minusWeeks(1).toString()).getBytes(),
                     RedisKeyUtil.getDAUKey(dateTime).getBytes());
             return redisConnection.bitCount(wnruKey.getBytes());
         });
 
         // 2.获取七天前用户留存率
         // 2.1 获取七天前新注册的用户数
-        Long nnut = queryUserNNUT(dateTime.minusDays(7));
+        Long nnut = getNewUsersToday(localDate.minusWeeks(1).toString());
         // 2.2 计算七天前用户留存率
         double wurr = Double.parseDouble(String.format("%.2f", wnru.doubleValue() / nnut.doubleValue()));
 
         // 3.获取一个月前用户留存数
         String mnruKey = RedisKeyUtil.getMNRUKey(dateTime);
+
         Long mnru = redisTemplate.execute((RedisCallback<Long>) redisConnection -> {
             redisConnection.bitOp(RedisStringCommands.BitOperation.AND,
                     mnruKey.getBytes(),
-                    RedisKeyUtil.getNNUTKey(dateTime.minusMonths(1)).getBytes(),
+                    RedisKeyUtil.getNNUTKey(localDate.minusMonths(1).toString()).getBytes(),
                     RedisKeyUtil.getDAUKey(dateTime).getBytes());
             return redisConnection.bitCount(mnruKey.getBytes());
         });
 
         // 4.获取一个月前用户留存率
         // 4.1 获取一个月前新注册的用户数
-        nnut = queryUserNNUT(dateTime.minusMonths(1));
+        nnut = getNewUsersToday(localDate.minusMonths(1).toString());
         // 4.2 计算一个月前用户留存率
         double murr = Double.parseDouble(String.format("%.2f", mnru.doubleValue() / nnut.doubleValue()));
 
@@ -184,14 +187,13 @@ public class UserManagerImpl implements UserManager {
 
 
     /**
-     * 根据当日日期获得所在周和月的起始和结束日期
+     * 根据日期获取其所在周和月的起始日期和结束日期
      *
-     * @param dateTime 当日日期
-     * @return 日所在周和月的起始日期和结束日期
+     * @param dateTime 日期（比如：2022-11-26）
      */
-    private Map<String, String> getWeekAndMonth(LocalDateTime dateTime) {
+    private Map<String, String> getWeekAndMonth(String dateTime) {
         Map<String, String> map = new HashMap<>();
-        String[] split = dateTime.toString().split("-");
+        String[] split = dateTime.split("-");
         int year = Integer.parseInt(split[0]);
         int month = Integer.parseInt(split[1]);
         int day = Integer.parseInt(split[2]);
@@ -207,6 +209,4 @@ public class UserManagerImpl implements UserManager {
         map.put("monthEnd", monthEnd);
         return map;
     }
-
-
 }

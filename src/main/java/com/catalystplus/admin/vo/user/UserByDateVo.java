@@ -6,7 +6,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 @Data
 @ApiModel("通过日期查询用户数据")
@@ -17,7 +16,7 @@ public class UserByDateVo implements Serializable {
     @ApiModelProperty("用户ID")
     private Long userId;
 
-    @ApiModelProperty("日期")
-    private LocalDateTime localDateTime;
+    @ApiModelProperty("日期（比如：2022-11-26）")
+    private String localDateTime;
 
 }

@@ -9,22 +9,25 @@ import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
-
+/**
+ * 当用户上线或下线时，消费消息，统计用户同时在线数
+ */
 @Component
 @Slf4j
-@RocketMQMessageListener(consumerGroup = "admin-user-nnut",
-        topic = "AdminTopic", selectorExpression = "nnut")
-public class UserNnutConsumer implements RocketMQListener<AdminDTO> {
+@RocketMQMessageListener(consumerGroup = "admin-user-concurrent",
+        topic = "AdminTopic", selectorExpression = "cu")
+public class AdminConcurrentUserConsumer implements RocketMQListener<AdminDTO> {
 
     @Autowired
     private UserManagerImpl userManager;
 
     @Override
     public void onMessage(AdminDTO message) {
-        log.info("成功消费message: {}", message);
+        log.info("message is {}", message);
+        // 1.从消息中取出用户在线的相关信息
         Long userId = message.getUserId();
-        LocalDateTime createdTime = message.getCreatedTime();
-        userManager.recordUserNNUT(userId, createdTime);
+        Integer onlineFlag = message.getOnlineFlag();
+        // 2.记录用户的在线信息
+        userManager.recordConcurrentUsersInfo(userId, onlineFlag);
     }
 }
