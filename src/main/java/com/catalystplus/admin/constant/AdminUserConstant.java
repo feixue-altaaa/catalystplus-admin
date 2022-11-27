@@ -3,55 +3,101 @@ package com.catalystplus.admin.constant;
 /**
  * 用户数据有关的常量
  */
-public class AdminUserConstant {
+public final class AdminUserConstant {
 
     // TODO: 2022/11/24 所有data改成admin 
     // TODO: 2022/11/24 常量类不是用接口，用静态终类变量 
     // TODO: 2022/11/24 常量里面写上注释 
 
     /**
-     * 分隔符
+     * 冒号分隔符
      */
     public static final String SPLIT = ":";
 
     /**
-     * 统计今日新增用户数的redis键前缀
+     * 今日新增用户数
      */
-    public static final String PREFIX_ADMIN_NNUT = "admin:nnut";
+    public static final String ADMIN_USER_ACTIVE_NNUT = "admin:user:active:nnut";
 
     /**
-     * 统计日活跃用户数的redis键前缀
+     * 日活跃用户数
      */
-    public static final String PREFIX_ADMIN_DAU = "admin:dau";
+    public static final String ADMIN_USER_ACTIVE_DAU = "admin:user:active:dau";
 
     /**
-     * 统计周活跃用户数的redis键前缀
+     * 周活跃用户数
      */
-    public static final String PREFIX_ADMIN_WAU = "admin:wau";
+    public static final String ADMIN_USER_ACTIVE_WAU = "admin:user:active:wau";
 
     /**
-     * 统计月活跃用户数的redis键前缀
+     * 月活跃用户数
      */
-    public static final String PREFIX_ADMIN_MAU = "admin:mau";
+    public static final String ADMIN_USER_ACTIVE_MAU = "admin:user:active:mau";
 
     /**
-     * 统计同时在线活跃用户数的redis键前缀
+     * 同时在线活跃用户数
      */
-    public static final String PREFIX_ADMIN_NACU = "admin:nacu";
+    public static final String ADMIN_USER_ACTIVE_NACU = "admin:user:active:nacu";
 
     /**
-     * 统计同时在线新用户数的redis键前缀
+     * 同时在线新用户数
      */
-    public static final String PREFIX_ADMIN_NNCU = "admin:nncu";
+    public static final String ADMIN_USER_ACTIVE_NNCU = "admin:user:active:nncu";
 
     /**
-     * 统计七天前用户留存数的redis键前缀
+     * 七天前用户留存数
      */
-    public static final String PREFIX_ADMIN_WNRU = "admin:wnru";
+    public static final String ADMIN_USER_ACTIVE_WNRU = "admin:user:active:wnru";
 
     /**
-     * 统计一个月前用户留存数的redis键前缀
+     * 一个月前用户留存数
      */
-    public static final String PREFIX_ADMIN_MNRU = "admin:mnru";
+    public static final String ADMIN_USER_ACTIVE_MNRU = "admin:user:active:mnru";
+
+    /**
+     * 今日新增本科生数
+     */
+    public static final String ADMIN_USER_INFO_NNUT = "admin:user:info:nnut";
+
+    /**
+     * 今日新增硕士生数
+     */
+    public static final String ADMIN_USER_INFO_NNMT = "admin:user:info:nnmt";
+
+    /**
+     * 今日新增博士生数
+     */
+    public static final String ADMIN_USER_INFO_NNDT = "admin:user:info:nndt";
+
+    /**
+     * 今日新增老师数
+     */
+    public static final String ADMIN_USER_INFO_NNTT = "admin:user:info:nntt";
+
+    /**
+     * 今日新增C9用户数
+     */
+    public static final String ADMIN_USER_INFO_NNC9UT = "admin:user:info:nnc9ut";
+
+    /**
+     * 今日新增985用户数
+     */
+    public static final String ADMIN_USER_INFO_NN985UT = "admin:user:info:nn985ut";
+
+    /**
+     * 今日新增211用户数
+     */
+    public static final String ADMIN_USER_INFO_NN211UT = "admin:user:info:nn211ut";
+
+    /**
+     * 今日新增一本院校用户数
+     */
+    public static final String ADMIN_USER_INFO_NNFBUU = "admin:user:info:nnfbuu";
+
+    /**
+     * 今日新增其他院校用户数
+     */
+    public static final String ADMIN_USER_INFO_NNOUUT = "admin:user:info:nnouut";
+
 
 }

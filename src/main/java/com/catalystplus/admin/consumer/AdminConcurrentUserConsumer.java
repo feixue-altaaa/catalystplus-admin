@@ -2,7 +2,7 @@ package com.catalystplus.admin.consumer;
 
 
 import com.catalystplus.admin.dto.AdminDTO;
-import com.catalystplus.admin.manager.impl.UserManagerImpl;
+import com.catalystplus.admin.manager.impl.UserActiveManagerImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 public class AdminConcurrentUserConsumer implements RocketMQListener<AdminDTO> {
 
     @Autowired
-    private UserManagerImpl userManager;
+    private UserActiveManagerImpl userManager;
 
     @Override
     public void onMessage(AdminDTO message) {

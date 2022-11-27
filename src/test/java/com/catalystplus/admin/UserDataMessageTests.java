@@ -24,4 +24,12 @@ class UserDataMessageTests {
         tempProducer.sendMessage("AdminTopic:nnut", adminDTO);
     }
 
+    @Test
+    void testMQ1() {
+        AdminDTO adminDTO = new AdminDTO();
+        adminDTO.setUserId(11L);
+        adminDTO.setLoginTime(LocalDateTime.now());
+        tempProducer.sendMessage("AdminTopic:au", adminDTO);
+    }
+
 }

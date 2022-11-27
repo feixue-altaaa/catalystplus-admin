@@ -2,7 +2,7 @@ package com.catalystplus.admin.controller;
 
 import com.catalystplus.admin.controller.api.UserApi;
 import com.catalystplus.admin.exception.Assert;
-import com.catalystplus.admin.manager.impl.UserManagerImpl;
+import com.catalystplus.admin.manager.impl.UserActiveManagerImpl;
 import com.catalystplus.admin.response.Response;
 import com.catalystplus.admin.response.user.UserActiveResponse;
 import com.catalystplus.admin.response.user.UserConcurrentResponse;
@@ -24,7 +24,7 @@ import static com.catalystplus.admin.response.ResponseCode.*;
 public class UserController implements UserApi {
 
     @Autowired
-    private UserManagerImpl userManager;
+    private UserActiveManagerImpl userManager;
 
     @Override
     public Response<Long> queryTotalNumberOfUsers() {
