@@ -21,10 +21,11 @@ public interface PaperCountService extends IService<PaperCount> {
 
     PaperCount getTotalPaperJournalBySubject(Long areaId, Long subjectId);
 
-//    void insertPaperCount(Long journalTotal,Long paperTotal,Long todayJournal,Long todayPaper);
-//
-//    void insertPaperCountByArea(Long areaId,Long journalTotal,Long paperTotal,Long todayJournal,Long todayPaper);
-
     void insertPaperCount(PaperCount paperCount);
+
+    PaperCount getPaperCountpre();
+
+    PaperCount getPaperCountLatest();
+
 
 }

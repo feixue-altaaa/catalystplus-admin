@@ -37,6 +37,13 @@ public interface PaperCountMapper extends BaseMapper<PaperCount> {
 //            "VALUES (#{journalTotal},#{paperTotal},#{todayJournal},#{todayPaper})")
 //    void insertPaperCountByArea(Long areaId,Long journalTotal,Long paperTotal,Long todayJournal,Long todayPaper);
 
+    @Select("SELECT * FROM `paper_count` where type = 3 \n" +
+            "AND TO_DAYS(NOW()) - TO_DAYS(created_time) <=2 AND TO_DAYS(NOW()) - TO_DAYS(created_time) >= 1\n" +
+            "ORDER BY created_time DESC limit 1")
+    PaperCount getPaperCountpre();
 
+    @Select("SELECT * FROM `paper_count` where type = 3 \n" +
+            "AND TO_DAYS(NOW()) - TO_DAYS(created_time) <=1 ORDER BY created_time DESC limit 1")
+    PaperCount getPaperCountLatest();
 
 }

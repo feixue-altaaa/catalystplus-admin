@@ -43,13 +43,14 @@ public class PaperCountServiceImpl extends ServiceImpl<PaperCountMapper, PaperCo
         paperCountMapper.insert(paperCount);
     }
 
-//    @Override
-//    public void insertPaperCount(Long journalTotal, Long paperTotal, Long todayJournal, Long todayPaper) {
-//
-//    }
-//
-//    @Override
-//    public void insertPaperCountByArea(Long areaId, Long journalTotal, Long paperTotal, Long todayJournal, Long todayPaper) {
-//
-//    }
+    @Override
+    public PaperCount getPaperCountpre() {
+        return paperCountMapper.getPaperCountpre();
+    }
+
+    @Override
+    public PaperCount getPaperCountLatest() {
+        return paperCountMapper.getPaperCountLatest();
+    }
+
 }

@@ -3,6 +3,7 @@ package com.catalystplus.admin.controller.api;
 
 import com.catalystplus.admin.response.Response;
 import com.catalystplus.admin.response.paperCount.PaperCountResponse;
+import com.catalystplus.admin.response.paperCount.RiseResponse;
 import com.catalystplus.admin.vo.paperCount.PaperCountVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Api(value = "PaperCountApi",tags = "获取文章期刊数量接口")
+@Api(value = "PaperCountApi",tags = "文章期刊总数接口")
 @RequestMapping("/admin")
 public interface PaperCountApi {
 
@@ -26,4 +27,7 @@ public interface PaperCountApi {
     @ApiOperation("根据主题划分获取文章期刊总数")
     Response<List<PaperCountResponse>> getPaperJournalCountBySubject(@RequestBody PaperCountVo paperCountVo);
 
+    @PostMapping("/auto/paper_count/rise")
+    @ApiOperation("获取文章期刊新增率")
+    Response<RiseResponse> getPaperJournalRise(@RequestBody PaperCountVo paperCountVo);
 }
