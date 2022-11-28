@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.catalystplus.admin.mapper.UserMajorEconomicsMapper">
+
+    <resultMap id="BaseResultMap" type="com.catalystplus.admin.entity.UserMajorEconomics">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="tn0201mu" column="TN0201MU" jdbcType="BIGINT"/>
+            <result property="nn0201mut" column="NN0201MUT" jdbcType="BIGINT"/>
+            <result property="tn0202mu" column="TN0202MU" jdbcType="BIGINT"/>
+            <result property="nn0202mut" column="NN0202MUT" jdbcType="BIGINT"/>
+            <result property="dateTime" column="date_time" jdbcType="VARCHAR"/>
+            <result property="status" column="status" jdbcType="TINYINT"/>
+            <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
+            <result property="updatedTime" column="updated_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,TN0201MU,NN0201MUT,
+        TN0202MU,NN0202MUT,date_time,
+        status,created_time,updated_time
+    </sql>
+</mapper>

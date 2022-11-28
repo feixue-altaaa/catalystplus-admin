@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.catalystplus.admin.mapper.UserMajorScienceMapper">
+
+    <resultMap id="BaseResultMap" type="com.catalystplus.admin.entity.UserMajorScience">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="tn0701mu" column="TN0701MU" jdbcType="BIGINT"/>
+            <result property="nn0701mut" column="NN0701MUT" jdbcType="BIGINT"/>
+            <result property="tn0702mu" column="TN0702MU" jdbcType="BIGINT"/>
+            <result property="nn0702mut" column="NN0702MUT" jdbcType="BIGINT"/>
+            <result property="tn0703mu" column="TN0703MU" jdbcType="BIGINT"/>
+            <result property="nn0703mut" column="NN0703MUT" jdbcType="BIGINT"/>
+            <result property="tn0704mu" column="TN0704MU" jdbcType="BIGINT"/>
+            <result property="nn0704mut" column="NN0704MUT" jdbcType="BIGINT"/>
+            <result property="tn0705mu" column="TN0705MU" jdbcType="BIGINT"/>
+            <result property="nn0705mut" column="NN0705MUT" jdbcType="BIGINT"/>
+            <result property="tn0706mu" column="TN0706MU" jdbcType="BIGINT"/>
+            <result property="nn0706mut" column="NN0706MUT" jdbcType="BIGINT"/>
+            <result property="tn0707mu" column="TN0707MU" jdbcType="BIGINT"/>
+            <result property="nn0707mut" column="NN0707MUT" jdbcType="BIGINT"/>
+            <result property="tn0708mu" column="TN0708MU" jdbcType="BIGINT"/>
+            <result property="nn0708mut" column="NN0708MUT" jdbcType="BIGINT"/>
+            <result property="tn0709mu" column="TN0709MU" jdbcType="BIGINT"/>
+            <result property="nn0709mut" column="NN0709MUT" jdbcType="BIGINT"/>
+            <result property="tn0710mu" column="TN0710MU" jdbcType="BIGINT"/>
+            <result property="nn0710mut" column="NN0710MUT" jdbcType="BIGINT"/>
+            <result property="tn0711mu" column="TN0711MU" jdbcType="BIGINT"/>
+            <result property="nn0711mut" column="NN0711MUT" jdbcType="BIGINT"/>
+            <result property="tn0712mu" column="TN0712MU" jdbcType="BIGINT"/>
+            <result property="nn0712mut" column="NN0712MUT" jdbcType="BIGINT"/>
+            <result property="tn0713mu" column="TN0713MU" jdbcType="BIGINT"/>
+            <result property="nn0713mut" column="NN0713MUT" jdbcType="BIGINT"/>
+            <result property="tn0714mu" column="TN0714MU" jdbcType="BIGINT"/>
+            <result property="nn0714mut" column="NN0714MUT" jdbcType="BIGINT"/>
+            <result property="dateTime" column="date_time" jdbcType="VARCHAR"/>
+            <result property="status" column="status" jdbcType="TINYINT"/>
+            <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
+            <result property="updatedTime" column="updated_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,TN0701MU,NN0701MUT,
+        TN0702MU,NN0702MUT,TN0703MU,
+        NN0703MUT,TN0704MU,NN0704MUT,
+        TN0705MU,NN0705MUT,TN0706MU,
+        NN0706MUT,TN0707MU,NN0707MUT,
+        TN0708MU,NN0708MUT,TN0709MU,
+        NN0709MUT,TN0710MU,NN0710MUT,
+        TN0711MU,NN0711MUT,TN0712MU,
+        NN0712MUT,TN0713MU,NN0713MUT,
+        TN0714MU,NN0714MUT,date_time,
+        status,created_time,updated_time
+    </sql>
+</mapper>

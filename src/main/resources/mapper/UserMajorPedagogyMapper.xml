@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.catalystplus.admin.mapper.UserMajorPedagogyMapper">
+
+    <resultMap id="BaseResultMap" type="com.catalystplus.admin.entity.UserMajorPedagogy">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="tn0401mu" column="TN0401MU" jdbcType="BIGINT"/>
+            <result property="nn0401mut" column="NN0401MUT" jdbcType="BIGINT"/>
+            <result property="tn0402mu" column="TN0402MU" jdbcType="BIGINT"/>
+            <result property="nn0402mut" column="NN0402MUT" jdbcType="BIGINT"/>
+            <result property="tn0403mu" column="TN0403MU" jdbcType="BIGINT"/>
+            <result property="nn0403mut" column="NN0403MUT" jdbcType="BIGINT"/>
+            <result property="dateTime" column="date_time" jdbcType="VARCHAR"/>
+            <result property="status" column="status" jdbcType="TINYINT"/>
+            <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
+            <result property="updatedTime" column="updated_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,TN0401MU,NN0401MUT,
+        TN0402MU,NN0402MUT,TN0403MU,
+        NN0403MUT,date_time,status,
+        created_time,updated_time
+    </sql>
+</mapper>

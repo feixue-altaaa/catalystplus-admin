@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.catalystplus.admin.mapper.UserMajorAgronomyMapper">
+
+    <resultMap id="BaseResultMap" type="com.catalystplus.admin.entity.UserMajorAgronomy">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="tn0901mu" column="TN0901MU" jdbcType="BIGINT"/>
+            <result property="nn0901mut" column="NN0901MUT" jdbcType="BIGINT"/>
+            <result property="tn0902mu" column="TN0902MU" jdbcType="BIGINT"/>
+            <result property="nn0902mut" column="NN0902MUT" jdbcType="BIGINT"/>
+            <result property="tn0903mu" column="TN0903MU" jdbcType="BIGINT"/>
+            <result property="nn0903mut" column="NN0903MUT" jdbcType="BIGINT"/>
+            <result property="tn0904mu" column="TN0904MU" jdbcType="BIGINT"/>
+            <result property="nn0904mut" column="NN0904MUT" jdbcType="BIGINT"/>
+            <result property="tn0905mu" column="TN0905MU" jdbcType="BIGINT"/>
+            <result property="nn0905mut" column="NN0905MUT" jdbcType="BIGINT"/>
+            <result property="tn0906mu" column="TN0906MU" jdbcType="BIGINT"/>
+            <result property="nn0906mut" column="NN0906MUT" jdbcType="BIGINT"/>
+            <result property="tn0907mu" column="TN0907MU" jdbcType="BIGINT"/>
+            <result property="nn0907mut" column="NN0907MUT" jdbcType="BIGINT"/>
+            <result property="tn0908mu" column="TN0908MU" jdbcType="BIGINT"/>
+            <result property="nn0908mut" column="NN0908MUT" jdbcType="BIGINT"/>
+            <result property="tn0909mu" column="TN0909MU" jdbcType="BIGINT"/>
+            <result property="nn0909mut" column="NN0909MUT" jdbcType="BIGINT"/>
+            <result property="dateTime" column="date_time" jdbcType="VARCHAR"/>
+            <result property="status" column="status" jdbcType="TINYINT"/>
+            <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
+            <result property="updatedTime" column="updated_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,TN0901MU,NN0901MUT,
+        TN0902MU,NN0902MUT,TN0903MU,
+        NN0903MUT,TN0904MU,NN0904MUT,
+        TN0905MU,NN0905MUT,TN0906MU,
+        NN0906MUT,TN0907MU,NN0907MUT,
+        TN0908MU,NN0908MUT,TN0909MU,
+        NN0909MUT,date_time,status,
+        created_time,updated_time
+    </sql>
+</mapper>
