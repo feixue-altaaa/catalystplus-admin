@@ -3,43 +3,64 @@ package com.catalystplus.admin.constant;
 public class AdminRankConstant {
 
     /**
-     *期刊订阅
+     *期刊订阅总数
      */
-    public static final String ADMIN_RANK_PERIODICAL_SUBSCRIPTION = "admin:rank:periodical:subscription";
+    public static final String ADMIN_RANK_SUBSCRIPTION_TOTAL = "admin:rank:subscription:total";
 
     /**
-     * 阅读文章数
+     * 今日期刊订阅数
      */
-    public static final String ADMIN_RANK_PAPER_READ = "admin:rank:paper:read";
+    public static final String ADMIN_RANK_TODAY_SUBSCRIPTION = "admin:rank:today:subscription";
 
     /**
-     * 文章收藏数
+     * 今日阅读文章总数
      */
-    public static final String ADMIN_RANK_PAPER_COLLECT = "admin:rank:paper:collect";
+    public static final String ADMIN_RANK_TODAY_READ = "admin:rank:today:read";
 
     /**
-     * 打标签数
+     * 阅读文章总数
      */
-    public static final String ADMIN_RANK_PAPER_TAG = "admin:rank:paper:tag";
+    public static final String ADMIN_RANK_READ_TOTAL = "admin:rank:read:total";
 
     /**
-     * 做笔记数
+     * 今日文章收藏总数
      */
-    public static final String ADMIN_RANK_PAPER_NOTE = "admin:rank:paper:note";
+    public static final String ADMIN_RANK_TODAY_COLLECT = "admin:rank:today:collect";
 
     /**
-     * 文章点赞热度
+     * 文章收藏总数
      */
-    public static final String ADMIN_RANK_PAPER_GOOD = "admin:rank:paper:good";
+    public static final String ADMIN_RANK_COLLECT_TOTAL = "admin:rank:collect:total";
 
     /**
-     * 今日新增
+     * 打标签总数
      */
-    public static final String ADMIN_RANK_TODAY = "admin:rank:today";
+    public static final String ADMIN_RANK_TAG_TOTAL = "admin:rank:tag:total";
 
     /**
-     * 截至今日
+     * 今日打标签总数
      */
-    public static final String ADMIN_RANK_TOTAL = "admin:rank:total";
+    public static final String ADMIN_RANK_TODAY_TAG = "admin:rank:today:tag";
+
+
+    /**
+     * 做笔记总数
+     */
+    public static final String ADMIN_RANK_NOTE_TOTAL = "admin:rank:note:total";
+
+    /**
+     * 今日做笔记总数
+     */
+    public static final String ADMIN_RANK_TODAY_NOTE = "admin:rank:today:note";
+
+    /**
+     * 文章总点赞热度
+     */
+    public static final String ADMIN_RANK_GOOD_TOTAL = "admin:rank:good:total";
+
+    /**
+     * 今日文章总点赞热度
+     */
+    public static final String ADMIN_RANK_TODAY_GOOD = "admin:rank:today:good";
 
 }

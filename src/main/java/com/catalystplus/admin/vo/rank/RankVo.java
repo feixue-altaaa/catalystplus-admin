@@ -16,9 +16,6 @@ public class RankVo implements Serializable {
     @ApiModelProperty("用户ID")
     private Long userId;
 
-    @ApiModelProperty("日期类别")
-    private String date;
-
     @ApiModelProperty("排名类别")
     private String categoryOfRanking;
 
