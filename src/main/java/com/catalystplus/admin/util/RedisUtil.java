@@ -1,14 +1,22 @@
 package com.catalystplus.admin.util;
 
+import com.catalystplus.admin.entity.Journal;
+import com.catalystplus.admin.entity.Paper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.RedisStringCommands;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 /**
  * redis操作的工具类
  */
+@Slf4j
 @Component
 public class RedisUtil {
 
@@ -33,4 +41,26 @@ public class RedisUtil {
             return connection.bitCount(key.getBytes());
         });
     }
+
+
+    /**
+     * 获取redis中zset数据
+     *
+     * @param key redis中排行榜类型
+     */
+    public List<Object> get(String key) {
+        try {
+            Set<Object> paperIdsObject = redisTemplate.opsForZSet().reverseRange(key, 0, 9);
+            List<Object> objects = new ArrayList<>();
+            for (Object ob : paperIdsObject) {
+                objects.add(ob);
+            }
+            return objects;
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("获取缓存异常", e.getLocalizedMessage());
+            return null;
+        }
+    }
+
 }
