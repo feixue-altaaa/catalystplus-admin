@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.catalystplus.admin.mapper.RankPaperMapper">
+
+    <resultMap id="BaseResultMap" type="com.catalystplus.admin.entity.RankPaper">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="enName" column="en_name" jdbcType="VARCHAR"/>
+            <result property="chName" column="ch_name" jdbcType="VARCHAR"/>
+            <result property="todayRead" column="today_read" jdbcType="BIGINT"/>
+            <result property="readTotal" column="read_total" jdbcType="BIGINT"/>
+            <result property="todayCollect" column="today_collect" jdbcType="BIGINT"/>
+            <result property="collectTotal" column="collect_total" jdbcType="BIGINT"/>
+            <result property="todayTag" column="today_tag" jdbcType="BIGINT"/>
+            <result property="tagTotal" column="tag_total" jdbcType="BIGINT"/>
+            <result property="todayNote" column="today_note" jdbcType="BIGINT"/>
+            <result property="noteTotal" column="note_total" jdbcType="BIGINT"/>
+            <result property="todayGood" column="today_good" jdbcType="BIGINT"/>
+            <result property="goodTotal" column="good_total" jdbcType="BIGINT"/>
+            <result property="dateTime" column="date_time" jdbcType="VARCHAR"/>
+            <result property="status" column="status" jdbcType="TINYINT"/>
+            <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
+            <result property="updatedTime" column="updated_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,en_name,ch_name,
+        today_read,read_total,today_collect,
+        collect_total,today_tag,tag_total,
+        today_note,note_total,today_good,
+        good_total,date_time,status,
+        created_time,updated_time
+    </sql>
+</mapper>
