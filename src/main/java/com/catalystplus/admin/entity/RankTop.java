@@ -14,7 +14,7 @@ import lombok.Data;
  */
 @TableName(value ="rank_top_ten")
 @Data
-public class RankTopTen implements Serializable {
+public class RankTop implements Serializable {
     /**
      * id，自增
      */
@@ -80,7 +80,7 @@ public class RankTopTen implements Serializable {
         if (getClass() != that.getClass()) {
             return false;
         }
-        RankTopTen other = (RankTopTen) that;
+        RankTop other = (RankTop) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
             && (this.getType() == null ? other.getType() == null : this.getType().equals(other.getType()))
             && (this.getTypeId() == null ? other.getTypeId() == null : this.getTypeId().equals(other.getTypeId()))

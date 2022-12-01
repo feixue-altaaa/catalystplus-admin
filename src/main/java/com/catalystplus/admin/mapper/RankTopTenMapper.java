@@ -1,6 +1,6 @@
 package com.catalystplus.admin.mapper;
 
-import com.catalystplus.admin.entity.RankTopTen;
+import com.catalystplus.admin.entity.RankTop;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @createDate 2022-12-01 10:00:55
 * @Entity com.catalystplus.admin.entity.RankTopTen
 */
-public interface RankTopTenMapper extends BaseMapper<RankTopTen> {
+public interface RankTopTenMapper extends BaseMapper<RankTop> {
 
 }
 

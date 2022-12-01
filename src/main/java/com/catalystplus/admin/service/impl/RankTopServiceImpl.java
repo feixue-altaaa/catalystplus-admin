@@ -1,8 +1,8 @@
 package com.catalystplus.admin.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.catalystplus.admin.entity.RankTopTen;
-import com.catalystplus.admin.service.RankTopTenService;
+import com.catalystplus.admin.entity.RankTop;
+import com.catalystplus.admin.service.RankTopService;
 import com.catalystplus.admin.mapper.RankTopTenMapper;
 import org.springframework.stereotype.Service;
 
@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 * @createDate 2022-12-01 10:00:55
 */
 @Service
-public class RankTopTenServiceImpl extends ServiceImpl<RankTopTenMapper, RankTopTen>
-    implements RankTopTenService{
+public class RankTopServiceImpl extends ServiceImpl<RankTopTenMapper, RankTop>
+    implements RankTopService {
 
 }
 

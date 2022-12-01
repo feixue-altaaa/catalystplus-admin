@@ -18,7 +18,7 @@ public class RankJournal implements Serializable {
     /**
      * 期刊id
      */
-    @TableId(type = IdType.AUTO)
+    @TableId
     private Long id;
 
     /**

@@ -18,7 +18,7 @@ public class RankPaper implements Serializable {
     /**
      * 论文id
      */
-    @TableId(type = IdType.AUTO)
+    @TableId
     private Long id;
 
     /**

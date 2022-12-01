@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.catalystplus.admin.mapper.RankTopTenMapper">
 
-    <resultMap id="BaseResultMap" type="com.catalystplus.admin.entity.RankTopTen">
+    <resultMap id="BaseResultMap" type="com.catalystplus.admin.entity.RankTop">
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="type" column="type" jdbcType="BIGINT"/>
             <result property="typeId" column="type_id" jdbcType="BIGINT"/>
