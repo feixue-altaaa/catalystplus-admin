@@ -63,4 +63,59 @@ public class RedisUtil {
         }
     }
 
+    /**
+     * 更新Redis中数据
+     *
+     * @param key 键
+     * @param id  值
+     */
+
+    public void update(String key, Long id) {
+
+        try {
+            //判断redis该key中是否存在该paperId
+            Long pidExist = redisTemplate.opsForZSet().rank(key, id);
+
+            //存在则更新(score++),不存在将paperId存入redis，并设置初始得分为1
+            if (pidExist == null) {
+                redisTemplate.opsForZSet().add(key, id, 1);
+                log.info("redis插入成功");
+            } else {
+                redisTemplate.opsForZSet().incrementScore(key, id, 1);
+                log.info("redis更新成功");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 普通缓存放入
+     *
+     * @param key   键
+     * @param value 值
+     * @return true成功 false失败
+     */
+    public boolean set(String key, Object value) {
+        try {
+            redisTemplate.opsForZSet().add(key,value,0);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
+    /**
+     * 清空redis
+     */
+    public void flushDB(String key) {
+        try {
+          redisTemplate.opsForZSet().remove(key);
+        } catch (Exception e) {
+            log.info("清空数据异常:{}", e.getLocalizedMessage());
+        }
+    }
+
 }

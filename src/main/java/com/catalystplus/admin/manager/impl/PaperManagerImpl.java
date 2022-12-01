@@ -107,4 +107,8 @@ public class PaperManagerImpl implements PaperManager {
 
         return journalResponses;
     }
+
+
+
+
 }

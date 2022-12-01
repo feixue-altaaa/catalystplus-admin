@@ -63,4 +63,32 @@ public class AdminRankConstant {
      */
     public static final String ADMIN_RANK_TODAY_GOOD = "admin:rank:today:good";
 
+
+    /**
+     * 期刊订阅总数
+     */
+    public static final String SUBSCRIPTION_TOTAL = "subscription_total";
+
+    /**
+     * 文章收藏总数
+     */
+    public static final String COLLECT_TOTAL = "collect_total";
+
+    /**
+     * 文章标签总数
+     */
+    public static final String TAG_TOTAL = "tag_total";
+
+    /**
+     * 文章笔记总数
+     */
+    public static final String NOTE_TOTAL = "note_total";
+
+    /**
+     * 文章点赞总数
+     */
+    public static final String GOOD_TOTAL = "good_total";
+
+
+
 }

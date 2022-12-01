@@ -3,10 +3,13 @@ package com.catalystplus.admin;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.catalystplus.admin.constant.AdminRankConstant;
 import com.catalystplus.admin.controller.*;
 import com.catalystplus.admin.entity.*;
 import com.catalystplus.admin.manager.PaperCountManager;
 import com.catalystplus.admin.manager.PaperJournalManager;
+import com.catalystplus.admin.manager.ProducerManager;
+import com.catalystplus.admin.manager.RankManager;
 import com.catalystplus.admin.manager.impl.JournalManagerImpl;
 import com.catalystplus.admin.mapper.JournalMapper;
 import com.catalystplus.admin.mapper.PaperCountMapper;
@@ -359,6 +362,26 @@ class CatalystplusAdminApplicationTests {
 
     public static void main(String[] args) {
 
+    }
+
+    @Autowired
+    RankPaperService rankPaperService;
+
+    @Test
+    void rankPaperTest(){
+        List<Long> topTagByTotal = rankPaperService.getTopTotal("collect_total",10L);
+        topTagByTotal.forEach(System.out::println);
+    }
+
+    @Autowired
+    RankManager rankManager;
+    @Autowired
+    ProducerManager producerManager;
+
+    @Test
+    void rankTest(){
+//        rankManager.updatePaperAndJournalTotal();
+        producerManager.sendMessage("AdminRank","123");
     }
 
 

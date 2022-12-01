@@ -2,6 +2,9 @@ package com.catalystplus.admin.mapper;
 
 import com.catalystplus.admin.entity.RankPaper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 /**
 * @author lanran
@@ -10,6 +13,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @Entity com.catalystplus.admin.entity.RankPaper
 */
 public interface RankPaperMapper extends BaseMapper<RankPaper> {
+
 
 }
 
