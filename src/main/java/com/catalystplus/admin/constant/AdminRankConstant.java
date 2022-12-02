@@ -89,6 +89,20 @@ public class AdminRankConstant {
      */
     public static final String GOOD_TOTAL = "good_total";
 
+    /**
+     * 文章排行榜数量
+     */
+    public static final Long rankNumber = 10L;
+
+    /**
+     * Redis起始点
+     */
+    public static final Long rankStart = 0L;
+
+    /**
+     * Redis结束点
+     */
+    public static final Long rankEnd = -1L;
 
 
 }

@@ -3,7 +3,6 @@ package com.catalystplus.admin.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.catalystplus.admin.entity.RankPaper;
-import com.catalystplus.admin.mapper.RankTopTenMapper;
 import com.catalystplus.admin.service.RankPaperService;
 import com.catalystplus.admin.mapper.RankPaperMapper;
 import org.springframework.beans.factory.annotation.Autowired;

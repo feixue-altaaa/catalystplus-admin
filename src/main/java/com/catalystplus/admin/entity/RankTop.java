@@ -12,7 +12,7 @@ import lombok.Data;
  * 后台文章期刊十大排行表
  * @TableName rank_top_ten
  */
-@TableName(value ="rank_top_ten")
+@TableName(value ="rank_top")
 @Data
 public class RankTop implements Serializable {
     /**

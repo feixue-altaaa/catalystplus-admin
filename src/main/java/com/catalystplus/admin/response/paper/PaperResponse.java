@@ -140,5 +140,65 @@ public class PaperResponse implements Serializable {
     @ApiModelProperty("用户是否喜欢该期刊，false表示不喜欢，true表示喜欢")
     private Boolean favourite;
 
+    /**
+     * 文章今日阅读次数
+     */
+    @ApiModelProperty("文章今日阅读次数")
+    private Long todayRead;
+
+    /**
+     * 截至今日文章阅读次数
+     */
+    @ApiModelProperty("截至今日文章阅读次数")
+    private Long readTotal;
+
+    /**
+     * 今日文章收藏次数
+     */
+    @ApiModelProperty("今日文章收藏次数")
+    private Long todayCollect;
+
+    /**
+     * 截至今日文章收藏次数
+     */
+    @ApiModelProperty("截至今日文章收藏次数")
+    private Long collectTotal;
+
+    /**
+     * 今日文章标签次数
+     */
+    @ApiModelProperty("今日文章标签次数")
+    private Long todayTag;
+
+    /**
+     * 截至今日文章标签次数
+     */
+    @ApiModelProperty("截至今日文章标签次数")
+    private Long tagTotal;
+
+    /**
+     * 今日文章做笔记次数
+     */
+    @ApiModelProperty("今日文章做笔记次数")
+    private Long todayNote;
+
+    /**
+     * 截至今日文章做笔记次数
+     */
+    @ApiModelProperty("截至今日文章做笔记次数")
+    private Long noteTotal;
+
+    /**
+     * 今日点赞热度
+     */
+    @ApiModelProperty("今日点赞热度")
+    private Long todayGood;
+
+    /**
+     * 截至今日点赞热度
+     */
+    @ApiModelProperty("截至今日点赞热度")
+    private Long goodTotal;
+
 
 }

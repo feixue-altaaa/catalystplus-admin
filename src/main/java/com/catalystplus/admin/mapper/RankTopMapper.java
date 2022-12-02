@@ -2,6 +2,8 @@ package com.catalystplus.admin.mapper;
 
 import com.catalystplus.admin.entity.RankTop;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Select;
+import org.springframework.stereotype.Repository;
 
 /**
 * @author lanran
@@ -9,7 +11,10 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @createDate 2022-12-01 10:00:55
 * @Entity com.catalystplus.admin.entity.RankTopTen
 */
-public interface RankTopTenMapper extends BaseMapper<RankTop> {
+public interface RankTopMapper extends BaseMapper<RankTop> {
+
+    @Select("DELETE FROM `rank_top` WHERE type = #{type}")
+    void deleteByType(Long type);
 
 }
 

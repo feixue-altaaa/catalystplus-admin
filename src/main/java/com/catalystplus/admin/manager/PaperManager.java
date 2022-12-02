@@ -9,8 +9,5 @@ import java.util.List;
 
 public interface PaperManager {
 
-    List<PaperResponse> getTopPaper(RankVo rankVo);
-
-    List<JournalResponse> getTopJournal(RankVo rankVo);
 
 }

@@ -1,4 +1,4 @@
-package com.catalystplus.admin.timingjob;
+package com.catalystplus.admin.quartz;
 
 
 import com.catalystplus.admin.manager.PaperCountManager;

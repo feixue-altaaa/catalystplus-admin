@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.RedisStringCommands;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -56,6 +57,24 @@ public class RedisUtil {
                 objects.add(ob);
             }
             return objects;
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("获取缓存异常", e.getLocalizedMessage());
+            return null;
+        }
+    }
+
+    /**
+     * 获取Redis中zset数据
+     * @param key
+     * @param start
+     * @param end
+     * @return
+     */
+    public Set<ZSetOperations.TypedTuple<Object>> get(String key,Long start,Long end) {
+        try {
+            Set<ZSetOperations.TypedTuple<Object>> typedTuples = redisTemplate.opsForZSet().rangeWithScores(key, start, end);
+            return typedTuples;
         } catch (Exception e) {
             e.printStackTrace();
             log.error("获取缓存异常", e.getLocalizedMessage());

@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.Getter;
 import lombok.ToString;
 
 import java.io.Serializable;
@@ -90,6 +91,18 @@ public class JournalResponse implements Serializable {
     /**
      * 下面字段需要手动设置值
      */
+
+    /**
+     * 今日期刊订阅数
+     */
+    @ApiModelProperty("今日期刊订阅数")
+    private Long todaySubscription;
+
+    /**
+     * 截至今日期刊订阅数
+     */
+    @ApiModelProperty("截至今日期刊订阅数")
+    private Long subscriptionTotal;
 
     /**
      * 关联publisher出版商表

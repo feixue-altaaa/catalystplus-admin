@@ -35,9 +35,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ZSetOperations;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Slf4j
 @SpringBootTest
@@ -377,11 +378,48 @@ class CatalystplusAdminApplicationTests {
     RankManager rankManager;
     @Autowired
     ProducerManager producerManager;
+    @Autowired
+    RedisTemplate redisTemplate;
 
     @Test
     void rankTest(){
+
+        log.info("开始更新rank_top");
+        rankManager.updateRankTop();
+
 //        rankManager.updatePaperAndJournalTotal();
-        producerManager.sendMessage("AdminRank","123");
+//        producerManager.sendMessage("AdminRank","123");
+
+//        Set set = redisTemplate.opsForZSet().reverseRangeWithScores
+//                (AdminRankConstant.ADMIN_RANK_TODAY_GOOD, 0, -1);
+//        for (Object o : set) {
+//            System.out.println(o.toString());
+//        }
+
+//        Set range = redisTemplate.opsForZSet().range(AdminRankConstant.ADMIN_RANK_TODAY_GOOD, 0, -1);
+//        Set<ZSetOperations.TypedTuple<Object>> set = redisTemplate.opsForZSet().rangeWithScores(AdminRankConstant.ADMIN_RANK_TODAY_GOOD, 0, -1);
+//        set.forEach(System.out::println);
+
+
+//        Set<ZSetOperations.TypedTuple<Object>> rangeWithScores = redisTemplate.opsForZSet().rangeWithScores(AdminRankConstant.ADMIN_RANK_TODAY_GOOD, 0  , -1);
+//        Iterator<ZSetOperations.TypedTuple<Object>> iterator = rangeWithScores.iterator();
+//        Map<Long,Long> map = new HashMap<Long, Long>();
+//        while(iterator.hasNext()) {
+//            ZSetOperations.TypedTuple<Object> next = iterator.next();
+////            System.out.println("value:" + next.getValue() + " score:" + next.getScore());
+////            next.getValue();
+////            long l = Long.parseLong(next.getValue().toString());
+////            log.info("l:{}",l);
+////            long l1 = next.getScore().longValue();
+////            log.info("l1:{}",l1);
+//            map.put(Long.parseLong(next.getValue().toString()),next.getScore().longValue());
+//        }
+//
+//        for (Map.Entry<Long, Long> entry : map.entrySet()) {
+//            System.out.println("value:" + entry.getKey() + " score:" + entry.getValue());
+//        }
+
+
     }
 
 

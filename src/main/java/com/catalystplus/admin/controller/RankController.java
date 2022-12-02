@@ -17,6 +17,9 @@ public class RankController implements RankApi {
 
     @Override
     public Response<List<PaperResponse>> getTopPaper(RankVo rankVo) {
+
+        //1. 参数校验
+
         return null;
     }
 

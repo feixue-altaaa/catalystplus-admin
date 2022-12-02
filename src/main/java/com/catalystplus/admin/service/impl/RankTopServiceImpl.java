@@ -2,8 +2,9 @@ package com.catalystplus.admin.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.catalystplus.admin.entity.RankTop;
+import com.catalystplus.admin.mapper.RankTopMapper;
 import com.catalystplus.admin.service.RankTopService;
-import com.catalystplus.admin.mapper.RankTopTenMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -12,9 +13,16 @@ import org.springframework.stereotype.Service;
 * @createDate 2022-12-01 10:00:55
 */
 @Service
-public class RankTopServiceImpl extends ServiceImpl<RankTopTenMapper, RankTop>
+public class RankTopServiceImpl extends ServiceImpl<RankTopMapper, RankTop>
     implements RankTopService {
 
+    @Autowired
+    RankTopMapper rankTopMapper;
+
+    @Override
+    public void deleteByType(Long type) {
+        rankTopMapper.deleteByType(type);
+    }
 }
 
 
