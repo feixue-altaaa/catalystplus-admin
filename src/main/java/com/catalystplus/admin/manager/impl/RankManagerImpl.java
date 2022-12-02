@@ -56,7 +56,6 @@ public class RankManagerImpl implements RankManager {
 //        rankTopRedis.add(AdminRankConstant.ADMIN_RANK_TODAY_SUBSCRIPTION);
 
 
-
     }
 
     /**
@@ -78,10 +77,10 @@ public class RankManagerImpl implements RankManager {
 
         //3. 组装响应
         List<JournalResponse> journalResponses = new ArrayList<>();
-        for(int i=0;i<journals.size();i++){
+        for (int i = 0; i < journals.size(); i++) {
             JournalResponse journalResponse = new JournalResponse();
-            BeanUtils.copyProperties(journals.get(i),journalResponse);
-            BeanUtils.copyProperties(rankJournals.get(i),journalResponse);
+            BeanUtils.copyProperties(journals.get(i), journalResponse);
+            BeanUtils.copyProperties(rankJournals.get(i), journalResponse);
             journalResponses.add(journalResponse);
         }
 
@@ -112,11 +111,11 @@ public class RankManagerImpl implements RankManager {
 
         //3. 组装响应
         List<PaperResponse> paperResponses = new ArrayList<>();
-        if(null != papers && null != rankPapers){
-            for(int i=0;i<papers.size();i++){
+        if (null != papers && null != rankPapers) {
+            for (int i = 0; i < papers.size(); i++) {
                 PaperResponse paperResponse = new PaperResponse();
-                BeanUtils.copyProperties(papers.get(i),paperResponse);
-                BeanUtils.copyProperties(rankPapers.get(i),paperResponse);
+                BeanUtils.copyProperties(papers.get(i), paperResponse);
+                BeanUtils.copyProperties(rankPapers.get(i), paperResponse);
             }
         }
 
@@ -133,18 +132,18 @@ public class RankManagerImpl implements RankManager {
     @Override
     public void updateRankTop() {
 
-        for(int i=0;i<rankTopRedis.size();i+=2){
+        for (int i = 0; i < rankTopRedis.size(); i += 2) {
 
             //1. 获取Redis中各类型排名Top数据，得到其value及score
             Set<ZSetOperations.TypedTuple<Object>> valueAndScore = redisUtil.get(rankTopRedis.get(i), AdminRankConstant.rankStart, AdminRankConstant.rankNumber - 1);
             Iterator<ZSetOperations.TypedTuple<Object>> iteratorValueAndScore = valueAndScore.iterator();
 
             //2. 首先删除掉表中该type类型数据，重新插入
-            rankTopService.deleteByType(i+0L);
-            while (iteratorValueAndScore.hasNext()){
+            rankTopService.deleteByType(i + 0L);
+            while (iteratorValueAndScore.hasNext()) {
                 ZSetOperations.TypedTuple<Object> next = iteratorValueAndScore.next();
                 RankTop rankTopMySQL = new RankTop();
-                rankTopMySQL.setType(i+0L);
+                rankTopMySQL.setType(i + 0L);
                 rankTopMySQL.setTypeId(Long.parseLong(next.getValue().toString()));
                 rankTopMySQL.setCount(next.getScore().longValue());
                 rankTopService.save(rankTopMySQL);
@@ -154,6 +153,7 @@ public class RankManagerImpl implements RankManager {
 
     /**
      * 更新数据库中rank_paper表
+     *
      * @param type
      */
     @Override
@@ -188,6 +188,7 @@ public class RankManagerImpl implements RankManager {
 
     /**
      * 更新Mysql中rank_journal表
+     *
      * @param type
      */
     @Override
@@ -219,58 +220,58 @@ public class RankManagerImpl implements RankManager {
         List<Paper> papers = new ArrayList<>();
 
         //2. 获取文章详细信息
-        if(AdminRankConstant.ADMIN_RANK_COLLECT_TOTAL == rankVo.getCategoryOfRanking() ||
+        if (AdminRankConstant.ADMIN_RANK_COLLECT_TOTAL == rankVo.getCategoryOfRanking() ||
                 AdminRankConstant.ADMIN_RANK_GOOD_TOTAL == rankVo.getCategoryOfRanking() ||
                 AdminRankConstant.ADMIN_RANK_NOTE_TOTAL == rankVo.getCategoryOfRanking() ||
-                AdminRankConstant.ADMIN_RANK_TAG_TOTAL == rankVo.getCategoryOfRanking()){
+                AdminRankConstant.ADMIN_RANK_TAG_TOTAL == rankVo.getCategoryOfRanking()) {
             objects = redisUtil.get(rankVo.getCategoryOfRanking());
-            if(null != objects){
+            if (null != objects) {
                 objects.forEach(object -> {
                     paperResponses.add((PaperResponse) object);
                 });
             }
-        }else if(AdminRankConstant.ADMIN_RANK_TODAY_COLLECT == rankVo.getCategoryOfRanking() ||
+        } else if (AdminRankConstant.ADMIN_RANK_TODAY_COLLECT == rankVo.getCategoryOfRanking() ||
                 AdminRankConstant.ADMIN_RANK_TODAY_GOOD == rankVo.getCategoryOfRanking() ||
                 AdminRankConstant.ADMIN_RANK_TODAY_NOTE == rankVo.getCategoryOfRanking() ||
-                AdminRankConstant.ADMIN_RANK_TODAY_TAG == rankVo.getCategoryOfRanking()){
+                AdminRankConstant.ADMIN_RANK_TODAY_TAG == rankVo.getCategoryOfRanking()) {
             objects = redisUtil.get(rankVo.getCategoryOfRanking());
-            if(null != objects){
+            if (null != objects) {
                 objects.forEach(object -> {
-                    papers.add(paperService.getById((Long)object));
+                    papers.add(paperService.getById((Long) object));
                 });
             }
 
-        //3. 组装响应
-        if(null != objects){
-            objects.forEach(paper -> {
-                PaperResponse paperResponse = new PaperResponse();
-                BeanUtils.copyProperties((Paper)paper,paperResponse);
-                paperResponses.add(paperResponse);
-            });
-        }
-        Set<ZSetOperations.TypedTuple<Object>> rangeWithScores = redisUtil.get(rankVo.getCategoryOfRanking(), AdminRankConstant.rankStart, AdminRankConstant.rankNumber-1);
-        Iterator<ZSetOperations.TypedTuple<Object>> iterator = rangeWithScores.iterator();
+            //3. 组装响应
+            if (null != objects) {
+                objects.forEach(paper -> {
+                    PaperResponse paperResponse = new PaperResponse();
+                    BeanUtils.copyProperties((Paper) paper, paperResponse);
+                    paperResponses.add(paperResponse);
+                });
+            }
+            Set<ZSetOperations.TypedTuple<Object>> rangeWithScores = redisUtil.get(rankVo.getCategoryOfRanking(), AdminRankConstant.rankStart, AdminRankConstant.rankNumber - 1);
+            Iterator<ZSetOperations.TypedTuple<Object>> iterator = rangeWithScores.iterator();
 
-        if(null != paperResponses){
-            for(int i=0;i<paperResponses.size();i++){
-                ZSetOperations.TypedTuple<Object> next = iterator.next();
-                if(paperResponses.get(i).getId() == Long.parseLong(next.getValue().toString())) {
-                    switch (rankVo.getCategoryOfRanking()) {
-                        case AdminRankConstant.ADMIN_RANK_TODAY_COLLECT :
-                            paperResponses.get(i).setTodayCollect(next.getScore().longValue());
-                            break;
-                        case AdminRankConstant.ADMIN_RANK_TODAY_GOOD :
-                            paperResponses.get(i).setTodayGood(next.getScore().longValue());
-                            break;
-                        case AdminRankConstant.ADMIN_RANK_TODAY_NOTE :
-                            paperResponses.get(i).setTodayNote(next.getScore().longValue());
-                            break;
-                        case AdminRankConstant.ADMIN_RANK_TODAY_TAG :
-                            paperResponses.get(i).setTodayTag(next.getScore().longValue());
+            if (0 != paperResponses.size()) {
+                for (int i = 0; i < paperResponses.size(); i++) {
+                    ZSetOperations.TypedTuple<Object> next = iterator.next();
+                    if (paperResponses.get(i).getId() == Long.parseLong(next.getValue().toString())) {
+                        switch (rankVo.getCategoryOfRanking()) {
+                            case AdminRankConstant.ADMIN_RANK_TODAY_COLLECT:
+                                paperResponses.get(i).setTodayCollect(next.getScore().longValue());
+                                break;
+                            case AdminRankConstant.ADMIN_RANK_TODAY_GOOD:
+                                paperResponses.get(i).setTodayGood(next.getScore().longValue());
+                                break;
+                            case AdminRankConstant.ADMIN_RANK_TODAY_NOTE:
+                                paperResponses.get(i).setTodayNote(next.getScore().longValue());
+                                break;
+                            case AdminRankConstant.ADMIN_RANK_TODAY_TAG:
+                                paperResponses.get(i).setTodayTag(next.getScore().longValue());
+                        }
                     }
                 }
             }
-        }
         }
         return paperResponses;
     }
@@ -284,30 +285,30 @@ public class RankManagerImpl implements RankManager {
         List<Journal> journals = new ArrayList<>();
 
         //2. 获取期刊详细信息
-        if(AdminRankConstant.ADMIN_RANK_SUBSCRIPTION_TOTAL == rankVo.getCategoryOfRanking()){
+        if (AdminRankConstant.ADMIN_RANK_SUBSCRIPTION_TOTAL == rankVo.getCategoryOfRanking()) {
             objects = redisUtil.get(rankVo.getCategoryOfRanking());
-            if(null != objects){
+            if (null != objects) {
                 objects.forEach(object -> {
-                    journals.add((Journal)object);
+                    journals.add((Journal) object);
                 });
             }
-        }else if(AdminRankConstant.ADMIN_RANK_TODAY_SUBSCRIPTION == rankVo.getCategoryOfRanking()){
+        } else if (AdminRankConstant.ADMIN_RANK_TODAY_SUBSCRIPTION == rankVo.getCategoryOfRanking()) {
             objects = redisUtil.get(rankVo.getCategoryOfRanking());
-            if(null != objects){
+            if (null != objects) {
                 objects.forEach(journalId -> {
-                    journals.add(journalService.getById((Long)journalId));
+                    journals.add(journalService.getById((Long) journalId));
                 });
             }
         }
 
         //3. 组装响应
-        Set<ZSetOperations.TypedTuple<Object>> rangeWithScores = redisUtil.get(rankVo.getCategoryOfRanking(), AdminRankConstant.rankStart, AdminRankConstant.rankNumber-1);
+        Set<ZSetOperations.TypedTuple<Object>> rangeWithScores = redisUtil.get(rankVo.getCategoryOfRanking(), AdminRankConstant.rankStart, AdminRankConstant.rankNumber - 1);
         Iterator<ZSetOperations.TypedTuple<Object>> iterator = rangeWithScores.iterator();
-        if(null != journals && null != iterator){
-            for(int i=0;i<journals.size();i++){
+        if (null != journals && null != iterator) {
+            for (int i = 0; i < journals.size(); i++) {
                 ZSetOperations.TypedTuple<Object> next = iterator.next();
                 JournalResponse journalResponse = new JournalResponse();
-                BeanUtils.copyProperties(journals.get(i),journalResponse);
+                BeanUtils.copyProperties(journals.get(i), journalResponse);
                 journalResponse.setTodaySubscription(next.getScore().longValue());
 
                 journalResponses.add(journalResponse);
