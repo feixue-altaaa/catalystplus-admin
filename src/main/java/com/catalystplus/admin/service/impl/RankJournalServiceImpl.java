@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.catalystplus.admin.entity.RankJournal;
 import com.catalystplus.admin.service.RankJournalService;
 import com.catalystplus.admin.mapper.RankJournalMapper;
+import com.catalystplus.admin.constant.AdminRankConstant;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -19,26 +20,25 @@ import java.util.List;
 public class RankJournalServiceImpl extends ServiceImpl<RankJournalMapper, RankJournal>
     implements RankJournalService{
 
+    /**
+     * 获取不同排行下期刊ID
+     * @param type  排行种类
+     * @param number 排行数量
+     * @return
+     */
     @Override
     public List<Long> getTopJournal(String type, Long number) {
 
         LambdaQueryWrapper<RankJournal> rankJournalLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        rankJournalLambdaQueryWrapper.select(RankJournal::getId);
         switch (type){
-            case "subscription_total" :
+            case AdminRankConstant.SUBSCRIPTION_TOTAL :
                 rankJournalLambdaQueryWrapper.orderByDesc(RankJournal::getSubscriptionTotal);
+                break;
         }
         rankJournalLambdaQueryWrapper.last("limit "+number);
 
-        List<RankJournal> rankJournals = this.baseMapper.selectList(rankJournalLambdaQueryWrapper);
-        List<Long> list = new ArrayList<>();
-
-        if(null != rankJournals){
-            rankJournals.forEach(rankJournal -> {
-                list.add(rankJournal.getId());
-            });
-        }
-
-        return list;
+        return this.listObjs(rankJournalLambdaQueryWrapper,object -> Long.valueOf(object.toString()));
     }
 }
 

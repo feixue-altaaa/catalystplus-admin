@@ -143,6 +143,15 @@ public class JournalServiceImpl extends ServiceImpl<JournalMapper, Journal> impl
         return journalMapper.getTodayJournalTotalBySubject(subjectId);
     }
 
+    @Override
+    public List<Journal> getJournalByJournalIds(List<Long> journalIds) {
+
+        LambdaQueryWrapper<Journal> journalLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        journalLambdaQueryWrapper.in(Journal::getJournalId,journalIds).groupBy(Journal::getJournalId);
+
+        return this.baseMapper.selectList(journalLambdaQueryWrapper);
+    }
+
 }
 
 

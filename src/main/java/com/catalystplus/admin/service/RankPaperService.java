@@ -14,4 +14,6 @@ public interface RankPaperService extends IService<RankPaper> {
 
     List<Long> getTopTotal(String type,Long number);
 
+    List<RankPaper> getRankPaperByIds(List<Long> paperIds);
+
 }

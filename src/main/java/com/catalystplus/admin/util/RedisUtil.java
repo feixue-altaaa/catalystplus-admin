@@ -73,7 +73,7 @@ public class RedisUtil {
      */
     public Set<ZSetOperations.TypedTuple<Object>> get(String key,Long start,Long end) {
         try {
-            Set<ZSetOperations.TypedTuple<Object>> typedTuples = redisTemplate.opsForZSet().rangeWithScores(key, start, end);
+            Set<ZSetOperations.TypedTuple<Object>> typedTuples = redisTemplate.opsForZSet().reverseRangeWithScores(key, start, end);
             return typedTuples;
         } catch (Exception e) {
             e.printStackTrace();
@@ -109,15 +109,15 @@ public class RedisUtil {
     }
 
     /**
-     * 普通缓存放入
-     *
-     * @param key   键
-     * @param value 值
-     * @return true成功 false失败
+     * zset数据存放
+     * @param key
+     * @param value
+     * @param score
+     * @return
      */
-    public boolean set(String key, Object value) {
+    public boolean set(String key, Object value,Long score) {
         try {
-            redisTemplate.opsForZSet().add(key,value,0);
+            redisTemplate.opsForZSet().add(key,value,score);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -131,7 +131,7 @@ public class RedisUtil {
      */
     public void flushDB(String key) {
         try {
-          redisTemplate.opsForZSet().remove(key);
+          redisTemplate.opsForZSet().removeRange(key,0,-1);
         } catch (Exception e) {
             log.info("清空数据异常:{}", e.getLocalizedMessage());
         }

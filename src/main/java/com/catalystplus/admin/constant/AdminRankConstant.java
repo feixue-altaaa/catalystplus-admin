@@ -1,11 +1,11 @@
 package com.catalystplus.admin.constant;
 
-public class AdminRankConstant {
+public final class AdminRankConstant {
 
     /**
      *期刊订阅总数
      */
-    public static final String ADMIN_RANK_SUBSCRIPTION_TOTAL = "admin:rank:subscription:total";
+    public static final String ADMIN_RANK_TOTAL_SUBSCRIPTION = "admin:rank:total:subscription";
 
     /**
      * 今日期刊订阅数
@@ -20,7 +20,7 @@ public class AdminRankConstant {
     /**
      * 阅读文章总数
      */
-    public static final String ADMIN_RANK_READ_TOTAL = "admin:rank:read:total";
+    public static final String ADMIN_RANK_TOTAL_READ = "admin:rank:total:read";
 
     /**
      * 今日文章收藏总数
@@ -30,12 +30,12 @@ public class AdminRankConstant {
     /**
      * 文章收藏总数
      */
-    public static final String ADMIN_RANK_COLLECT_TOTAL = "admin:rank:collect:total";
+    public static final String ADMIN_RANK_TOTAL_COLLECT = "admin:rank:total:collect";
 
     /**
      * 打标签总数
      */
-    public static final String ADMIN_RANK_TAG_TOTAL = "admin:rank:tag:total";
+    public static final String ADMIN_RANK_TOTAL_TAG = "admin:rank:total:tag";
 
     /**
      * 今日打标签总数
@@ -46,7 +46,7 @@ public class AdminRankConstant {
     /**
      * 做笔记总数
      */
-    public static final String ADMIN_RANK_NOTE_TOTAL = "admin:rank:note:total";
+    public static final String ADMIN_RANK_TOTAL_NOTE = "admin:rank:total:note";
 
     /**
      * 今日做笔记总数
@@ -56,7 +56,7 @@ public class AdminRankConstant {
     /**
      * 文章总点赞热度
      */
-    public static final String ADMIN_RANK_GOOD_TOTAL = "admin:rank:good:total";
+    public static final String ADMIN_RANK_TOTAL_GOOD = "admin:rank:total:good";
 
     /**
      * 今日文章总点赞热度

@@ -7,6 +7,9 @@ import com.catalystplus.admin.mapper.PaperMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author lanran
  * @description 针对表【paper0(文献详细表)】的数据库操作Service实现
@@ -47,6 +50,20 @@ public class PaperServiceImpl extends ServiceImpl<PaperMapper, Paper> implements
     @Override
     public Long getPaperTotalBySubject(Long subjectId) {
         return paperMapper.getPaperTotalBySubject(subjectId);
+    }
+
+    @Override
+    public List<Paper> getPapersByIds(List<Long> paperIds) {
+
+        //1. 初始化
+        List<Paper> papers = new ArrayList<>();
+
+        //2. 根据paperIds查询文章并组装
+        paperIds.forEach(paperId -> {
+            papers.add(this.getById(paperId));
+        });
+
+        return papers;
     }
 }
 

@@ -37,4 +37,6 @@ public interface JournalService extends IService<Journal> {
 
     Long getTodayJournalTotalBySubject(Long subjectId);
 
+    List<Journal> getJournalByJournalIds(List<Long> journalIds);
+
 }

@@ -15,7 +15,7 @@ import lombok.Data;
  *
  * @TableName journal
  */
-@TableName(value = "journal")
+@TableName(value = "journal_orig")
 @Data
 public class Journal implements Serializable {
     /**

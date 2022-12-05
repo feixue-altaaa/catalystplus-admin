@@ -1,6 +1,7 @@
 package com.catalystplus.admin;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.catalystplus.admin.constant.AdminRankConstant;
@@ -20,6 +21,7 @@ import com.catalystplus.admin.response.area.AreaResponse;
 import com.catalystplus.admin.response.journal.JournalResponse;
 import com.catalystplus.admin.response.journal.JournalSimpleResponse;
 import com.catalystplus.admin.response.paper.PaperJournalResponse;
+import com.catalystplus.admin.response.paper.PaperResponse;
 import com.catalystplus.admin.response.paperCount.PaperCountResponse;
 import com.catalystplus.admin.response.publisher.PublisherResponse;
 import com.catalystplus.admin.response.subject.SubjectResponse;
@@ -30,6 +32,7 @@ import com.catalystplus.admin.service.impl.PublisherServiceImpl;
 import com.catalystplus.admin.service.impl.SubjectServiceImpl;
 import com.catalystplus.admin.vo.journal.*;
 import com.catalystplus.admin.vo.paperCount.PaperCountVo;
+import com.catalystplus.admin.vo.rank.RankVo;
 import com.catalystplus.admin.vo.subject.SubjectByAreaIdVo;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -38,6 +41,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 
+import javax.swing.text.html.parser.Entity;
 import java.util.*;
 
 @Slf4j
@@ -380,12 +384,56 @@ class CatalystplusAdminApplicationTests {
     ProducerManager producerManager;
     @Autowired
     RedisTemplate redisTemplate;
+    @Autowired
+    RankJournalService rankJournalService;
 
     @Test
     void rankTest(){
 
-        log.info("开始更新rank_top");
-        rankManager.updateRankTop();
+
+
+
+        rankManager.updatePaperTotal(AdminRankConstant.COLLECT_TOTAL,10L,AdminRankConstant.ADMIN_RANK_TOTAL_COLLECT);
+
+        //测试getJournalByJournalIds
+//        List<Long> journalIds = new ArrayList<>();
+//        journalIds.add(23L);
+//        journalIds.add(79L);
+//        journalIds.add(71L);
+//        List<Journal> journalByJournalIds = journalService.getJournalByJournalIds(journalIds);
+//        journalByJournalIds.forEach(System.out::println);
+
+        //测试从mysql中取排名靠前期刊ID
+//        List<Long> topJournal = rankJournalService.getTopJournal(AdminRankConstant.SUBSCRIPTION_TOTAL, 10L);
+//        topJournal.forEach(System.out::println);
+
+
+        //测试从mysql中取排名靠前文章ID
+//        List<Long> topTotal = rankPaperService.getTopTotal(AdminRankConstant.COLLECT_TOTAL, 10L);
+//        topTotal.forEach(System.out::println);
+
+
+//        LambdaQueryWrapper<RankPaper> rankPaperLambdaQueryWrapper = new LambdaQueryWrapper<>();
+//        rankPaperLambdaQueryWrapper.select(RankPaper::getId).orderByDesc(RankPaper::getTodayCollect).last("limit 10");
+//        List<Long> list = rankPaperService.listObjs(rankPaperLambdaQueryWrapper, o -> Long.valueOf(o.toString()));
+//        list.forEach(System.out::println);
+
+//        QueryWrapper<RankPaper> rankPaperQueryWrapper = new QueryWrapper<>();
+//        rankPaperQueryWrapper.select("id").orderByDesc(AdminRankConstant.COLLECT_TOTAL);
+//        rankPaperQueryWrapper.last("limit 10");
+//        List<RankPaper> rankPapers = rankPaperService.getBaseMapper().selectList(rankPaperQueryWrapper);
+//        rankPapers.forEach(System.out::println);
+
+//        rankManager.updatePaperTotal(AdminRankConstant.COLLECT_TOTAL,10L,AdminRankConstant.ADMIN_RANK_COLLECT_TOTAL);
+
+
+//        RankVo rankVo = new RankVo();
+//        rankVo.setCategoryOfRanking("admin:rank:collect:total");
+//        List<PaperResponse> topPaper = rankManager.getTopPaper(rankVo);
+//        topPaper.forEach(System.out::println);
+
+//        log.info("开始更新rank_top");
+//        rankManager.updateRankTop();
 
 //        rankManager.updatePaperAndJournalTotal();
 //        producerManager.sendMessage("AdminRank","123");

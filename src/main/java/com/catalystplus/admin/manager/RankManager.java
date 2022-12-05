@@ -12,11 +12,17 @@ public interface RankManager {
 
     void updatePaperTotal(String type,Long number,String key);
 
-    void updateRankTop();
+    void updateRankTodayTop();
 
-    void updateMySQLPaperCount(String type);
+    void updateRankTotalTop();
 
-    void updateMySQLJournalcount(String type);
+    void updateMySQLPaperCountToday();
+
+    void updateMySQLJournalCountToday();
+
+    void updateMySQLPaperCountTotal();
+
+    void updateMySQLJournalCountTotal();
 
     List<PaperResponse> getTopPaper(RankVo rankVo);
 

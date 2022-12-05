@@ -19,6 +19,8 @@ public class RankController implements RankApi {
     public Response<List<PaperResponse>> getTopPaper(RankVo rankVo) {
 
         //1. 参数校验
+//        log.info();
+//        if()
 
         return null;
     }

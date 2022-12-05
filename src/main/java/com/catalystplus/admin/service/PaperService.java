@@ -4,6 +4,8 @@ import com.catalystplus.admin.entity.Paper;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.List;
+
 /**
  * @author lanran
  * @description 针对表【paper0(文献详细表)】的数据库操作Service
@@ -22,4 +24,6 @@ public interface PaperService extends IService<Paper> {
     Long getTodayPaperTotalBySubject(Long subjectId);
 
     Long getPaperTotalBySubject(Long subjectId);
+
+    List<Paper> getPapersByIds(List<Long> paperIds);
 }

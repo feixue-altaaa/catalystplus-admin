@@ -1,5 +1,7 @@
 package com.catalystplus.admin.manager.impl;
 
+import com.alibaba.fastjson.JSONArray;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.catalystplus.admin.constant.AdminRankConstant;
 import com.catalystplus.admin.entity.*;
 import com.catalystplus.admin.manager.RankManager;
@@ -34,70 +36,81 @@ public class RankManagerImpl implements RankManager {
     RedisUtil redisUtil;
 
     //存放rank_top中所有的key
-    public static List<String> rankTopRedis = new ArrayList<>();
+    public static List<String> rankTopPaperToday = new ArrayList<>();
+    public static List<String> rankToppaperTotal = new ArrayList<>();
+    public static List<String> rankTopJournalToday = new ArrayList<>();
+    public static List<String> rankTopJournalTotal = new ArrayList<>();
+
+    public int rankFlag;
 
     {
-        rankTopRedis.add(AdminRankConstant.ADMIN_RANK_TODAY_READ);
-//        rankTopRedis.add(AdminRankConstant.ADMIN_RANK_TODAY_READ);
+        //初始化rankTopPaperToday
+        rankTopPaperToday.add(AdminRankConstant.ADMIN_RANK_TODAY_READ);
+        rankTopPaperToday.add(AdminRankConstant.ADMIN_RANK_TODAY_COLLECT);
+        rankTopPaperToday.add(AdminRankConstant.ADMIN_RANK_TODAY_TAG);
+        rankTopPaperToday.add(AdminRankConstant.ADMIN_RANK_TODAY_NOTE);
+        rankTopPaperToday.add(AdminRankConstant.ADMIN_RANK_TODAY_GOOD);
 
-        rankTopRedis.add(AdminRankConstant.ADMIN_RANK_TODAY_COLLECT);
-//        rankTopRedis.add(AdminRankConstant.ADMIN_RANK_COLLECT_TOTAL);
+        //初始化rankToppaperTotal
+        rankToppaperTotal.add(AdminRankConstant.ADMIN_RANK_TOTAL_READ);
+        rankToppaperTotal.add(AdminRankConstant.ADMIN_RANK_TOTAL_COLLECT);
+        rankToppaperTotal.add(AdminRankConstant.ADMIN_RANK_TOTAL_TAG);
+        rankToppaperTotal.add(AdminRankConstant.ADMIN_RANK_TOTAL_NOTE);
+        rankToppaperTotal.add(AdminRankConstant.ADMIN_RANK_TOTAL_GOOD);
 
-        rankTopRedis.add(AdminRankConstant.ADMIN_RANK_TODAY_TAG);
-//        rankTopRedis.add(AdminRankConstant.ADMIN_RANK_TAG_TOTAL);
+        //初始化rankTopJournalToday
+        rankTopJournalToday.add(AdminRankConstant.ADMIN_RANK_TODAY_SUBSCRIPTION);
 
-        rankTopRedis.add(AdminRankConstant.ADMIN_RANK_TODAY_NOTE);
-//        rankTopRedis.add(AdminRankConstant.ADMIN_RANK_NOTE_TOTAL);
-
-        rankTopRedis.add(AdminRankConstant.ADMIN_RANK_TODAY_GOOD);
-//        rankTopRedis.add(AdminRankConstant.ADMIN_RANK_GOOD_TOTAL);
-
-        rankTopRedis.add(AdminRankConstant.ADMIN_RANK_SUBSCRIPTION_TOTAL);
-//        rankTopRedis.add(AdminRankConstant.ADMIN_RANK_TODAY_SUBSCRIPTION);
-
-
+        //初始化rankTopJournalTotal
+        rankToppaperTotal.add(AdminRankConstant.ADMIN_RANK_TOTAL_SUBSCRIPTION);
     }
+
 
     /**
      * 更新Redis中截至今日期刊订阅总量
      *
-     * @param type
-     * @param number
-     * @param key
+     * @param type   rank_journal字段
+     * @param number 获取需排行数量
+     * @param key    Redis中需保存的key
      */
     @Override
     public void updateJournalTotal(String type, Long number, String key) {
 
-        //1. 获取截至今日TOP期刊
-        List<Long> subscriptionTotal = rankJournalService.getTopJournal(type, number);
+        //1. 获取截至今日TOP期刊ID
+        List<Long> journalIds = rankJournalService.getTopJournal(type, number);
 
         //2. 根据期刊ID从数据库中查询其详细信息
-        List<Journal> journals = journalService.getBaseMapper().selectBatchIds(subscriptionTotal);
-        List<RankJournal> rankJournals = rankJournalService.getBaseMapper().selectBatchIds(subscriptionTotal);
+        List<Journal> journals = journalService.getJournalByJournalIds(journalIds);
+        List<RankJournal> rankJournals = rankJournalService.getBaseMapper().selectBatchIds(journalIds);
 
-        //3. 组装响应
+        //3. 组装响应,将journal、rank_journal两表中信息组装到paperResponse
         List<JournalResponse> journalResponses = new ArrayList<>();
-        for (int i = 0; i < journals.size(); i++) {
-            JournalResponse journalResponse = new JournalResponse();
-            BeanUtils.copyProperties(journals.get(i), journalResponse);
-            BeanUtils.copyProperties(rankJournals.get(i), journalResponse);
-            journalResponses.add(journalResponse);
+        if (null != journals && null != rankJournals) {
+            rankFlag = 0;
+            journals.forEach(journal -> {
+                JournalResponse journalResponse = new JournalResponse();
+                BeanUtils.copyProperties(journals.get(rankFlag), journalResponse);
+                BeanUtils.copyProperties(rankJournals.get(rankFlag++), journalResponse);
+                journalResponses.add(journalResponse);
+            });
         }
 
-        //4. 更新Redis中期刊总量
+        //4. 删除旧数据,更新Redis中期刊总量
+        redisUtil.flushDB(key);
+        rankFlag = 10;
         journalResponses.forEach(journalResponse -> {
             log.info("开始更新Redis中期刊订阅总量");
-            redisUtil.set(key, journalResponse);
+            redisUtil.set(key, journalResponse, rankFlag + 0L);
+            rankFlag--;
         });
-
     }
 
     /**
      * 更新Redis中截至今日文章收藏、点赞等总量
      *
-     * @param type
-     * @param number
-     * @param key
+     * @param type   rank_paper字段
+     * @param number 获取需排行数量
+     * @param key    Redis中需保存的key
      */
     @Override
     public void updatePaperTotal(String type, Long number, String key) {
@@ -106,215 +119,286 @@ public class RankManagerImpl implements RankManager {
         List<Long> paperIds = rankPaperService.getTopTotal(type, number);
 
         //2. 根据文章ID获取其详细信息
-        List<Paper> papers = paperService.getBaseMapper().selectBatchIds(paperIds);
-        List<RankPaper> rankPapers = rankPaperService.getBaseMapper().selectBatchIds(paperIds);
+        List<Paper> papers = paperService.getPapersByIds(paperIds);
+        List<RankPaper> rankPapers = rankPaperService.getRankPaperByIds(paperIds);
 
-        //3. 组装响应
+        //3. 组装响应,将journal、rank_journal两表信息组装到journalResponse
         List<PaperResponse> paperResponses = new ArrayList<>();
         if (null != papers && null != rankPapers) {
-            for (int i = 0; i < papers.size(); i++) {
+            rankFlag = 0;
+            papers.forEach(paper -> {
                 PaperResponse paperResponse = new PaperResponse();
-                BeanUtils.copyProperties(papers.get(i), paperResponse);
-                BeanUtils.copyProperties(rankPapers.get(i), paperResponse);
-            }
+                BeanUtils.copyProperties(papers.get(rankFlag), paperResponse);
+                BeanUtils.copyProperties(rankPapers.get(rankFlag++), paperResponse);
+                paperResponses.add(paperResponse);
+            });
         }
 
-        //4. 更新Redis中文章总量
+        //4. 删除旧数据,更新Redis中文章总量
+        redisUtil.flushDB(key);
+        rankFlag = Integer.parseInt(AdminRankConstant.rankNumber.toString());
         paperResponses.forEach(paperResponse -> {
             log.info("开始更新Redis中文章" + type);
-            redisUtil.set(key, paperResponse);
+            redisUtil.set(key, paperResponse, rankFlag + 0L);
+            rankFlag--;
         });
     }
 
     /**
-     * 更新Mysql中rank_top表
+     * 更新Mysql中rank_top表今日新增部分
      */
     @Override
-    public void updateRankTop() {
+    public void updateRankTodayTop() {
 
-        for (int i = 0; i < rankTopRedis.size(); i += 2) {
+        List<String> paperAndJournal = new ArrayList<>();
+        paperAndJournal.addAll(rankTopPaperToday);
+        paperAndJournal.addAll(rankTopJournalToday);
+
+        rankFlag = 1;
+
+        paperAndJournal.forEach(paperToday -> {
 
             //1. 获取Redis中各类型排名Top数据，得到其value及score
-            Set<ZSetOperations.TypedTuple<Object>> valueAndScore = redisUtil.get(rankTopRedis.get(i), AdminRankConstant.rankStart, AdminRankConstant.rankNumber - 1);
-            Iterator<ZSetOperations.TypedTuple<Object>> iteratorValueAndScore = valueAndScore.iterator();
+            Set<ZSetOperations.TypedTuple<Object>> paperIdAndScore = redisUtil.get
+                    (paperToday, AdminRankConstant.rankStart, AdminRankConstant.rankNumber - 1);
+            Iterator<ZSetOperations.TypedTuple<Object>> iteratorpaperIdAndScore = paperIdAndScore.iterator();
 
             //2. 首先删除掉表中该type类型数据，重新插入
-            rankTopService.deleteByType(i + 0L);
-            while (iteratorValueAndScore.hasNext()) {
-                ZSetOperations.TypedTuple<Object> next = iteratorValueAndScore.next();
-                RankTop rankTopMySQL = new RankTop();
-                rankTopMySQL.setType(i + 0L);
-                rankTopMySQL.setTypeId(Long.parseLong(next.getValue().toString()));
-                rankTopMySQL.setCount(next.getScore().longValue());
-                rankTopService.save(rankTopMySQL);
+            rankTopService.deleteByType(rankFlag + 0L);
+            while (iteratorpaperIdAndScore.hasNext()) {
+                ZSetOperations.TypedTuple<Object> next = iteratorpaperIdAndScore.next();
+                RankTop rankTopPaperMySQL = new RankTop();
+                rankTopPaperMySQL.setType(rankFlag + 0L);
+                rankTopPaperMySQL.setTypeId(Long.parseLong(next.getValue().toString()));
+                rankTopPaperMySQL.setCount(next.getScore().longValue());
+                rankTopService.save(rankTopPaperMySQL);
             }
-        }
+            rankFlag += 2;
+        });
     }
 
     /**
-     * 更新数据库中rank_paper表
-     *
-     * @param type
+     * 更新Mysql中rank_top表截至今日总量
      */
     @Override
-    public void updateMySQLPaperCount(String type) {
+    public void updateRankTotalTop() {
 
-        //1. 获取Redis中今日新增总数
-        Set<ZSetOperations.TypedTuple<Object>> rangeWithScores = redisUtil.get(type, AdminRankConstant.rankStart, AdminRankConstant.rankEnd);
-        Iterator<ZSetOperations.TypedTuple<Object>> iterator = rangeWithScores.iterator();
-        Map<Long, Long> map = new HashMap<Long, Long>();
-        //2. 根据Redis修改rank_paper表
-        while (iterator.hasNext()) {
-            ZSetOperations.TypedTuple<Object> next = iterator.next();
-            RankPaper rankPaper = rankPaperService.getBaseMapper().
-                    selectById(Long.parseLong(next.getValue().toString()));
-            switch (type) {
-                case AdminRankConstant.ADMIN_RANK_TODAY_GOOD:
-                    rankPaper.setTodayGood(next.getScore().longValue());
-                    break;
-                case AdminRankConstant.ADMIN_RANK_TODAY_COLLECT:
-                    rankPaper.setTodayCollect(next.getScore().longValue());
-                    break;
-                case AdminRankConstant.ADMIN_RANK_TODAY_NOTE:
-                    rankPaper.setTodayNote(next.getScore().longValue());
-                    break;
-                case AdminRankConstant.ADMIN_RANK_TODAY_TAG:
-                    rankPaper.setTodayTag(next.getScore().longValue());
-                    break;
+        List<String> paperAndJournal = new ArrayList<>();
+        paperAndJournal.addAll(rankToppaperTotal);
+        paperAndJournal.addAll(rankTopJournalTotal);
+
+        rankFlag = 2;
+
+        paperAndJournal.forEach(paperToday -> {
+
+            //1. 获取Redis中各类型排名Top数据，得到其value及score
+            Set<ZSetOperations.TypedTuple<Object>> paperIdAndScore = redisUtil.get
+                    (paperToday, AdminRankConstant.rankStart, AdminRankConstant.rankNumber - 1);
+            Iterator<ZSetOperations.TypedTuple<Object>> iteratorpaperIdAndScore = paperIdAndScore.iterator();
+
+            //2. 首先删除掉表中该type类型数据，重新插入
+            rankTopService.deleteByType(rankFlag + 0L);
+            while (iteratorpaperIdAndScore.hasNext()) {
+                ZSetOperations.TypedTuple<Object> next = iteratorpaperIdAndScore.next();
+                RankTop rankTopPaperMySQL = new RankTop();
+                rankTopPaperMySQL.setType(rankFlag + 0L);
+//                JSONArray.
+                rankTopPaperMySQL.setTypeId(Long.parseLong(next.getValue().toString()));
+                rankTopPaperMySQL.setCount(next.getScore().longValue());
+                rankTopService.save(rankTopPaperMySQL);
             }
-
-        }
+            rankFlag += 2;
+        });
     }
 
     /**
-     * 更新Mysql中rank_journal表
-     *
-     * @param type
+     * 更新数据库中rank_paper表今日新增字段
      */
     @Override
-    public void updateMySQLJournalcount(String type) {
+    public void updateMySQLPaperCountToday() {
 
-        //1. 获取Redis中今日新增总数
-        Set<ZSetOperations.TypedTuple<Object>> rangeWithScores = redisUtil.get(type, AdminRankConstant.rankStart, AdminRankConstant.rankEnd);
-        Iterator<ZSetOperations.TypedTuple<Object>> iterator = rangeWithScores.iterator();
+        rankTopPaperToday.forEach(type -> {
 
-        //2. 根据Redis修改rank_journal表
-        while (iterator.hasNext()) {
-            ZSetOperations.TypedTuple<Object> next = iterator.next();
-            RankJournal rankJournal = rankJournalService.getBaseMapper().
-                    selectById(Long.parseLong(next.getValue().toString()));
-            switch (type) {
-                case AdminRankConstant.ADMIN_RANK_TODAY_SUBSCRIPTION:
-                    rankJournal.setTodaySubscription(next.getScore().longValue());
-                    break;
+            //1. 获取Redis中今日新增总数
+            Set<ZSetOperations.TypedTuple<Object>> rangeWithScores = redisUtil.get(type, AdminRankConstant.rankStart, AdminRankConstant.rankEnd);
+            Iterator<ZSetOperations.TypedTuple<Object>> iterator = rangeWithScores.iterator();
+            Map<Long, Long> map = new HashMap<Long, Long>();
+
+            //2. 根据Redis修改rank_paper表
+            while (iterator.hasNext()) {
+                ZSetOperations.TypedTuple<Object> next = iterator.next();
+                RankPaper rankPaper = rankPaperService.getById(Long.parseLong(next.getValue().toString()));
+                if (null == rankPaper) {
+                    rankPaper = new RankPaper();
+                    rankPaper.setId(Long.parseLong(next.getValue().toString()));
+                }
+                switch (type) {
+                    case AdminRankConstant.ADMIN_RANK_TODAY_GOOD:
+                        rankPaper.setTodayGood(next.getScore().longValue());
+                        break;
+                    case AdminRankConstant.ADMIN_RANK_TODAY_COLLECT:
+                        rankPaper.setTodayCollect(next.getScore().longValue());
+                        break;
+                    case AdminRankConstant.ADMIN_RANK_TODAY_NOTE:
+                        rankPaper.setTodayNote(next.getScore().longValue());
+                        break;
+                    case AdminRankConstant.ADMIN_RANK_TODAY_TAG:
+                        rankPaper.setTodayTag(next.getScore().longValue());
+                        break;
+                }
+                rankPaperService.saveOrUpdate(rankPaper);
             }
-        }
+        });
     }
 
+    /**
+     * 更新Mysql中rank_journal表今日新增字段
+     */
+    @Override
+    public void updateMySQLJournalCountToday() {
+
+        rankTopJournalToday.forEach(type -> {
+
+            //1. 获取Redis中今日新增总数
+            Set<ZSetOperations.TypedTuple<Object>> rangeWithScores = redisUtil.get(type, AdminRankConstant.rankStart, AdminRankConstant.rankEnd);
+            Iterator<ZSetOperations.TypedTuple<Object>> iterator = rangeWithScores.iterator();
+
+            //2. 根据Redis修改rank_journal表
+            while (iterator.hasNext()) {
+                ZSetOperations.TypedTuple<Object> next = iterator.next();
+                RankJournal rankJournal = rankJournalService.getById(Long.parseLong(next.getValue().toString()));
+                if (null == rankJournal) {
+                    rankJournal = new RankJournal();
+                    rankJournal.setId(Long.parseLong(next.getValue().toString()));
+                }
+                switch (type) {
+                    case AdminRankConstant.ADMIN_RANK_TODAY_SUBSCRIPTION:
+                        rankJournal.setTodaySubscription(next.getScore().longValue());
+                        break;
+                }
+                rankJournalService.saveOrUpdate(rankJournal);
+            }
+        });
+    }
+
+    /**
+     * 将文章今日新增更新至截至今日总量
+     */
+    @Override
+    public void updateMySQLPaperCountTotal() {
+
+        List<RankPaper> rankPapers = rankPaperService.list();
+        rankPapers.forEach(rankPaper -> {
+            rankPaper.setCollectTotal(rankPaper.getCollectTotal() + rankPaper.getTodayCollect());
+            rankPaper.setGoodTotal(rankPaper.getGoodTotal() + rankPaper.getTodayGood());
+            rankPaper.setTagTotal(rankPaper.getTagTotal() + rankPaper.getTodayTag());
+            rankPaper.setNoteTotal(rankPaper.getNoteTotal() + rankPaper.getTodayNote());
+            rankPaper.setReadTotal(rankPaper.getReadTotal() + rankPaper.getTodayRead());
+            rankPaperService.updateById(rankPaper);
+        });
+
+
+    }
+
+    /**
+     * 将期刊今日新增更新至截至今日总量
+     */
+    @Override
+    public void updateMySQLJournalCountTotal() {
+
+        List<RankJournal> rankJournals = rankJournalService.list();
+        rankJournals.forEach(rankJournal -> {
+            rankJournal.setTodaySubscription(rankJournal.getSubscriptionTotal() + rankJournal.getTodaySubscription());
+            rankJournalService.updateById(rankJournal);
+        });
+    }
+
+    /**
+     * 获取截至今日或今日新增文章排行
+     *
+     * @param rankVo
+     * @return
+     */
     @Override
     public List<PaperResponse> getTopPaper(RankVo rankVo) {
 
         //1. 初始化
         List<PaperResponse> paperResponses = new ArrayList<>();
-        List<Object> objects = new ArrayList<>();
-        List<Paper> papers = new ArrayList<>();
+        List<Object> paperObjects = new ArrayList<>();
 
-        //2. 获取文章详细信息
-        if (AdminRankConstant.ADMIN_RANK_COLLECT_TOTAL == rankVo.getCategoryOfRanking() ||
-                AdminRankConstant.ADMIN_RANK_GOOD_TOTAL == rankVo.getCategoryOfRanking() ||
-                AdminRankConstant.ADMIN_RANK_NOTE_TOTAL == rankVo.getCategoryOfRanking() ||
-                AdminRankConstant.ADMIN_RANK_TAG_TOTAL == rankVo.getCategoryOfRanking()) {
-            objects = redisUtil.get(rankVo.getCategoryOfRanking());
-            if (null != objects) {
-                objects.forEach(object -> {
-                    paperResponses.add((PaperResponse) object);
+        //2 截至今日总量直接从Redis中获取
+        if (rankToppaperTotal.contains(rankVo.getCategoryOfRanking())) {
+            log.info("获取文章详细信息");
+            paperObjects = redisUtil.get(rankVo.getCategoryOfRanking());
+            if (paperObjects.size() > 0) {
+                paperObjects.forEach(paperObject -> {
+                    paperResponses.add((PaperResponse) paperObject);
                 });
             }
-        } else if (AdminRankConstant.ADMIN_RANK_TODAY_COLLECT == rankVo.getCategoryOfRanking() ||
-                AdminRankConstant.ADMIN_RANK_TODAY_GOOD == rankVo.getCategoryOfRanking() ||
-                AdminRankConstant.ADMIN_RANK_TODAY_NOTE == rankVo.getCategoryOfRanking() ||
-                AdminRankConstant.ADMIN_RANK_TODAY_TAG == rankVo.getCategoryOfRanking()) {
-            objects = redisUtil.get(rankVo.getCategoryOfRanking());
-            if (null != objects) {
-                objects.forEach(object -> {
-                    papers.add(paperService.getById((Long) object));
-                });
-            }
+            //3 今日新增总量需根据paper表和Redis数据组装响应
+        } else if (rankTopPaperToday.contains(rankVo.getCategoryOfRanking())) {
 
-            //3. 组装响应
-            if (null != objects) {
-                objects.forEach(paper -> {
-                    PaperResponse paperResponse = new PaperResponse();
-                    BeanUtils.copyProperties((Paper) paper, paperResponse);
-                    paperResponses.add(paperResponse);
-                });
-            }
-            Set<ZSetOperations.TypedTuple<Object>> rangeWithScores = redisUtil.get(rankVo.getCategoryOfRanking(), AdminRankConstant.rankStart, AdminRankConstant.rankNumber - 1);
-            Iterator<ZSetOperations.TypedTuple<Object>> iterator = rangeWithScores.iterator();
+            Set<ZSetOperations.TypedTuple<Object>> paperIdRangeWithScores = redisUtil.get(rankVo.getCategoryOfRanking(), AdminRankConstant.rankStart, AdminRankConstant.rankNumber - 1);
+            Iterator<ZSetOperations.TypedTuple<Object>> paperIdIterator = paperIdRangeWithScores.iterator();
 
-            if (0 != paperResponses.size()) {
-                for (int i = 0; i < paperResponses.size(); i++) {
-                    ZSetOperations.TypedTuple<Object> next = iterator.next();
-                    if (paperResponses.get(i).getId() == Long.parseLong(next.getValue().toString())) {
-                        switch (rankVo.getCategoryOfRanking()) {
-                            case AdminRankConstant.ADMIN_RANK_TODAY_COLLECT:
-                                paperResponses.get(i).setTodayCollect(next.getScore().longValue());
-                                break;
-                            case AdminRankConstant.ADMIN_RANK_TODAY_GOOD:
-                                paperResponses.get(i).setTodayGood(next.getScore().longValue());
-                                break;
-                            case AdminRankConstant.ADMIN_RANK_TODAY_NOTE:
-                                paperResponses.get(i).setTodayNote(next.getScore().longValue());
-                                break;
-                            case AdminRankConstant.ADMIN_RANK_TODAY_TAG:
-                                paperResponses.get(i).setTodayTag(next.getScore().longValue());
-                        }
-                    }
+            while (paperIdIterator.hasNext()) {
+                ZSetOperations.TypedTuple<Object> next = paperIdIterator.next();
+                PaperResponse paperResponse = new PaperResponse();
+                BeanUtils.copyProperties((Paper) paperService.getById(Long.parseLong(next.getValue().toString())), paperResponse);
+
+                switch (rankVo.getCategoryOfRanking()) {
+                    case AdminRankConstant.ADMIN_RANK_TODAY_COLLECT:
+                        paperResponse.setTodayCollect(next.getScore().longValue());
+                        break;
+                    case AdminRankConstant.ADMIN_RANK_TODAY_GOOD:
+                        paperResponse.setTodayGood(next.getScore().longValue());
+                        break;
+                    case AdminRankConstant.ADMIN_RANK_TODAY_NOTE:
+                        paperResponse.setTodayNote(next.getScore().longValue());
+                        break;
+                    case AdminRankConstant.ADMIN_RANK_TODAY_TAG:
+                        paperResponse.setTodayTag(next.getScore().longValue());
+                        break;
                 }
+                paperResponses.add(paperResponse);
             }
         }
         return paperResponses;
     }
 
+    /**
+     * 获取截至今日或今日新增期刊排行
+     *
+     * @param rankVo
+     * @return
+     */
     @Override
     public List<JournalResponse> getTopJournal(RankVo rankVo) {
 
         //1. 初始化
         List<JournalResponse> journalResponses = new ArrayList<>();
-        List<Object> objects = new ArrayList<>();
-        List<Journal> journals = new ArrayList<>();
+        List<Object> journalObjects = new ArrayList<>();
 
-        //2. 获取期刊详细信息
-        if (AdminRankConstant.ADMIN_RANK_SUBSCRIPTION_TOTAL == rankVo.getCategoryOfRanking()) {
-            objects = redisUtil.get(rankVo.getCategoryOfRanking());
-            if (null != objects) {
-                objects.forEach(object -> {
-                    journals.add((Journal) object);
+        //2 截至今日总量直接从Redis中获取
+        if (rankTopJournalTotal.contains(rankVo.getCategoryOfRanking())) {
+            journalObjects = redisUtil.get(rankVo.getCategoryOfRanking());
+            if (journalObjects.size() > 0) {
+                journalObjects.forEach(journalObject -> {
+                    journalResponses.add((JournalResponse) journalObject);
                 });
             }
-        } else if (AdminRankConstant.ADMIN_RANK_TODAY_SUBSCRIPTION == rankVo.getCategoryOfRanking()) {
-            objects = redisUtil.get(rankVo.getCategoryOfRanking());
-            if (null != objects) {
-                objects.forEach(journalId -> {
-                    journals.add(journalService.getById((Long) journalId));
-                });
-            }
-        }
-
-        //3. 组装响应
-        Set<ZSetOperations.TypedTuple<Object>> rangeWithScores = redisUtil.get(rankVo.getCategoryOfRanking(), AdminRankConstant.rankStart, AdminRankConstant.rankNumber - 1);
-        Iterator<ZSetOperations.TypedTuple<Object>> iterator = rangeWithScores.iterator();
-        if (null != journals && null != iterator) {
-            for (int i = 0; i < journals.size(); i++) {
-                ZSetOperations.TypedTuple<Object> next = iterator.next();
+            //3 今日新增总量需根据journal表和Redis数据组装响应
+        } else if (rankTopJournalTotal.contains(rankVo.getCategoryOfRanking())) {
+            Set<ZSetOperations.TypedTuple<Object>> journalIdRangeWithScores = redisUtil.get(rankVo.getCategoryOfRanking(), AdminRankConstant.rankStart, AdminRankConstant.rankNumber - 1);
+            Iterator<ZSetOperations.TypedTuple<Object>> journalIds = journalIdRangeWithScores.iterator();
+            while (journalIds.hasNext()) {
+                ZSetOperations.TypedTuple<Object> next = journalIds.next();
                 JournalResponse journalResponse = new JournalResponse();
-                BeanUtils.copyProperties(journals.get(i), journalResponse);
+                BeanUtils.copyProperties(journalService.getOne(new LambdaQueryWrapper<Journal>().eq(Journal::getJournalId, Long.parseLong(next.getValue().toString())).groupBy(Journal::getJournalId)), journalResponse);
                 journalResponse.setTodaySubscription(next.getScore().longValue());
-
                 journalResponses.add(journalResponse);
             }
         }
-
         return journalResponses;
     }
 }

@@ -1,7 +1,9 @@
 package com.catalystplus.admin.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.catalystplus.admin.constant.AdminRankConstant;
 import com.catalystplus.admin.entity.RankPaper;
 import com.catalystplus.admin.service.RankPaperService;
 import com.catalystplus.admin.mapper.RankPaperMapper;
@@ -20,31 +22,50 @@ import java.util.List;
 public class RankPaperServiceImpl extends ServiceImpl<RankPaperMapper, RankPaper>
         implements RankPaperService {
 
+    /**
+     *获取不同排行下文章ID
+     * @param type  排行种类
+     * @param number 排行数量
+     * @return
+     */
     @Override
     public List<Long> getTopTotal(String type, Long number) {
 
+        //1. 组装查询语句
         LambdaQueryWrapper<RankPaper> rankPaperLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        rankPaperLambdaQueryWrapper.select(RankPaper::getId);
         switch (type) {
-            case "collect_total":
+            case AdminRankConstant.COLLECT_TOTAL:
                 rankPaperLambdaQueryWrapper.orderByDesc(RankPaper::getCollectTotal);
                 break;
-            case "tag_total":
+            case AdminRankConstant.TAG_TOTAL:
                 rankPaperLambdaQueryWrapper.orderByDesc(RankPaper::getTagTotal);
                 break;
-            case "note_total":
+            case AdminRankConstant.NOTE_TOTAL:
                 rankPaperLambdaQueryWrapper.orderByDesc(RankPaper::getNoteTotal);
                 break;
-            case "good_total":
+            case AdminRankConstant.GOOD_TOTAL:
                 rankPaperLambdaQueryWrapper.orderByDesc(RankPaper::getGoodTotal);
                 break;
         }
         rankPaperLambdaQueryWrapper.last("limit " + number);
 
-        List<RankPaper> rankPapers = this.baseMapper.selectList(rankPaperLambdaQueryWrapper);
-        List<Long> list = new ArrayList<>();
+        //2. 返回文章ID
+        return this.listObjs(rankPaperLambdaQueryWrapper, object -> Long.valueOf(object.toString()));
+    }
 
-        rankPapers.forEach(rankPaper -> list.add(rankPaper.getId()));
-        return list;
+    @Override
+    public List<RankPaper> getRankPaperByIds(List<Long> paperIds) {
+
+        //1. 初始化
+        List<RankPaper> rankPapers = new ArrayList<>();
+
+        //2. 根据paperIds获取rankpaper
+        paperIds.forEach(paperId -> {
+            rankPapers.add(this.getById(paperId));
+        });
+
+        return rankPapers;
     }
 }
 
