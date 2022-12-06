@@ -7,10 +7,12 @@ import com.catalystplus.admin.util.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 
 @Slf4j
+@Component
 public class PaperJournalRankJob {
 
     @Autowired
@@ -21,11 +23,12 @@ public class PaperJournalRankJob {
     /**
      * 每天凌晨更新Redis中期刊、文章总量信息
      */
-    @Scheduled(cron = "0 0 0 ? * *")
+    @Scheduled(cron = "0 50 15 ? * *")
     public void updatePaperAndJournalTotal(){
 
 
         //更新数据库中文章、期刊截至今日阅读等总量
+        log.info("开始执行定时任务");
         rankManager.updateMySQLPaperCountTotal();
         rankManager.updateMySQLJournalCountTotal();
 
@@ -36,6 +39,13 @@ public class PaperJournalRankJob {
         rankManager.updatePaperTotal(AdminRankConstant.GOOD_TOTAL,AdminRankConstant.rankNumber,AdminRankConstant.ADMIN_RANK_TOTAL_GOOD);
         rankManager.updateJournalTotal
                 (AdminRankConstant.SUBSCRIPTION_TOTAL,AdminRankConstant.rankNumber,AdminRankConstant.ADMIN_RANK_TOTAL_SUBSCRIPTION);
+
+        //清空Redis中今日新增部分
+        rankManager.redisFlush();
+
+        //更新数据库中rank_top表
+        rankManager.updateRankTotalTop();
+
     }
 
     /**
