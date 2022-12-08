@@ -46,6 +46,9 @@ public class PaperJournalRankJob {
         //更新数据库中rank_top表
         rankManager.updateRankTotalTop();
 
+        //清空Redis中admin:user:today下所有key
+        
+
     }
 
     /**

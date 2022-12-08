@@ -104,22 +104,22 @@ public final class AdminUserConstant {
     /**
      * 今日期刊订阅用户数
      */
-    public static final String ADMIN_USER_TODAY_SUBSCRIPTION = "admin:use:today:subscriptionr";
+    public static final String ADMIN_USER_TODAY_SUBSCRIPTION = "admin:user:today:subscription";
 
     /**
      * 今日阅读文章用户总数
      */
-    public static final String ADMIN_USER_TODAY_READ = "admin:use:today:read";
+    public static final String ADMIN_USER_TODAY_READ = "admin:user:today:read";
 
     /**
      * 今日文章收藏用户总数
      */
-    public static final String ADMIN_USER_TODAY_COLLECT = "admin:use:today:collect";
+    public static final String ADMIN_USER_TODAY_COLLECT = "admin:user:today:collect";
 
     /**
      * 今日打标签用户总数
      */
-    public static final String ADMIN_USER_TODAY_TAG = "admin:use:today:tag";
+    public static final String ADMIN_USER_TODAY_TAG = "admin:user:today:tag";
 
     /**
      * 今日做笔记用户总数

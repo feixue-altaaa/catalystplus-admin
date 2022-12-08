@@ -27,6 +27,7 @@ public class SummaryController implements SummaryApi {
         } catch (Exception e) {
             return Response.fail(summaryVo.getUserId(),e.getMessage());
         }
+
         return Response.success(summaryVo.getUserId(),totalCountResponse);
     }
 }

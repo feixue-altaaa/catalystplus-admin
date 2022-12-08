@@ -101,7 +101,7 @@ class CatalystplusAdminApplicationTests {
 //        totalCount.setTodayRead(totalCount.getTodayRead()+1);
 //        totalCount.setReadTotal(totalCount.getReadTotal()+1);
 //        totalCountService.updateById(totalCount);
-        Long aLong = redisUtil.bitCount(AdminUserConstant.ADMIN_USER_TODAY_SUBSCRIPTION);
+        Long aLong = redisUtil.bitCount(AdminUserConstant.ADMIN_USER_TODAY_READ);
         System.out.println(aLong);
 
 
