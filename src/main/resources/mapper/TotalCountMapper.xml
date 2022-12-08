@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.catalystplus.admin.mapper.TotalCountMapper">
+
+    <resultMap id="BaseResultMap" type="com.catalystplus.admin.entity.TotalCount">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="todayRead" column="today_read" jdbcType="BIGINT"/>
+            <result property="todayCollect" column="today_collect" jdbcType="BIGINT"/>
+            <result property="todayTag" column="today_tag" jdbcType="BIGINT"/>
+            <result property="todayNote" column="today_note" jdbcType="BIGINT"/>
+            <result property="todayGood" column="today_good" jdbcType="BIGINT"/>
+            <result property="todaySubscription" column="today_subscription" jdbcType="BIGINT"/>
+            <result property="readTotal" column="read_total" jdbcType="BIGINT"/>
+            <result property="collectTotal" column="collect_total" jdbcType="BIGINT"/>
+            <result property="tagTotal" column="tag_total" jdbcType="BIGINT"/>
+            <result property="noteTotal" column="note_total" jdbcType="BIGINT"/>
+            <result property="goodTotal" column="good_total" jdbcType="BIGINT"/>
+            <result property="subscriptionTotal" column="subscription_total" jdbcType="BIGINT"/>
+            <result property="todayReadUser" column="today_read_user" jdbcType="BIGINT"/>
+            <result property="todayCollectUser" column="today_collect_user" jdbcType="BIGINT"/>
+            <result property="todayTagUser" column="today_tag_user" jdbcType="BIGINT"/>
+            <result property="todayNoteUser" column="today_note_user" jdbcType="BIGINT"/>
+            <result property="todayGoodUser" column="today_good_user" jdbcType="BIGINT"/>
+            <result property="todaySubscriptionUser" column="today_subscription_user" jdbcType="BIGINT"/>
+            <result property="readTotalUser" column="read_total_user" jdbcType="BIGINT"/>
+            <result property="collectTotalUser" column="collect_total_user" jdbcType="BIGINT"/>
+            <result property="tagTotalUser" column="tag_total_user" jdbcType="BIGINT"/>
+            <result property="noteTotalUser" column="note_total_user" jdbcType="BIGINT"/>
+            <result property="goodTotalUser" column="good_total_user" jdbcType="BIGINT"/>
+            <result property="subscriptionTotalUser" column="subscription_total_user" jdbcType="BIGINT"/>
+            <result property="dateTime" column="date_time" jdbcType="VARCHAR"/>
+            <result property="status" column="status" jdbcType="TINYINT"/>
+            <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
+            <result property="updatedTime" column="updated_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,today_read,today_collect,
+        today_tag,today_note,today_good,
+        today_subscription,read_total,collect_total,
+        tag_total,note_total,good_total,
+        subscription_total,today_read_user,today_collect_user,
+        today_tag_user,today_note_user,today_good_user,
+        today_subscription_user,read_total_user,collect_total_user,
+        tag_total_user,note_total_user,good_total_user,
+        subscription_total_user,date_time,status,
+        created_time,updated_time
+    </sql>
+</mapper>

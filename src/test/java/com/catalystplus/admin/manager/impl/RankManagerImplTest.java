@@ -29,12 +29,16 @@ class RankManagerImplTest {
 
     @Autowired
     RankManager rankManager;
+
     @Autowired
     RedisUtil redisUtil;
+
     @Autowired
     RankPaperService rankPaperService;
+
     @Autowired
     PaperService paperService;
+
     @Autowired
     RankJournalService rankJournalService;
 
