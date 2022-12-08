@@ -40,6 +40,18 @@ public class RankJournalServiceImpl extends ServiceImpl<RankJournalMapper, RankJ
 
         return this.listObjs(rankJournalLambdaQueryWrapper,object -> Long.valueOf(object.toString()));
     }
+
+    @Override
+    public List<RankJournal> getRankJouralByIds(List<Long> journalIds) {
+
+
+        List<RankJournal> rankJournals = new ArrayList<>();
+
+        journalIds.forEach(journalId -> {
+            rankJournals.add(this.getById(journalId));
+        });
+        return rankJournals;
+    }
 }
 
 

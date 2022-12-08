@@ -35,6 +35,9 @@ public class RankPaperServiceImpl extends ServiceImpl<RankPaperMapper, RankPaper
         LambdaQueryWrapper<RankPaper> rankPaperLambdaQueryWrapper = new LambdaQueryWrapper<>();
         rankPaperLambdaQueryWrapper.select(RankPaper::getId);
         switch (type) {
+            case AdminRankConstant.READ_TOTAL:
+                rankPaperLambdaQueryWrapper.orderByDesc(RankPaper::getReadTotal);
+                break;
             case AdminRankConstant.COLLECT_TOTAL:
                 rankPaperLambdaQueryWrapper.orderByDesc(RankPaper::getCollectTotal);
                 break;
@@ -46,6 +49,34 @@ public class RankPaperServiceImpl extends ServiceImpl<RankPaperMapper, RankPaper
                 break;
             case AdminRankConstant.GOOD_TOTAL:
                 rankPaperLambdaQueryWrapper.orderByDesc(RankPaper::getGoodTotal);
+                break;
+        }
+        rankPaperLambdaQueryWrapper.last("limit " + number);
+
+        //2. 返回文章ID
+        return this.listObjs(rankPaperLambdaQueryWrapper, object -> Long.valueOf(object.toString()));
+    }
+
+    @Override
+    public List<Long> getTopToday(String type, Long number) {
+
+        //1. 组装查询语句
+        LambdaQueryWrapper<RankPaper> rankPaperLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        rankPaperLambdaQueryWrapper.select(RankPaper::getId);
+        switch (type) {
+            case AdminRankConstant.TODAY_READ:
+                rankPaperLambdaQueryWrapper.orderByDesc(RankPaper::getTodayRead);
+            case AdminRankConstant.TODAY_COLLECT:
+                rankPaperLambdaQueryWrapper.orderByDesc(RankPaper::getTodayCollect);
+                break;
+            case AdminRankConstant.TODAY_TAG:
+                rankPaperLambdaQueryWrapper.orderByDesc(RankPaper::getTodayTag);
+                break;
+            case AdminRankConstant.TODAY_NOTE:
+                rankPaperLambdaQueryWrapper.orderByDesc(RankPaper::getTodayNote);
+                break;
+            case AdminRankConstant.TODAY_GOOD:
+                rankPaperLambdaQueryWrapper.orderByDesc(RankPaper::getTodayGood);
                 break;
         }
         rankPaperLambdaQueryWrapper.last("limit " + number);

@@ -27,4 +27,6 @@ public interface RankManager {
     List<PaperResponse> getTopPaper(RankVo rankVo);
 
     List<JournalResponse> getTopJournal(RankVo rankVo);
+
+    void redisFlush();
 }

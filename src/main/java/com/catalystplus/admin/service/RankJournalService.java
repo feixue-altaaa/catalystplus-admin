@@ -13,4 +13,6 @@ import java.util.List;
 public interface RankJournalService extends IService<RankJournal> {
 
     List<Long> getTopJournal(String type,Long number);
+
+    List<RankJournal> getRankJouralByIds(List<Long> journalIds);
 }

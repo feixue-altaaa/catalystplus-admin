@@ -42,6 +42,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 
 import javax.swing.text.html.parser.Entity;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.util.*;
 
 @Slf4j
@@ -386,6 +388,20 @@ class CatalystplusAdminApplicationTests {
     RedisTemplate redisTemplate;
     @Autowired
     RankJournalService rankJournalService;
+
+
+    @Test
+    void mysqlTest(){
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver") ;
+            String url ="jdbc:mysql://192.168.3.103/sys?characterEncoding=utf8" ;
+            Connection conn = DriverManager.getConnection(url,"root","Catalyst@103") ;
+            System.out.println("success...") ;
+        }catch(Exception e){
+            System.out.println("failure!!!") ;
+        }
+    }
+
 
     @Test
     void rankTest(){

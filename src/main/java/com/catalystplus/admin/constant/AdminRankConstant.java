@@ -70,9 +70,29 @@ public final class AdminRankConstant {
     public static final String SUBSCRIPTION_TOTAL = "subscription_total";
 
     /**
+     * 今日期刊订阅总量
+     */
+    public static final String TODAY_SUBSCRIPTION = "today_subscription";
+
+    /**
      * 文章收藏总数
      */
     public static final String COLLECT_TOTAL = "collect_total";
+
+    /**
+     * 今日文章收藏总数
+     */
+    public static final String TODAY_COLLECT = "today_collect";
+
+    /**
+     * 文章阅读总数
+     */
+    public static final String READ_TOTAL = "read_total";
+
+    /**
+     * 今日文章阅读总数
+     */
+    public static final String TODAY_READ = "today_read";
 
     /**
      * 文章标签总数
@@ -80,14 +100,29 @@ public final class AdminRankConstant {
     public static final String TAG_TOTAL = "tag_total";
 
     /**
+     * 文章标签总数
+     */
+    public static final String TODAY_TAG = "today_total";
+
+    /**
      * 文章笔记总数
      */
     public static final String NOTE_TOTAL = "note_total";
 
     /**
+     * 今日文章笔记总数
+     */
+    public static final String TODAY_NOTE = "today_note";
+
+    /**
      * 文章点赞总数
      */
     public static final String GOOD_TOTAL = "good_total";
+
+    /**
+     * 今日文章点赞总数
+     */
+    public static final String TODAY_GOOD = "today_good";
 
     /**
      * 文章排行榜数量
