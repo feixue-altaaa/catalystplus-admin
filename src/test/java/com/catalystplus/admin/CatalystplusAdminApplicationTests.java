@@ -1,10 +1,8 @@
 package com.catalystplus.admin;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.catalystplus.admin.constant.AdminRankConstant;
+import com.catalystplus.admin.constant.AdminUserConstant;
 import com.catalystplus.admin.controller.*;
 import com.catalystplus.admin.entity.*;
 import com.catalystplus.admin.manager.PaperCountManager;
@@ -15,33 +13,26 @@ import com.catalystplus.admin.manager.impl.JournalManagerImpl;
 import com.catalystplus.admin.mapper.JournalMapper;
 import com.catalystplus.admin.mapper.PaperCountMapper;
 import com.catalystplus.admin.mapper.SubjectJournalMapper;
-import com.catalystplus.admin.mapper.SubjectMapper;
 import com.catalystplus.admin.response.Response;
-import com.catalystplus.admin.response.area.AreaResponse;
 import com.catalystplus.admin.response.journal.JournalResponse;
-import com.catalystplus.admin.response.journal.JournalSimpleResponse;
 import com.catalystplus.admin.response.paper.PaperJournalResponse;
-import com.catalystplus.admin.response.paper.PaperResponse;
 import com.catalystplus.admin.response.paperCount.PaperCountResponse;
-import com.catalystplus.admin.response.publisher.PublisherResponse;
 import com.catalystplus.admin.response.subject.SubjectResponse;
 import com.catalystplus.admin.service.*;
 import com.catalystplus.admin.service.impl.AreaServiceImpl;
 import com.catalystplus.admin.service.impl.JournalServiceImpl;
 import com.catalystplus.admin.service.impl.PublisherServiceImpl;
 import com.catalystplus.admin.service.impl.SubjectServiceImpl;
+import com.catalystplus.admin.util.RedisUtil;
 import com.catalystplus.admin.vo.journal.*;
 import com.catalystplus.admin.vo.paperCount.PaperCountVo;
-import com.catalystplus.admin.vo.rank.RankVo;
 import com.catalystplus.admin.vo.subject.SubjectByAreaIdVo;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ZSetOperations;
 
-import javax.swing.text.html.parser.Entity;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.*;
@@ -91,6 +82,30 @@ class CatalystplusAdminApplicationTests {
     PaperService paperService;
     @Autowired
     PaperCountController paperCountController;
+    @Autowired
+    TotalCountService totalCountService;
+    @Autowired
+    RedisUtil redisUtil;
+
+
+    @Test
+    void dateTest(){
+//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//        long l = System.currentTimeMillis();
+//        System.out.println(l);
+//        Date date = new Date(l);
+//        String format = simpleDateFormat.format(date);
+//        System.out.println(format);
+
+//        TotalCount totalCount = totalCountService.getByDate();
+//        totalCount.setTodayRead(totalCount.getTodayRead()+1);
+//        totalCount.setReadTotal(totalCount.getReadTotal()+1);
+//        totalCountService.updateById(totalCount);
+        Long aLong = redisUtil.bitCount(AdminUserConstant.ADMIN_USER_TODAY_SUBSCRIPTION);
+        System.out.println(aLong);
+
+
+    }
 
     @Test
     void paperCountTest(){

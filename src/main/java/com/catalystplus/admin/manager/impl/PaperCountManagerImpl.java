@@ -5,10 +5,7 @@ import com.catalystplus.admin.entity.Subject;
 import com.catalystplus.admin.manager.PaperCountManager;
 import com.catalystplus.admin.response.paperCount.PaperCountResponse;
 import com.catalystplus.admin.response.paperCount.RiseResponse;
-import com.catalystplus.admin.service.JournalService;
-import com.catalystplus.admin.service.PaperCountService;
-import com.catalystplus.admin.service.PaperService;
-import com.catalystplus.admin.service.SubjectService;
+import com.catalystplus.admin.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +29,8 @@ public class PaperCountManagerImpl implements PaperCountManager {
     PaperCountService paperCountService;
     @Autowired
     SubjectService subjectService;
+    @Autowired
+    AreaService areaService;
 
 
 
@@ -146,9 +145,16 @@ public class PaperCountManagerImpl implements PaperCountManager {
 
     @Override
     public PaperCountResponse getPaperCount() {
+
+        //1. 初始化
         PaperCountResponse paperCountResponse = new PaperCountResponse();
+
+        //2. 获取文章、期刊总量
         PaperCount paperCount = paperCountService.getTotalPaperJournal();
+
+        //3. 组装响应
         BeanUtils.copyProperties(paperCount,paperCountResponse);
+
         return paperCountResponse;
     }
 
@@ -170,6 +176,12 @@ public class PaperCountManagerImpl implements PaperCountManager {
         paperCounts.forEach(paperCount -> {
             PaperCountResponse paperCountResponse = new PaperCountResponse();
             BeanUtils.copyProperties(paperCount,paperCountResponse);
+            if(0 != paperCount.getAreaId()){
+                paperCountResponse.setAreaChName(areaService.getById(paperCount.getAreaId()).getChName());
+            }
+            if(0 != paperCount.getSubjectId()){
+                paperCountResponse.setSubjectChName(subjectService.getSubjectBySubjectId(paperCount.getSubjectId()).getChName());
+            }
             paperCountResponses.add(paperCountResponse);
         });
         return paperCountResponses;
@@ -191,6 +203,12 @@ public class PaperCountManagerImpl implements PaperCountManager {
         paperCounts.forEach(paperCount -> {
             PaperCountResponse paperCountResponse = new PaperCountResponse();
             BeanUtils.copyProperties(paperCount,paperCountResponse);
+            if(0 != paperCount.getAreaId()){
+                paperCountResponse.setAreaChName(areaService.getById(paperCount.getAreaId()).getChName());
+            }
+            if(0 != paperCount.getSubjectId()){
+                paperCountResponse.setSubjectChName(subjectService.getSubjectBySubjectId(paperCount.getSubjectId()).getChName());
+            }
             paperCountResponses.add(paperCountResponse);
         });
         return paperCountResponses;
@@ -208,8 +226,8 @@ public class PaperCountManagerImpl implements PaperCountManager {
 
         //3. 组装响应
         if(null != paperCountpre && null != paperCountLatest){
-            System.out.println(paperCountpre.toString());
-            System.out.println(paperCountLatest);
+//            System.out.println(paperCountpre.toString());
+//            System.out.println(paperCountLatest);
             riseResponse.setPaperRise(paperCountLatest.getTodayPaper()*1.0/paperCountpre.getPaperTotal());
             riseResponse.setJournalRise(paperCountLatest.getTodayJournal()*1.0/paperCountpre.getJournalTotal());
         }

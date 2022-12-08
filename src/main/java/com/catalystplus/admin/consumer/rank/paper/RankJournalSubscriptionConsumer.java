@@ -1,6 +1,8 @@
-package com.catalystplus.admin.consumer.rank;
+package com.catalystplus.admin.consumer.rank.paper;
 
 import com.catalystplus.admin.constant.AdminRankConstant;
+import com.catalystplus.admin.entity.TotalCount;
+import com.catalystplus.admin.service.TotalCountService;
 import com.catalystplus.admin.util.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
@@ -16,10 +18,17 @@ public class RankJournalSubscriptionConsumer implements RocketMQListener<String>
 
     @Autowired
     RedisUtil redisUtil;
+    @Autowired
+    TotalCountService totalCountService;
 
     @Override
     public void onMessage(String message) {
         redisUtil.update(AdminRankConstant.ADMIN_RANK_TODAY_SUBSCRIPTION,Long.parseLong(message));
         log.info("subscription消费成功");
+
+        TotalCount totalCount = totalCountService.getByDate();
+        totalCount.setTodaySubscription(totalCount.getTodaySubscription()+1);
+        totalCount.setSubscriptionTotal(totalCount.getSubscriptionTotal()+1);
+        totalCountService.updateById(totalCount);
     }
 }

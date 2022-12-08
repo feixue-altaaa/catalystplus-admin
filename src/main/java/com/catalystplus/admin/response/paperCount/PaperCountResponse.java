@@ -12,9 +12,19 @@ public class PaperCountResponse {
     private Long areaId;
 
     /**
+     * 领域中文名称
+     */
+    private String areaChName;
+
+    /**
      * 主题ID，当type==2时，表示某领域下主题。type==1、3时，为默认值
      */
     private Long subjectId;
+
+    /**
+     * 主题中文名称
+     */
+    private String subjectChName;
 
     /**
      * 当type==1时，表示一个领域下的期刊总数；当type==2时，表示一个领域的主题下的期刊总数，当type==3时，表示数据库期刊总数

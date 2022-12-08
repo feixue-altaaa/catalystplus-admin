@@ -100,4 +100,34 @@ public final class AdminUserConstant {
     public static final String ADMIN_USER_INFO_NNOUUT = "admin:user:info:nnouut";
 
 
+
+    /**
+     * 今日期刊订阅用户数
+     */
+    public static final String ADMIN_USER_TODAY_SUBSCRIPTION = "admin:use:today:subscriptionr";
+
+    /**
+     * 今日阅读文章用户总数
+     */
+    public static final String ADMIN_USER_TODAY_READ = "admin:use:today:read";
+
+    /**
+     * 今日文章收藏用户总数
+     */
+    public static final String ADMIN_USER_TODAY_COLLECT = "admin:use:today:collect";
+
+    /**
+     * 今日打标签用户总数
+     */
+    public static final String ADMIN_USER_TODAY_TAG = "admin:use:today:tag";
+
+    /**
+     * 今日做笔记用户总数
+     */
+    public static final String ADMIN_USER_TODAY_NOTE = "admin:user:today:note";
+
+    /**
+     * 今日文章总点赞用户热度
+     */
+    public static final String ADMIN_USER_TODAY_GOOD = "admin:user:today:good";
 }

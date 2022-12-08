@@ -2,6 +2,7 @@ package com.catalystplus.admin.mapper;
 
 import com.catalystplus.admin.entity.TotalCount;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Select;
 
 /**
 * @author lanran
@@ -10,7 +11,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @Entity com.catalystplus.admin.entity.TotalCount
 */
 public interface TotalCountMapper extends BaseMapper<TotalCount> {
-
 }
 
 
