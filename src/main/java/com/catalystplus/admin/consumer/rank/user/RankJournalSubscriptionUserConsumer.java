@@ -30,5 +30,6 @@ public class RankJournalSubscriptionUserConsumer implements RocketMQListener<Str
         totalCount.setTodaySubscriptionUser(todaySubscription);
         totalCount.setSubscriptionTotalUser(totalCount.getSubscriptionTotalUser()+todaySubscription);
         totalCountService.updateById(totalCount);
+
     }
 }

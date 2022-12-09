@@ -45,6 +45,27 @@ class CatalystplusAdminApplicationTests {
     void contextLoads() {
     }
 
+    @Test
+    void redisTest(){
+
+
+//        Set keys = redisTemplate.keys("admin:user:today:" + "*");
+//        keys.forEach(key -> );
+
+        redisTemplate.delete(redisTemplate.keys("admin:user:today:"+"*"));
+
+
+
+
+//        Map entries = redisTemplate.opsForHash().entries("admin:user:today:111");
+//        Set keys = redisTemplate.opsForHash().keys("admin:user:today:111");
+//
+//
+//        keys.forEach(key -> {
+//            System.out.println(redisTemplate.opsForHash().get("admin:user:today:111", key));
+//        });
+    }
+
 
     @Autowired
     JournalController journalController;

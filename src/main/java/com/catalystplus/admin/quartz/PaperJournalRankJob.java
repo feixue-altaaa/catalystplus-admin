@@ -23,7 +23,7 @@ public class PaperJournalRankJob {
     /**
      * 每天凌晨更新Redis中期刊、文章总量信息
      */
-    @Scheduled(cron = "0 50 15 ? * *")
+    @Scheduled(cron = "0 29 13 ? * *")
     public void updatePaperAndJournalTotal(){
 
 
@@ -33,6 +33,7 @@ public class PaperJournalRankJob {
         rankManager.updateMySQLJournalCountTotal();
 
         //更新Redis文章收藏、打标签、做笔记、点赞总量、期刊订阅总量
+        rankManager.updatePaperTotal(AdminRankConstant.READ_TOTAL,AdminRankConstant.rankNumber,AdminRankConstant.ADMIN_RANK_TOTAL_READ);
         rankManager.updatePaperTotal(AdminRankConstant.COLLECT_TOTAL,AdminRankConstant.rankNumber,AdminRankConstant.ADMIN_RANK_TOTAL_COLLECT);
         rankManager.updatePaperTotal(AdminRankConstant.TAG_TOTAL,AdminRankConstant.rankNumber,AdminRankConstant.ADMIN_RANK_TOTAL_TAG);
         rankManager.updatePaperTotal(AdminRankConstant.NOTE_TOTAL,AdminRankConstant.rankNumber,AdminRankConstant.ADMIN_RANK_TOTAL_NOTE);
@@ -41,13 +42,16 @@ public class PaperJournalRankJob {
                 (AdminRankConstant.SUBSCRIPTION_TOTAL,AdminRankConstant.rankNumber,AdminRankConstant.ADMIN_RANK_TOTAL_SUBSCRIPTION);
 
         //清空Redis中今日新增部分
-        rankManager.redisFlush();
+//        rankManager.redisFlush();
 
         //更新数据库中rank_top表
         rankManager.updateRankTotalTop();
 
         //清空Redis中admin:user:today下所有key
-        
+        redisUtil.deleteBatch("admin:user:today");
+
+        //total_count重新插入一条
+
 
     }
 
