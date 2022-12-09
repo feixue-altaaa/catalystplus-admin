@@ -2,6 +2,7 @@ package com.catalystplus.admin;
 
 import com.catalystplus.admin.consumer.TempProducer;
 import com.catalystplus.admin.dto.AdminDTO;
+import com.catalystplus.admin.util.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,9 @@ class UserDataMessageTests {
 
     @Autowired
     TempProducer tempProducer;
+
+    @Autowired
+    RedisUtil redisUtil;
 
     @Test
     void testMQ() {

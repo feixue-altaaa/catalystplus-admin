@@ -1,4 +1,4 @@
-package com.catalystplus.admin.consumer;
+package com.catalystplus.admin.consumer.user;
 
 
 import com.catalystplus.admin.dto.AdminDTO;

@@ -1,7 +1,5 @@
 package com.catalystplus.admin.util;
 
-import com.catalystplus.admin.entity.Journal;
-import com.catalystplus.admin.entity.Paper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.RedisStringCommands;
@@ -27,6 +25,7 @@ public class RedisUtil {
     // 将bitmap中的offset为设置为value
     public void setBit(String key, Long offset, boolean value) {
         redisTemplate.opsForValue().setBit(key, offset, value);
+        Set<Object> faf = redisTemplate.opsForHash().keys("faf");
     }
 
     // 获取bitmap中bit为1的数量
@@ -42,7 +41,6 @@ public class RedisUtil {
             return connection.bitCount(key.getBytes());
         });
     }
-
 
     /**
      * 获取redis中zset数据

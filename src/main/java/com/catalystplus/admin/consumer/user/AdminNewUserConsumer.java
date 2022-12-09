@@ -1,8 +1,9 @@
-package com.catalystplus.admin.consumer;
+package com.catalystplus.admin.consumer.user;
 
 
 import com.catalystplus.admin.dto.AdminDTO;
 import com.catalystplus.admin.manager.impl.UserActiveManagerImpl;
+import com.catalystplus.admin.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
@@ -23,6 +24,9 @@ public class AdminNewUserConsumer implements RocketMQListener<AdminDTO> {
 
     @Autowired
     private UserActiveManagerImpl userManager;
+
+    @Autowired
+    private SysUserService sysUserService;
 
     @Override
     public void onMessage(AdminDTO message) {

@@ -2,7 +2,6 @@ package com.catalystplus.admin;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.catalystplus.admin.constant.AdminRankConstant;
-import com.catalystplus.admin.constant.AdminUserConstant;
 import com.catalystplus.admin.controller.*;
 import com.catalystplus.admin.entity.*;
 import com.catalystplus.admin.manager.PaperCountManager;
@@ -23,8 +22,8 @@ import com.catalystplus.admin.service.impl.AreaServiceImpl;
 import com.catalystplus.admin.service.impl.JournalServiceImpl;
 import com.catalystplus.admin.service.impl.PublisherServiceImpl;
 import com.catalystplus.admin.service.impl.SubjectServiceImpl;
-import com.catalystplus.admin.util.RedisUtil;
-import com.catalystplus.admin.vo.journal.*;
+import com.catalystplus.admin.vo.journal.JournalByJournalNameVo;
+import com.catalystplus.admin.vo.journal.ModifyJournalVo;
 import com.catalystplus.admin.vo.paperCount.PaperCountVo;
 import com.catalystplus.admin.vo.subject.SubjectByAreaIdVo;
 import lombok.extern.slf4j.Slf4j;
@@ -33,9 +32,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @SpringBootTest
@@ -82,30 +80,6 @@ class CatalystplusAdminApplicationTests {
     PaperService paperService;
     @Autowired
     PaperCountController paperCountController;
-    @Autowired
-    TotalCountService totalCountService;
-    @Autowired
-    RedisUtil redisUtil;
-
-
-    @Test
-    void dateTest(){
-//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//        long l = System.currentTimeMillis();
-//        System.out.println(l);
-//        Date date = new Date(l);
-//        String format = simpleDateFormat.format(date);
-//        System.out.println(format);
-
-//        TotalCount totalCount = totalCountService.getByDate();
-//        totalCount.setTodayRead(totalCount.getTodayRead()+1);
-//        totalCount.setReadTotal(totalCount.getReadTotal()+1);
-//        totalCountService.updateById(totalCount);
-        Long aLong = redisUtil.bitCount(AdminUserConstant.ADMIN_USER_TODAY_READ);
-        System.out.println(aLong);
-
-
-    }
 
     @Test
     void paperCountTest(){
@@ -403,20 +377,6 @@ class CatalystplusAdminApplicationTests {
     RedisTemplate redisTemplate;
     @Autowired
     RankJournalService rankJournalService;
-
-
-    @Test
-    void mysqlTest(){
-        try{
-            Class.forName("com.mysql.cj.jdbc.Driver") ;
-            String url ="jdbc:mysql://192.168.3.103/sys?characterEncoding=utf8" ;
-            Connection conn = DriverManager.getConnection(url,"root","Catalyst@103") ;
-            System.out.println("success...") ;
-        }catch(Exception e){
-            System.out.println("failure!!!") ;
-        }
-    }
-
 
     @Test
     void rankTest(){
