@@ -43,6 +43,16 @@ class CatalystplusAdminApplicationTests {
     void contextLoads() {
     }
 
+    @Autowired
+    UserInfoService userInfoService;
+
+    @Test
+    void userInfoTest(){
+        UserInfo userInfo = new UserInfo();
+        userInfo.setNncut(1L);
+        userInfoService.save(userInfo);
+    }
+
     @Test
     void redisTest(){
 

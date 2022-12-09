@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.catalystplus.admin.mapper.UserActiveMapper">
+
+    <resultMap id="BaseResultMap" type="com.catalystplus.admin.entity.UserActive">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="tnu" column="TNU" jdbcType="BIGINT"/>
+            <result property="nnut" column="NNUT" jdbcType="BIGINT"/>
+            <result property="dau" column="DAU" jdbcType="BIGINT"/>
+            <result property="pdau" column="PDAU" jdbcType="DOUBLE"/>
+            <result property="wau" column="WAU" jdbcType="BIGINT"/>
+            <result property="pwau" column="PWAU" jdbcType="DOUBLE"/>
+            <result property="mau" column="MAU" jdbcType="BIGINT"/>
+            <result property="pmau" column="PMAU" jdbcType="DOUBLE"/>
+            <result property="wnru" column="WNRU" jdbcType="BIGINT"/>
+            <result property="wurr" column="WURR" jdbcType="DOUBLE"/>
+            <result property="mnru" column="MNRU" jdbcType="BIGINT"/>
+            <result property="murr" column="MURR" jdbcType="DOUBLE"/>
+            <result property="dateTime" column="date_time" jdbcType="VARCHAR"/>
+            <result property="status" column="status" jdbcType="TINYINT"/>
+            <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
+            <result property="updatedTime" column="updated_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,TNU,NNUT,
+        DAU,PDAU,WAU,
+        PWAU,MAU,PMAU,
+        WNRU,WURR,MNRU,
+        MURR,date_time,status,
+        created_time,updated_time
+    </sql>
+</mapper>

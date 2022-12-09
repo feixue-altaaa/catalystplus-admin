@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.catalystplus.admin.mapper.UserDisciplineMapper">
+
+    <resultMap id="BaseResultMap" type="com.catalystplus.admin.entity.UserDiscipline">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="tn01du" column="TN01DU" jdbcType="BIGINT"/>
+            <result property="nn01dut" column="NN01DUT" jdbcType="BIGINT"/>
+            <result property="tn02du" column="TN02DU" jdbcType="BIGINT"/>
+            <result property="nn02dut" column="NN02DUT" jdbcType="BIGINT"/>
+            <result property="tn03du" column="TN03DU" jdbcType="BIGINT"/>
+            <result property="nn03dut" column="NN03DUT" jdbcType="BIGINT"/>
+            <result property="tn04du" column="TN04DU" jdbcType="BIGINT"/>
+            <result property="nn04dut" column="NN04DUT" jdbcType="BIGINT"/>
+            <result property="tn05du" column="TN05DU" jdbcType="BIGINT"/>
+            <result property="nn05dut" column="NN05DUT" jdbcType="BIGINT"/>
+            <result property="tn06du" column="TN06DU" jdbcType="BIGINT"/>
+            <result property="nn06dut" column="NN06DUT" jdbcType="BIGINT"/>
+            <result property="tn07du" column="TN07DU" jdbcType="BIGINT"/>
+            <result property="nn07dut" column="NN07DUT" jdbcType="BIGINT"/>
+            <result property="tn08du" column="TN08DU" jdbcType="BIGINT"/>
+            <result property="nn08dut" column="NN08DUT" jdbcType="BIGINT"/>
+            <result property="tn09du" column="TN09DU" jdbcType="BIGINT"/>
+            <result property="nn09dut" column="NN09DUT" jdbcType="BIGINT"/>
+            <result property="tn10du" column="TN10DU" jdbcType="BIGINT"/>
+            <result property="nn10dut" column="NN10DUT" jdbcType="BIGINT"/>
+            <result property="tn11du" column="TN11DU" jdbcType="BIGINT"/>
+            <result property="nn11dut" column="NN11DUT" jdbcType="BIGINT"/>
+            <result property="tn12du" column="TN12DU" jdbcType="BIGINT"/>
+            <result property="nn12dut" column="NN12DUT" jdbcType="BIGINT"/>
+            <result property="tn13du" column="TN13DU" jdbcType="BIGINT"/>
+            <result property="nn13dut" column="NN13DUT" jdbcType="BIGINT"/>
+            <result property="tn14du" column="TN14DU" jdbcType="BIGINT"/>
+            <result property="nn14dut" column="NN14DUT" jdbcType="BIGINT"/>
+            <result property="dateTime" column="date_time" jdbcType="VARCHAR"/>
+            <result property="status" column="status" jdbcType="TINYINT"/>
+            <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
+            <result property="updatedTime" column="updated_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,TN01DU,NN01DUT,
+        TN02DU,NN02DUT,TN03DU,
+        NN03DUT,TN04DU,NN04DUT,
+        TN05DU,NN05DUT,TN06DU,
+        NN06DUT,TN07DU,NN07DUT,
+        TN08DU,NN08DUT,TN09DU,
+        NN09DUT,TN10DU,NN10DUT,
+        TN11DU,NN11DUT,TN12DU,
+        NN12DUT,TN13DU,NN13DUT,
+        TN14DU,NN14DUT,date_time,
+        status,created_time,updated_time
+    </sql>
+</mapper>

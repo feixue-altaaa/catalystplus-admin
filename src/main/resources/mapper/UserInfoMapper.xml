@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.catalystplus.admin.mapper.UserInfoMapper">
+
+    <resultMap id="BaseResultMap" type="com.catalystplus.admin.entity.UserInfo">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="tnu" column="TNU" jdbcType="BIGINT"/>
+            <result property="nnut" column="NNUT" jdbcType="BIGINT"/>
+            <result property="tnm" column="TNM" jdbcType="BIGINT"/>
+            <result property="nnmt" column="NNMT" jdbcType="BIGINT"/>
+            <result property="tnd" column="TND" jdbcType="BIGINT"/>
+            <result property="nndt" column="NNDT" jdbcType="BIGINT"/>
+            <result property="tnt" column="TNT" jdbcType="BIGINT"/>
+            <result property="nntt" column="NNTT" jdbcType="BIGINT"/>
+            <result property="tncu" column="TNCU" jdbcType="BIGINT"/>
+            <result property="nncut" column="NNCUT" jdbcType="BIGINT"/>
+            <result property="tn985u" column="TN985U" jdbcType="BIGINT"/>
+            <result property="nn985ut" column="NN985UT" jdbcType="BIGINT"/>
+            <result property="tn211u" column="TN211U" jdbcType="BIGINT"/>
+            <result property="nn211ut" column="NN211UT" jdbcType="BIGINT"/>
+            <result property="tnfbuu" column="TNFBUU" jdbcType="BIGINT"/>
+            <result property="nnfbuu" column="NNFBUU" jdbcType="BIGINT"/>
+            <result property="tnouu" column="TNOUU" jdbcType="BIGINT"/>
+            <result property="nnouut" column="NNOUUT" jdbcType="BIGINT"/>
+            <result property="dateTime" column="date_time" jdbcType="VARCHAR"/>
+            <result property="status" column="status" jdbcType="TINYINT"/>
+            <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
+            <result property="updatedTime" column="updated_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,TNU,NNUT,
+        TNM,NNMT,TND,
+        NNDT,TNT,NNTT,
+        TNCU,NNCUT,TN985U,
+        NN985UT,TN211U,NN211UT,
+        TNFBUU,NNFBUU,TNOUU,
+        NNOUUT,date_time,status,
+        created_time,updated_time
+    </sql>
+</mapper>
