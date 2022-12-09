@@ -139,7 +139,7 @@ public class RedisUtil {
      * 批量删除Redis中key
      */
     public void deleteBatch(String prefixKey){
-
+        redisTemplate.delete(redisTemplate.keys(prefixKey+"*"));
     }
 
 }
