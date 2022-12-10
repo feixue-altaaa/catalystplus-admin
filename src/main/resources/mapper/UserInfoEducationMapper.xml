@@ -2,12 +2,11 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.catalystplus.admin.mapper.UserInfoMapper">
+<mapper namespace="com.catalystplus.admin.mapper.UserInfoEducationMapper">
 
-    <resultMap id="BaseResultMap" type="com.catalystplus.admin.entity.UserInfo">
+    <resultMap id="BaseResultMap" type="com.catalystplus.admin.entity.UserInfoEducation">
             <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="discipline" column="discipline" jdbcType="VARCHAR"/>
-            <result property="major" column="major" jdbcType="VARCHAR"/>
+            <result property="education" column="education" jdbcType="VARCHAR"/>
             <result property="addNumber" column="add_number" jdbcType="BIGINT"/>
             <result property="totalNumber" column="total_number" jdbcType="BIGINT"/>
             <result property="dateTime" column="date_time" jdbcType="VARCHAR"/>
@@ -17,8 +16,8 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,discipline,major,
-        add_number,total_number,date_time,
-        status,created_time,updated_time
+        id,education,add_number,
+        total_number,date_time,status,
+        created_time,updated_time
     </sql>
 </mapper>
