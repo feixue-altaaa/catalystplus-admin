@@ -10,11 +10,11 @@ import lombok.Data;
 
 /**
  * 
- * @TableName user_info
+ * @TableName user_info_education
  */
-@TableName(value ="user_info")
+@TableName(value ="user_info_education")
 @Data
-public class UserInfo implements Serializable {
+public class UserInfoEducation implements Serializable {
     /**
      * 用户信息id
      */
@@ -22,14 +22,9 @@ public class UserInfo implements Serializable {
     private Long id;
 
     /**
-     * 学科
+     * 用户学历名称，比如本科生、硕士生
      */
-    private String discipline;
-
-    /**
-     * 专业
-     */
-    private String major;
+    private String education;
 
     /**
      * 今日新增数量
@@ -75,10 +70,9 @@ public class UserInfo implements Serializable {
         if (getClass() != that.getClass()) {
             return false;
         }
-        UserInfo other = (UserInfo) that;
+        UserInfoEducation other = (UserInfoEducation) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-            && (this.getDiscipline() == null ? other.getDiscipline() == null : this.getDiscipline().equals(other.getDiscipline()))
-            && (this.getMajor() == null ? other.getMajor() == null : this.getMajor().equals(other.getMajor()))
+            && (this.getEducation() == null ? other.getEducation() == null : this.getEducation().equals(other.getEducation()))
             && (this.getAddNumber() == null ? other.getAddNumber() == null : this.getAddNumber().equals(other.getAddNumber()))
             && (this.getTotalNumber() == null ? other.getTotalNumber() == null : this.getTotalNumber().equals(other.getTotalNumber()))
             && (this.getDateTime() == null ? other.getDateTime() == null : this.getDateTime().equals(other.getDateTime()))
@@ -92,8 +86,7 @@ public class UserInfo implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
-        result = prime * result + ((getDiscipline() == null) ? 0 : getDiscipline().hashCode());
-        result = prime * result + ((getMajor() == null) ? 0 : getMajor().hashCode());
+        result = prime * result + ((getEducation() == null) ? 0 : getEducation().hashCode());
         result = prime * result + ((getAddNumber() == null) ? 0 : getAddNumber().hashCode());
         result = prime * result + ((getTotalNumber() == null) ? 0 : getTotalNumber().hashCode());
         result = prime * result + ((getDateTime() == null) ? 0 : getDateTime().hashCode());
@@ -110,8 +103,7 @@ public class UserInfo implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", discipline=").append(discipline);
-        sb.append(", major=").append(major);
+        sb.append(", education=").append(education);
         sb.append(", addNumber=").append(addNumber);
         sb.append(", totalNumber=").append(totalNumber);
         sb.append(", dateTime=").append(dateTime);
