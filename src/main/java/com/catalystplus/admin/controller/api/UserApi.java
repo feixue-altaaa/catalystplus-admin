@@ -9,10 +9,7 @@ import com.catalystplus.admin.response.user.UserRetainedResponse;
 import com.catalystplus.admin.vo.user.UserByDateVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -55,6 +52,11 @@ public interface UserApi {
     @ApiOperation("获取用户信息按学科划分")
     Response<List<UserInfoResponse>> queryUsersInfoByDiscipline(@RequestBody UserByDateVo userByDateVo);
 
+    @PostMapping("/auth/user/info/major")
+    @ApiOperation("获取用户信息按专业划分")
+    Response<List<UserInfoResponse>> queryUsersInfoByMajor(@RequestBody UserByDateVo userByDateVo,
+                                                           @RequestParam(required = false, defaultValue = "1") int pageNo,
+                                                           @RequestParam(required = false, defaultValue = "10") int pageSize);
 
 
 }

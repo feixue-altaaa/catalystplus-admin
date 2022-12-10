@@ -51,12 +51,5 @@ public final class RedisKeyUtil {
         return ADMIN_USER_INFO_EDUCATION + SPLIT + dateTime;
     }
 
-    public static String getUserUniversityInfoKey(String dateTime) {
-        return ADMIN_USER_INFO_UNIVERSITY + SPLIT + dateTime;
-    }
-
-    public static String getUserDisciplineInfoKey(String dateTime) {
-        return ADMIN_USER_INFO_DISCIPLINE + SPLIT + dateTime;
-    }
 
 }

@@ -46,12 +46,6 @@ class CatalystplusAdminApplicationTests {
     @Autowired
     UserInfoService userInfoService;
 
-    @Test
-    void userInfoTest(){
-        UserInfo userInfo = new UserInfo();
-        userInfo.setNncut(1L);
-        userInfoService.save(userInfo);
-    }
 
     @Test
     void redisTest(){
@@ -87,16 +81,6 @@ class CatalystplusAdminApplicationTests {
 //        log.info("journal: {}", journal);
     }
 
-
-    @Autowired
-    VisualizeService visualizeService;
-
-    @Test
-    void adminTest() {
-        Visualize visualize = new Visualize();
-        visualize.setAu(652L);
-        visualizeService.save(visualize);
-    }
 
 
     @Autowired

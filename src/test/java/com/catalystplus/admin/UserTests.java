@@ -2,7 +2,8 @@ package com.catalystplus.admin;
 
 import com.catalystplus.admin.consumer.TempProducer;
 import com.catalystplus.admin.dto.AdminDTO;
-import com.catalystplus.admin.service.UserInfoService;
+import com.catalystplus.admin.entity.SysUser;
+import com.catalystplus.admin.service.SysUserService;
 import com.catalystplus.admin.util.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -16,7 +17,7 @@ import java.util.Objects;
 
 @Slf4j
 @SpringBootTest
-class UserDataMessageTests {
+class UserTests {
 
     @Autowired
     TempProducer tempProducer;
@@ -28,12 +29,12 @@ class UserDataMessageTests {
     RedisTemplate<String, Object> redisTemplate;
 
     @Autowired
-    UserInfoService userInfoService;
+    SysUserService sysUserService;
 
     @Test
     void testMQ() {
         AdminDTO adminDTO = new AdminDTO();
-        adminDTO.setUserId(5L);
+        adminDTO.setUserId(808390476037095424L);
         adminDTO.setCreatedTime(LocalDateTime.now());
         tempProducer.sendMessage("AdminTopic:nnut", adminDTO);
     }
@@ -56,6 +57,16 @@ class UserDataMessageTests {
         for (int i = 0; i < bitSet.length(); i++) {
             System.out.println(bitSet.get(i));
         }
+    }
+
+    @Test
+    void testInserSysUser() {
+        SysUser sysUser = new SysUser();
+        sysUser.setUsername("方胜");
+        sysUser.setJob("master");
+        sysUser.setDiscipline("工学");
+        sysUser.setMajor("机械工程");
+        sysUserService.save(sysUser);
     }
 
 

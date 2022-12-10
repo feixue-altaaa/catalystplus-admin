@@ -2,11 +2,11 @@ package com.catalystplus.admin.manager.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.catalystplus.admin.entity.SysUser;
-import com.catalystplus.admin.entity.UserInfo;
+import com.catalystplus.admin.entity.UserInfoEducation;
 import com.catalystplus.admin.manager.UserInfoManager;
 import com.catalystplus.admin.response.user.UserInfoResponse;
 import com.catalystplus.admin.service.SysUserService;
-import com.catalystplus.admin.service.UserInfoService;
+import com.catalystplus.admin.service.UserInfoEducationService;
 import com.catalystplus.admin.util.RedisKeyUtil;
 import com.catalystplus.admin.util.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.catalystplus.admin.constant.AdminUserConstant.*;
 
 @Slf4j
 @Service
@@ -27,52 +29,70 @@ public class UserInfoManagerImpl implements UserInfoManager {
     private RedisUtil redisUtil;
 
     @Autowired
-    private UserInfoService userInfoService;
+    private UserInfoEducationService userInfoEducationService;
 
     @Override
     public List<UserInfoResponse> getNewUsersByEducation(String dateTime) {
-        List<UserInfoResponse> userInfoByEducationResponses = new ArrayList<>();
+        List<UserInfoResponse> userInfoResponses = new ArrayList<>();
 
-        // 查询昨日的记录
+        // 获取昨天的日期
         String lastDate = getLastDate(dateTime);
-        QueryWrapper<UserInfo> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("date_time", lastDate);
-        UserInfo userInfo = userInfoService.getOne(queryWrapper);
 
-        // 1.1 今日新增本科生数
-        Long undergraduatesAddNumber = (Long) redisUtil.getHashKey(RedisKeyUtil.getUserEducationInfoKey(dateTime), "undergraduates");
-        // 1.2 截至今日本科生数
-        Long undergraduatesTotalNumber = undergraduatesAddNumber + userInfo.getTnu();
-        // 1.3 组装响应
-        UserInfoResponse undergraduatesResponse = new UserInfoResponse();
-        undergraduatesResponse.setId("undergraduates");
-        undergraduatesResponse.setAddNumber(undergraduatesAddNumber);
-        undergraduatesResponse.setTotalNumber(undergraduatesTotalNumber);
+        String key = RedisKeyUtil.getUserEducationInfoKey(dateTime);
 
-        // 2.1 今日新增研究生数
-        Long mastersAddNumber = (Long) redisUtil.getHashKey(RedisKeyUtil.getUserEducationInfoKey(dateTime), "masters");
-        // 2.2 截至今日研究生数
-        Long mastersTotalNumber = mastersAddNumber + userInfo.getTnm();
-        // 2.3 组装响应
-        UserInfoResponse mastersResponse = new UserInfoResponse();
-        mastersResponse.setId("masters");
-        mastersResponse.setAddNumber(mastersAddNumber);
-        mastersResponse.setTotalNumber(mastersTotalNumber);
+        // 1. 统计本科生
+        UserInfoResponse undergraduateInfoResponse = new UserInfoResponse();
+        undergraduateInfoResponse.setId(UNDERGRADUATE);
+        // 1.1 今日新增本科生数量
+        Long undergraduateAddNumber = (Long) redisUtil.getHashValue(key, UNDERGRADUATE);
+        undergraduateInfoResponse.setAddNumber(undergraduateAddNumber);
+        // 1.2 截至今日本科生数量 = 今日新增本科生数量 + 截至昨日本科生数量
+        QueryWrapper<UserInfoEducation> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("date_time", lastDate).eq("education", UNDERGRADUATE);
+        Long undergraduateTotalNumber = undergraduateAddNumber + userInfoEducationService.getOne(queryWrapper).getTotalNumber();
+        undergraduateInfoResponse.setTotalNumber(undergraduateTotalNumber);
+        userInfoResponses.add(undergraduateInfoResponse);
 
-        return  userInfoByEducationResponses;
+        // 2. 统计硕士生
+        UserInfoResponse masterInfoResponse = new UserInfoResponse();
+        masterInfoResponse.setId(MASTER);
+        // 2.1 今日新增硕士生数量
+        Long masterAddNumber = (Long) redisUtil.getHashValue(key, MASTER);
+        masterInfoResponse.setAddNumber(masterAddNumber);
+        // 2.2 截至今日硕士生数量 = 今日新增硕士生数量 + 截至昨日硕士生数量
+        queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("date_time", lastDate).eq("education", MASTER);
+        Long masterTotalNumber = masterAddNumber + userInfoEducationService.getOne(queryWrapper).getTotalNumber();
+        undergraduateInfoResponse.setTotalNumber(masterTotalNumber);
+        userInfoResponses.add(masterInfoResponse);
+
+
+        // TODO 3. 统计博士生
+        UserInfoResponse doctorInfoResponse = new UserInfoResponse();
+        doctorInfoResponse.setId("doctor");
+
+        // TODO 4. 统计老师
+        UserInfoResponse teacherInfoResponse = new UserInfoResponse();
+        teacherInfoResponse.setId("teacher");
+
+        return  userInfoResponses;
     }
 
     @Override
     public void recordNewUsersByEducationToday(Long userId, String dateTime) {
         SysUser sysUser = sysUserService.getById(userId);
-        if ("undergraduates".equals(sysUser.getJob())) {
-            redisUtil.hashIncrement(RedisKeyUtil.getUserEducationInfoKey(dateTime), "undergraduates");
-        } else if ("masters".equals(sysUser.getJob())) {
-            redisUtil.hashIncrement(RedisKeyUtil.getUserEducationInfoKey(dateTime), "masters");
-        } else if ("doctors".equals(sysUser.getJob())) {
-            redisUtil.hashIncrement(RedisKeyUtil.getUserEducationInfoKey(dateTime), "doctors");
-        } else if ("teachers".equals(sysUser.getJob())) {
-            redisUtil.hashIncrement(RedisKeyUtil.getUserEducationInfoKey(dateTime), "teachers");
+        log.info("sysUser is {}", sysUser);
+        if (sysUser == null) {
+            throw new RuntimeException("用户不存在");
+        }
+        if (UNDERGRADUATE.equals(sysUser.getJob())) {
+            redisUtil.hashValueIncrement(RedisKeyUtil.getUserEducationInfoKey(dateTime), UNDERGRADUATE);
+        } else if (MASTER.equals(sysUser.getJob())) {
+            redisUtil.hashValueIncrement(RedisKeyUtil.getUserEducationInfoKey(dateTime), MASTER);
+        } else if (DOCTOR.equals(sysUser.getJob())) {
+            redisUtil.hashValueIncrement(RedisKeyUtil.getUserEducationInfoKey(dateTime), DOCTOR);
+        } else if (TEACHER.equals(sysUser.getJob())) {
+            redisUtil.hashValueIncrement(RedisKeyUtil.getUserEducationInfoKey(dateTime), TEACHER);
         }
     }
 

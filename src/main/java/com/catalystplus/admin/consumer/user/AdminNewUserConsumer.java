@@ -3,6 +3,7 @@ package com.catalystplus.admin.consumer.user;
 
 import com.catalystplus.admin.dto.AdminDTO;
 import com.catalystplus.admin.manager.impl.UserActiveManagerImpl;
+import com.catalystplus.admin.manager.impl.UserInfoManagerImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
@@ -24,6 +25,9 @@ public class AdminNewUserConsumer implements RocketMQListener<AdminDTO> {
     @Autowired
     private UserActiveManagerImpl userActiveManager;
 
+    @Autowired
+    private UserInfoManagerImpl userInfoManager;
+
 
     @Override
     public void onMessage(AdminDTO message) {
@@ -34,9 +38,9 @@ public class AdminNewUserConsumer implements RocketMQListener<AdminDTO> {
         // 2.记录今日新增用户数
         userActiveManager.recordNewUsersToday(userId, createdTime.format(DateTimeFormatter.ISO_LOCAL_DATE));
 
-        // 3.记录今日新增用户数-按学历划分
+        // 3.按学历记录今日新增用户数
+        userInfoManager.recordNewUsersByEducationToday(userId, createdTime.format(DateTimeFormatter.ISO_LOCAL_DATE));
 
-        // 4.记录今日新增用户数-按学校划分
 
 
     }

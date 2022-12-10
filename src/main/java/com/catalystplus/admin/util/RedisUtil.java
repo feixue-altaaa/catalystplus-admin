@@ -25,7 +25,6 @@ public class RedisUtil {
     // 将bitmap中的offset为设置为value
     public void setBit(String key, Long offset, boolean value) {
         redisTemplate.opsForValue().setBit(key, offset, value);
-        Set<Object> faf = redisTemplate.opsForHash().keys("faf");
     }
 
     // 获取bitmap中bit为1的数量
@@ -44,12 +43,12 @@ public class RedisUtil {
 
 
     // 哈希键自增1
-    public void hashIncrement(String key, String hashKey) {
+    public void hashValueIncrement(String key, String hashKey) {
         redisTemplate.opsForHash().increment(key, hashKey, 1);
     }
 
     // 获取哈希键
-    public Object getHashKey(String key, String hashKey) {
+    public Object getHashValue(String key, String hashKey) {
         return redisTemplate.opsForHash().get(key, hashKey);
     }
 
