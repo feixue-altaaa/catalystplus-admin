@@ -22,94 +22,64 @@ public class UserInfo implements Serializable {
     private Long id;
 
     /**
-     * 截至今日本科生总数, Total Number of Undergraduates
+     * 本科生
      */
-    private Long tnu;
+    private Long undergraduates;
 
     /**
-     * 今日新增本科生数, Number of New Undergraduates Today
+     * 硕士生
      */
-    private Long nnut;
+    private Long masters;
 
     /**
-     * 截至今日硕士生总数, Total Number of Masters
+     * 博士生
      */
-    private Long tnm;
+    private Long doctors;
 
     /**
-     * 今日新增硕士生数, Number of New Masters Today
+     * 老师
      */
-    private Long nnmt;
+    private Long teachers;
 
     /**
-     * 截至今日博士生总数, Total Number of Doctors
+     * c9院校用户
      */
-    private Long tnd;
+    private Long universityC9;
 
     /**
-     * 今日新增博士生数, Number of New Doctors Today
+     * 985院校用户
      */
-    private Long nndt;
+    private Long university985;
 
     /**
-     * 截至今日老师总数, Total Number of Teachers
+     * 211院校用户
      */
-    private Long tnt;
+    private Long university211;
 
     /**
-     * 今日新增老师数, Number of New Teachers Today
+     * 其他院校用户
      */
-    private Long nntt;
+    private Long universityOther;
 
     /**
-     * 截至今日C9用户总数, Total Number of C9 Users
+     * 学科
      */
-    private Long tncu;
+    private Long discipline;
 
     /**
-     * 今日新增C9用户数, Number of New C9 Users Today
+     * 专业
      */
-    private Long nncut;
+    private Long major;
 
     /**
-     * 截至今日985用户总数, Total Number of 985 Users
+     * 今日新增数量
      */
-    private Long tn985u;
+    private Long addNumber;
 
     /**
-     * 今日新增985用户数, Number of New 985 Users Today
+     * 截至今日总数量
      */
-    private Long nn985ut;
-
-    /**
-     * 截至今日211用户总数, Total Number of 211 Users
-     */
-    private Long tn211u;
-
-    /**
-     * 今日新增211用户数, Number of New 211 Users Today
-     */
-    private Long nn211ut;
-
-    /**
-     * 截至今日一本院校用户总数, Total Number of First Batch University Users
-     */
-    private Long tnfbuu;
-
-    /**
-     * 今日新增一本院校用户数, Number of New First Batch University Users Today
-     */
-    private Long nnfbuu;
-
-    /**
-     * 截至今日其他院校用户总数, Total Number of Other University Users
-     */
-    private Long tnouu;
-
-    /**
-     * 今日新增其他院校用户数, Number of New Other University Users Today
-     */
-    private Long nnouut;
+    private Long totalNumber;
 
     /**
      * 当日日期，比如2022-11-26
@@ -147,24 +117,18 @@ public class UserInfo implements Serializable {
         }
         UserInfo other = (UserInfo) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-            && (this.getTnu() == null ? other.getTnu() == null : this.getTnu().equals(other.getTnu()))
-            && (this.getNnut() == null ? other.getNnut() == null : this.getNnut().equals(other.getNnut()))
-            && (this.getTnm() == null ? other.getTnm() == null : this.getTnm().equals(other.getTnm()))
-            && (this.getNnmt() == null ? other.getNnmt() == null : this.getNnmt().equals(other.getNnmt()))
-            && (this.getTnd() == null ? other.getTnd() == null : this.getTnd().equals(other.getTnd()))
-            && (this.getNndt() == null ? other.getNndt() == null : this.getNndt().equals(other.getNndt()))
-            && (this.getTnt() == null ? other.getTnt() == null : this.getTnt().equals(other.getTnt()))
-            && (this.getNntt() == null ? other.getNntt() == null : this.getNntt().equals(other.getNntt()))
-            && (this.getTncu() == null ? other.getTncu() == null : this.getTncu().equals(other.getTncu()))
-            && (this.getNncut() == null ? other.getNncut() == null : this.getNncut().equals(other.getNncut()))
-            && (this.getTn985u() == null ? other.getTn985u() == null : this.getTn985u().equals(other.getTn985u()))
-            && (this.getNn985ut() == null ? other.getNn985ut() == null : this.getNn985ut().equals(other.getNn985ut()))
-            && (this.getTn211u() == null ? other.getTn211u() == null : this.getTn211u().equals(other.getTn211u()))
-            && (this.getNn211ut() == null ? other.getNn211ut() == null : this.getNn211ut().equals(other.getNn211ut()))
-            && (this.getTnfbuu() == null ? other.getTnfbuu() == null : this.getTnfbuu().equals(other.getTnfbuu()))
-            && (this.getNnfbuu() == null ? other.getNnfbuu() == null : this.getNnfbuu().equals(other.getNnfbuu()))
-            && (this.getTnouu() == null ? other.getTnouu() == null : this.getTnouu().equals(other.getTnouu()))
-            && (this.getNnouut() == null ? other.getNnouut() == null : this.getNnouut().equals(other.getNnouut()))
+            && (this.getUndergraduates() == null ? other.getUndergraduates() == null : this.getUndergraduates().equals(other.getUndergraduates()))
+            && (this.getMasters() == null ? other.getMasters() == null : this.getMasters().equals(other.getMasters()))
+            && (this.getDoctors() == null ? other.getDoctors() == null : this.getDoctors().equals(other.getDoctors()))
+            && (this.getTeachers() == null ? other.getTeachers() == null : this.getTeachers().equals(other.getTeachers()))
+            && (this.getUniversityC9() == null ? other.getUniversityC9() == null : this.getUniversityC9().equals(other.getUniversityC9()))
+            && (this.getUniversity985() == null ? other.getUniversity985() == null : this.getUniversity985().equals(other.getUniversity985()))
+            && (this.getUniversity211() == null ? other.getUniversity211() == null : this.getUniversity211().equals(other.getUniversity211()))
+            && (this.getUniversityOther() == null ? other.getUniversityOther() == null : this.getUniversityOther().equals(other.getUniversityOther()))
+            && (this.getDiscipline() == null ? other.getDiscipline() == null : this.getDiscipline().equals(other.getDiscipline()))
+            && (this.getMajor() == null ? other.getMajor() == null : this.getMajor().equals(other.getMajor()))
+            && (this.getAddNumber() == null ? other.getAddNumber() == null : this.getAddNumber().equals(other.getAddNumber()))
+            && (this.getTotalNumber() == null ? other.getTotalNumber() == null : this.getTotalNumber().equals(other.getTotalNumber()))
             && (this.getDateTime() == null ? other.getDateTime() == null : this.getDateTime().equals(other.getDateTime()))
             && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
             && (this.getCreatedTime() == null ? other.getCreatedTime() == null : this.getCreatedTime().equals(other.getCreatedTime()))
@@ -176,24 +140,18 @@ public class UserInfo implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
-        result = prime * result + ((getTnu() == null) ? 0 : getTnu().hashCode());
-        result = prime * result + ((getNnut() == null) ? 0 : getNnut().hashCode());
-        result = prime * result + ((getTnm() == null) ? 0 : getTnm().hashCode());
-        result = prime * result + ((getNnmt() == null) ? 0 : getNnmt().hashCode());
-        result = prime * result + ((getTnd() == null) ? 0 : getTnd().hashCode());
-        result = prime * result + ((getNndt() == null) ? 0 : getNndt().hashCode());
-        result = prime * result + ((getTnt() == null) ? 0 : getTnt().hashCode());
-        result = prime * result + ((getNntt() == null) ? 0 : getNntt().hashCode());
-        result = prime * result + ((getTncu() == null) ? 0 : getTncu().hashCode());
-        result = prime * result + ((getNncut() == null) ? 0 : getNncut().hashCode());
-        result = prime * result + ((getTn985u() == null) ? 0 : getTn985u().hashCode());
-        result = prime * result + ((getNn985ut() == null) ? 0 : getNn985ut().hashCode());
-        result = prime * result + ((getTn211u() == null) ? 0 : getTn211u().hashCode());
-        result = prime * result + ((getNn211ut() == null) ? 0 : getNn211ut().hashCode());
-        result = prime * result + ((getTnfbuu() == null) ? 0 : getTnfbuu().hashCode());
-        result = prime * result + ((getNnfbuu() == null) ? 0 : getNnfbuu().hashCode());
-        result = prime * result + ((getTnouu() == null) ? 0 : getTnouu().hashCode());
-        result = prime * result + ((getNnouut() == null) ? 0 : getNnouut().hashCode());
+        result = prime * result + ((getUndergraduates() == null) ? 0 : getUndergraduates().hashCode());
+        result = prime * result + ((getMasters() == null) ? 0 : getMasters().hashCode());
+        result = prime * result + ((getDoctors() == null) ? 0 : getDoctors().hashCode());
+        result = prime * result + ((getTeachers() == null) ? 0 : getTeachers().hashCode());
+        result = prime * result + ((getUniversityC9() == null) ? 0 : getUniversityC9().hashCode());
+        result = prime * result + ((getUniversity985() == null) ? 0 : getUniversity985().hashCode());
+        result = prime * result + ((getUniversity211() == null) ? 0 : getUniversity211().hashCode());
+        result = prime * result + ((getUniversityOther() == null) ? 0 : getUniversityOther().hashCode());
+        result = prime * result + ((getDiscipline() == null) ? 0 : getDiscipline().hashCode());
+        result = prime * result + ((getMajor() == null) ? 0 : getMajor().hashCode());
+        result = prime * result + ((getAddNumber() == null) ? 0 : getAddNumber().hashCode());
+        result = prime * result + ((getTotalNumber() == null) ? 0 : getTotalNumber().hashCode());
         result = prime * result + ((getDateTime() == null) ? 0 : getDateTime().hashCode());
         result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
         result = prime * result + ((getCreatedTime() == null) ? 0 : getCreatedTime().hashCode());
@@ -208,24 +166,18 @@ public class UserInfo implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", tnu=").append(tnu);
-        sb.append(", nnut=").append(nnut);
-        sb.append(", tnm=").append(tnm);
-        sb.append(", nnmt=").append(nnmt);
-        sb.append(", tnd=").append(tnd);
-        sb.append(", nndt=").append(nndt);
-        sb.append(", tnt=").append(tnt);
-        sb.append(", nntt=").append(nntt);
-        sb.append(", tncu=").append(tncu);
-        sb.append(", nncut=").append(nncut);
-        sb.append(", tn985u=").append(tn985u);
-        sb.append(", nn985ut=").append(nn985ut);
-        sb.append(", tn211u=").append(tn211u);
-        sb.append(", nn211ut=").append(nn211ut);
-        sb.append(", tnfbuu=").append(tnfbuu);
-        sb.append(", nnfbuu=").append(nnfbuu);
-        sb.append(", tnouu=").append(tnouu);
-        sb.append(", nnouut=").append(nnouut);
+        sb.append(", undergraduates=").append(undergraduates);
+        sb.append(", masters=").append(masters);
+        sb.append(", doctors=").append(doctors);
+        sb.append(", teachers=").append(teachers);
+        sb.append(", universityC9=").append(universityC9);
+        sb.append(", university985=").append(university985);
+        sb.append(", university211=").append(university211);
+        sb.append(", universityOther=").append(universityOther);
+        sb.append(", discipline=").append(discipline);
+        sb.append(", major=").append(major);
+        sb.append(", addNumber=").append(addNumber);
+        sb.append(", totalNumber=").append(totalNumber);
         sb.append(", dateTime=").append(dateTime);
         sb.append(", status=").append(status);
         sb.append(", createdTime=").append(createdTime);
