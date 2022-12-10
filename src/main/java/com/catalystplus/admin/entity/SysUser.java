@@ -105,9 +105,14 @@ public class SysUser implements Serializable {
     private String socialUid;
 
     /**
-     * 关联discipline_major表的详细信息
+     * 学科
      */
-    private Long disciplineMajorId;
+    private String discipline;
+
+    /**
+     * 专业
+     */
+    private String major;
 
     /**
      * 用户所属机构, 清华北大
@@ -166,7 +171,8 @@ public class SysUser implements Serializable {
             && (this.getAccessToken() == null ? other.getAccessToken() == null : this.getAccessToken().equals(other.getAccessToken()))
             && (this.getExpiresIn() == null ? other.getExpiresIn() == null : this.getExpiresIn().equals(other.getExpiresIn()))
             && (this.getSocialUid() == null ? other.getSocialUid() == null : this.getSocialUid().equals(other.getSocialUid()))
-            && (this.getDisciplineMajorId() == null ? other.getDisciplineMajorId() == null : this.getDisciplineMajorId().equals(other.getDisciplineMajorId()))
+            && (this.getDiscipline() == null ? other.getDiscipline() == null : this.getDiscipline().equals(other.getDiscipline()))
+            && (this.getMajor() == null ? other.getMajor() == null : this.getMajor().equals(other.getMajor()))
             && (this.getInstitution() == null ? other.getInstitution() == null : this.getInstitution().equals(other.getInstitution()))
             && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
             && (this.getCreatedTime() == null ? other.getCreatedTime() == null : this.getCreatedTime().equals(other.getCreatedTime()))
@@ -194,7 +200,8 @@ public class SysUser implements Serializable {
         result = prime * result + ((getAccessToken() == null) ? 0 : getAccessToken().hashCode());
         result = prime * result + ((getExpiresIn() == null) ? 0 : getExpiresIn().hashCode());
         result = prime * result + ((getSocialUid() == null) ? 0 : getSocialUid().hashCode());
-        result = prime * result + ((getDisciplineMajorId() == null) ? 0 : getDisciplineMajorId().hashCode());
+        result = prime * result + ((getDiscipline() == null) ? 0 : getDiscipline().hashCode());
+        result = prime * result + ((getMajor() == null) ? 0 : getMajor().hashCode());
         result = prime * result + ((getInstitution() == null) ? 0 : getInstitution().hashCode());
         result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
         result = prime * result + ((getCreatedTime() == null) ? 0 : getCreatedTime().hashCode());
@@ -225,7 +232,8 @@ public class SysUser implements Serializable {
         sb.append(", accessToken=").append(accessToken);
         sb.append(", expiresIn=").append(expiresIn);
         sb.append(", socialUid=").append(socialUid);
-        sb.append(", disciplineMajorId=").append(disciplineMajorId);
+        sb.append(", discipline=").append(discipline);
+        sb.append(", major=").append(major);
         sb.append(", institution=").append(institution);
         sb.append(", status=").append(status);
         sb.append(", createdTime=").append(createdTime);
