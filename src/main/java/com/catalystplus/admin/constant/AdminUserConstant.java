@@ -55,51 +55,89 @@ public final class AdminUserConstant {
     public static final String ADMIN_USER_ACTIVE_MNRU = "admin:user:active:mnru";
 
     /**
-     * 今日新增本科生数
+     * 今日新增用户数-按用户学历划分
      */
-    public static final String ADMIN_USER_INFO_NNUT = "admin:user:info:nnut";
+    public static final String ADMIN_USER_INFO_EDUCATION = "admin:user:info:education";
 
     /**
-     * 今日新增硕士生数
+     * 今日新增用户数-按学校划分
      */
-    public static final String ADMIN_USER_INFO_NNMT = "admin:user:info:nnmt";
+    public static final String ADMIN_USER_INFO_UNIVERSITY = "admin:user:info:university";
 
     /**
-     * 今日新增博士生数
+     * 今日新增用户数-按学科划分
      */
-    public static final String ADMIN_USER_INFO_NNDT = "admin:user:info:nndt";
+    public static final String ADMIN_USER_INFO_DISCIPLINE = "admin:user:info:discipline";
 
     /**
-     * 今日新增老师数
+     * 今日新增用户数-按哲学学科划分
      */
-    public static final String ADMIN_USER_INFO_NNTT = "admin:user:info:nntt";
+    public static final String ADMIN_USER_INFO_PHILOSOPHY = "admin:user:info:philosophy";
 
     /**
-     * 今日新增C9用户数
+     * 今日新增用户数-按经济学学科划分
      */
-    public static final String ADMIN_USER_INFO_NNC9UT = "admin:user:info:nnc9ut";
+    public static final String ADMIN_USER_INFO_ECONMICS = "admin:user:info:econmics";
 
     /**
-     * 今日新增985用户数
+     * 今日新增用户数-按法学学科划分
      */
-    public static final String ADMIN_USER_INFO_NN985UT = "admin:user:info:nn985ut";
+    public static final String ADMIN_USER_INFO_JURISPRUDENCE = "admin:user:info:jurisprudence";
 
     /**
-     * 今日新增211用户数
+     * 今日新增用户数-按教育学学科划分
      */
-    public static final String ADMIN_USER_INFO_NN211UT = "admin:user:info:nn211ut";
+    public static final String ADMIN_USER_INFO_PEDAGOGY = "admin:user:info:pedagogy";
 
     /**
-     * 今日新增一本院校用户数
+     * 今日新增用户数-按文学学科划分
      */
-    public static final String ADMIN_USER_INFO_NNFBUU = "admin:user:info:nnfbuu";
+    public static final String ADMIN_USER_INFO_LITERATURE = "admin:user:info:literature";
 
     /**
-     * 今日新增其他院校用户数
+     * 今日新增用户数-按历史学学科划分
      */
-    public static final String ADMIN_USER_INFO_NNOUUT = "admin:user:info:nnouut";
+    public static final String ADMIN_USER_INFO_HISTORY = "admin:user:info:history";
 
+    /**
+     * 今日新增用户数-按理学学科划分
+     */
+    public static final String ADMIN_USER_INFO_SCIENCE = "admin:user:info:science";
 
+    /**
+     * 今日新增用户数-按工学学科划分
+     */
+    public static final String ADMIN_USER_INFO_ENGINEERING = "admin:user:info:engineering";
+
+    /**
+     * 今日新增用户数-按农学学科划分
+     */
+    public static final String ADMIN_USER_INFO_AGRONOMY = "admin:user:info:agronomy";
+
+    /**
+     * 今日新增用户数-按医学学科划分
+     */
+    public static final String ADMIN_USER_INFO_MEDICINE = "admin:user:info:medicine";
+
+    /**
+     * 今日新增用户数-按军事学学科划分
+     */
+    public static final String ADMIN_USER_INFO_MILITARY = "admin:user:info:military";
+
+    /**
+     * 今日新增用户数-按管理学学科划分
+     */
+    public static final String ADMIN_USER_INFO_MANAGEMENT = "admin:user:info:management";
+
+    /**
+     * 今日新增用户数-按艺术学学科划分
+     */
+    public static final String ADMIN_USER_INFO_ART = "admin:user:info:art";
+
+    /**
+     * 今日新增用户数-按交叉学科学科划分
+     */
+    public static final String ADMIN_USER_INFO_INTER = "admin:user:info:inter";
 
     /**
      * 今日期刊订阅用户数

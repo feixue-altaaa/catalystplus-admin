@@ -42,6 +42,17 @@ public class RedisUtil {
         });
     }
 
+
+    // 哈希键自增1
+    public void hashIncrement(String key, String hashKey) {
+        redisTemplate.opsForHash().increment(key, hashKey, 1);
+    }
+
+    // 获取哈希键
+    public Object getHashKey(String key, String hashKey) {
+        return redisTemplate.opsForHash().get(key, hashKey);
+    }
+
     /**
      * 获取redis中zset数据
      *
@@ -140,6 +151,13 @@ public class RedisUtil {
      */
     public void deleteBatch(String prefixKey){
         redisTemplate.delete(redisTemplate.keys(prefixKey+"*"));
+    }
+
+    /**
+     * 删除Redis中的某个key
+     */
+    public void delete(String key) {
+        redisTemplate.delete(key);
     }
 
 }

@@ -47,49 +47,16 @@ public final class RedisKeyUtil {
         return  ADMIN_USER_ACTIVE_MNRU + SPLIT + dateTime;
     }
 
-    // 获取今日新增本科生数的key
-    public static String getUserInfoNNUTKey(String dateTime) {
-        return ADMIN_USER_INFO_NNUT + SPLIT + dateTime;
+    public static String getUserEducationInfoKey(String dateTime) {
+        return ADMIN_USER_INFO_EDUCATION + SPLIT + dateTime;
     }
 
-    // 获取今日新增硕士生数的key
-    public static String getUserInfoNNMTKey(String dateTime) {
-        return ADMIN_USER_INFO_NNMT + SPLIT + dateTime;
+    public static String getUserUniversityInfoKey(String dateTime) {
+        return ADMIN_USER_INFO_UNIVERSITY + SPLIT + dateTime;
     }
 
-    // 获取今日新增博士生数的key
-    public static String getUserInfoNNDTKey(String dateTime) {
-        return ADMIN_USER_INFO_NNDT + SPLIT + dateTime;
-    }
-
-    // 获取今日新增老师数的key
-    public static String getUserInfoNNTTKey(String dateTime) {
-        return ADMIN_USER_INFO_NNTT + SPLIT + dateTime;
-    }
-
-    // 获取今日新增C9用户数的key
-    public static String getUserInfoNNC9UTKey(String dateTime) {
-        return ADMIN_USER_INFO_NNC9UT + SPLIT + dateTime;
-    }
-
-    // 获取今日新增985用户数的key
-    public static String getUserInfoNN985UTKey(String dateTime) {
-        return ADMIN_USER_INFO_NN985UT + SPLIT + dateTime;
-    }
-
-    // 获取今日新增211用户数的key
-    public static String getUserInfoNN211UTKey(String dateTime) {
-        return ADMIN_USER_INFO_NN211UT + SPLIT + dateTime;
-    }
-
-    // 获取今日新增一本院校用户数的key
-    public static String getUserInfoNNFBUUKey(String dateTime) {
-        return ADMIN_USER_INFO_NNFBUU + SPLIT + dateTime;
-    }
-
-    // 获取今日新增其他院校用户数的key
-    public static String getUserInfoNNOUUTKey(String dateTime) {
-        return ADMIN_USER_INFO_NNOUUT + SPLIT + dateTime;
+    public static String getUserDisciplineInfoKey(String dateTime) {
+        return ADMIN_USER_INFO_DISCIPLINE + SPLIT + dateTime;
     }
 
 }
