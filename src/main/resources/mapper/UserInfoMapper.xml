@@ -6,24 +6,18 @@
 
     <resultMap id="BaseResultMap" type="com.catalystplus.admin.entity.UserInfo">
             <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="tnu" column="TNU" jdbcType="BIGINT"/>
-            <result property="nnut" column="NNUT" jdbcType="BIGINT"/>
-            <result property="tnm" column="TNM" jdbcType="BIGINT"/>
-            <result property="nnmt" column="NNMT" jdbcType="BIGINT"/>
-            <result property="tnd" column="TND" jdbcType="BIGINT"/>
-            <result property="nndt" column="NNDT" jdbcType="BIGINT"/>
-            <result property="tnt" column="TNT" jdbcType="BIGINT"/>
-            <result property="nntt" column="NNTT" jdbcType="BIGINT"/>
-            <result property="tncu" column="TNCU" jdbcType="BIGINT"/>
-            <result property="nncut" column="NNCUT" jdbcType="BIGINT"/>
-            <result property="tn985u" column="TN985U" jdbcType="BIGINT"/>
-            <result property="nn985ut" column="NN985UT" jdbcType="BIGINT"/>
-            <result property="tn211u" column="TN211U" jdbcType="BIGINT"/>
-            <result property="nn211ut" column="NN211UT" jdbcType="BIGINT"/>
-            <result property="tnfbuu" column="TNFBUU" jdbcType="BIGINT"/>
-            <result property="nnfbuu" column="NNFBUU" jdbcType="BIGINT"/>
-            <result property="tnouu" column="TNOUU" jdbcType="BIGINT"/>
-            <result property="nnouut" column="NNOUUT" jdbcType="BIGINT"/>
+            <result property="undergraduates" column="undergraduates" jdbcType="BIGINT"/>
+            <result property="masters" column="masters" jdbcType="BIGINT"/>
+            <result property="doctors" column="doctors" jdbcType="BIGINT"/>
+            <result property="teachers" column="teachers" jdbcType="BIGINT"/>
+            <result property="universityC9" column="university_c9" jdbcType="BIGINT"/>
+            <result property="university985" column="university_985" jdbcType="BIGINT"/>
+            <result property="university211" column="university_211" jdbcType="BIGINT"/>
+            <result property="universityOther" column="university_other" jdbcType="BIGINT"/>
+            <result property="discipline" column="discipline" jdbcType="BIGINT"/>
+            <result property="major" column="major" jdbcType="BIGINT"/>
+            <result property="addNumber" column="add_number" jdbcType="BIGINT"/>
+            <result property="totalNumber" column="total_number" jdbcType="BIGINT"/>
             <result property="dateTime" column="date_time" jdbcType="VARCHAR"/>
             <result property="status" column="status" jdbcType="TINYINT"/>
             <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
@@ -31,13 +25,11 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,TNU,NNUT,
-        TNM,NNMT,TND,
-        NNDT,TNT,NNTT,
-        TNCU,NNCUT,TN985U,
-        NN985UT,TN211U,NN211UT,
-        TNFBUU,NNFBUU,TNOUU,
-        NNOUUT,date_time,status,
+        id,undergraduates,masters,
+        doctors,teachers,university_c9,
+        university_985,university_211,university_other,
+        discipline,major,add_number,
+        total_number,date_time,status,
         created_time,updated_time
     </sql>
 </mapper>
