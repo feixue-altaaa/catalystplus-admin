@@ -44,12 +44,10 @@ public class UserInfoManagerImpl implements UserInfoManager {
         UserInfoResponse undergraduateInfoResponse = new UserInfoResponse();
         undergraduateInfoResponse.setId(UNDERGRADUATE);
         // 1.1 今日新增本科生数量
-        Long undergraduateAddNumber = (Long) redisUtil.getHashValue(key, UNDERGRADUATE);
+        Integer undergraduateAddNumber = (Integer) redisUtil.getHashValue(key, UNDERGRADUATE);
         undergraduateInfoResponse.setAddNumber(undergraduateAddNumber);
         // 1.2 截至今日本科生数量 = 今日新增本科生数量 + 截至昨日本科生数量
-        QueryWrapper<UserInfoEducation> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("date_time", lastDate).eq("education", UNDERGRADUATE);
-        Long undergraduateTotalNumber = undergraduateAddNumber + userInfoEducationService.getOne(queryWrapper).getTotalNumber();
+        Integer undergraduateTotalNumber = undergraduateAddNumber + getTotalNumber(lastDate, UNDERGRADUATE);
         undergraduateInfoResponse.setTotalNumber(undergraduateTotalNumber);
         userInfoResponses.add(undergraduateInfoResponse);
 
@@ -57,23 +55,35 @@ public class UserInfoManagerImpl implements UserInfoManager {
         UserInfoResponse masterInfoResponse = new UserInfoResponse();
         masterInfoResponse.setId(MASTER);
         // 2.1 今日新增硕士生数量
-        Long masterAddNumber = (Long) redisUtil.getHashValue(key, MASTER);
+        Integer masterAddNumber = (Integer) redisUtil.getHashValue(key, MASTER);
         masterInfoResponse.setAddNumber(masterAddNumber);
         // 2.2 截至今日硕士生数量 = 今日新增硕士生数量 + 截至昨日硕士生数量
-        queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("date_time", lastDate).eq("education", MASTER);
-        Long masterTotalNumber = masterAddNumber + userInfoEducationService.getOne(queryWrapper).getTotalNumber();
-        undergraduateInfoResponse.setTotalNumber(masterTotalNumber);
+        Integer masterTotalNumber = masterAddNumber + getTotalNumber(lastDate, MASTER);
+        masterInfoResponse.setTotalNumber(masterTotalNumber);
         userInfoResponses.add(masterInfoResponse);
 
 
         // TODO 3. 统计博士生
         UserInfoResponse doctorInfoResponse = new UserInfoResponse();
-        doctorInfoResponse.setId("doctor");
+        doctorInfoResponse.setId(DOCTOR);
+        // 3.1 今日新增博士生数量
+        Integer doctorAddNumber = (Integer) redisUtil.getHashValue(key, DOCTOR);
+        doctorInfoResponse.setAddNumber(doctorAddNumber);
+        // 3.2 截至今日博士生数量 = 今日新增博士生数量 + 截至昨日博士生数量
+        Integer doctorTotalNumber = doctorAddNumber + getTotalNumber(lastDate, DOCTOR);
+        doctorInfoResponse.setTotalNumber(doctorTotalNumber);
+        userInfoResponses.add(doctorInfoResponse);
 
         // TODO 4. 统计老师
         UserInfoResponse teacherInfoResponse = new UserInfoResponse();
-        teacherInfoResponse.setId("teacher");
+        teacherInfoResponse.setId(TEACHER);
+        // 4.1 今日新增老师数量
+        Integer teacherAddNumber = (Integer) redisUtil.getHashValue(key, TEACHER);
+        teacherInfoResponse.setAddNumber(teacherAddNumber);
+        // 4.2 截至今日老师数量 = 今日新增老师数量 + 截至昨日老师数量
+        Integer teacherTotalNumber = teacherAddNumber + getTotalNumber(lastDate, TEACHER);
+        teacherInfoResponse.setTotalNumber(teacherTotalNumber);
+        userInfoResponses.add(teacherInfoResponse);
 
         return  userInfoResponses;
     }
@@ -105,6 +115,13 @@ public class UserInfoManagerImpl implements UserInfoManager {
         LocalDate localDate = LocalDate.of(year, month, day);
         localDate = localDate.minusDays(1);
         return localDate.toString();
+    }
+
+    // 根据日期和学历查询总用户量
+    private Integer getTotalNumber(String dateTime, String education) {
+        QueryWrapper<UserInfoEducation> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("date_time", dateTime).eq("education", education);
+        return Math.toIntExact(userInfoEducationService.getOne(queryWrapper).getTotalNumber());
     }
 
 }

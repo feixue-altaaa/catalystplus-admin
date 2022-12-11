@@ -3,7 +3,9 @@ package com.catalystplus.admin;
 import com.catalystplus.admin.consumer.TempProducer;
 import com.catalystplus.admin.dto.AdminDTO;
 import com.catalystplus.admin.entity.SysUser;
+import com.catalystplus.admin.entity.UserInfoEducation;
 import com.catalystplus.admin.service.SysUserService;
+import com.catalystplus.admin.service.UserInfoEducationService;
 import com.catalystplus.admin.util.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -11,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 
-import java.time.LocalDateTime;
 import java.util.BitSet;
 import java.util.Objects;
 
@@ -31,21 +32,9 @@ class UserTests {
     @Autowired
     SysUserService sysUserService;
 
-    @Test
-    void testMQ() {
-        AdminDTO adminDTO = new AdminDTO();
-        adminDTO.setUserId(808390476037095424L);
-        adminDTO.setCreatedTime(LocalDateTime.now());
-        tempProducer.sendMessage("AdminTopic:nnut", adminDTO);
-    }
+    @Autowired
+    UserInfoEducationService userInfoEducationService;
 
-    @Test
-    void testMQ1() {
-        AdminDTO adminDTO = new AdminDTO();
-        adminDTO.setUserId(11L);
-        adminDTO.setLoginTime(LocalDateTime.now());
-        tempProducer.sendMessage("AdminTopic:au", adminDTO);
-    }
 
     @Test
     void testBitmap() {
@@ -62,12 +51,28 @@ class UserTests {
     @Test
     void testInserSysUser() {
         SysUser sysUser = new SysUser();
-        sysUser.setUsername("方胜");
-        sysUser.setJob("master");
-        sysUser.setDiscipline("工学");
-        sysUser.setMajor("机械工程");
+        sysUser.setUsername("bob");
+        sysUser.setJob("teacher");
         sysUserService.save(sysUser);
     }
 
+
+    @Test
+    void testUserInfoEducation() {
+        UserInfoEducation userInfoEducation = new UserInfoEducation();
+        userInfoEducation.setEducation("teacher");
+        userInfoEducation.setAddNumber(130L);
+        userInfoEducation.setTotalNumber(1300L);
+        userInfoEducation.setDateTime("2022-12-10");
+        userInfoEducationService.save(userInfoEducation);
+    }
+
+    @Test
+    void sendMessage() {
+        AdminDTO dto = new AdminDTO();
+        dto.setUserId(808649353072738304L);
+        dto.setCreatedTime(sysUserService.getById(808649353072738304L).getCreatedTime());
+        tempProducer.sendMessage("AdminTopic:nnut", dto);
+    }
 
 }

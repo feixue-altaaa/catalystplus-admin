@@ -115,7 +115,20 @@ public class UserController implements UserApi {
 
     @Override
     public Response<List<UserInfoResponse>> queryUsersInfoByEducation(UserByDateVo userByDateVo) {
-        return null;
+        // 1.验证参数
+        log.info("userByDateVo is {}", userByDateVo);
+        if (Assert.notEmpty(userByDateVo.getLocalDateTime())) {
+            return Response.fail(userByDateVo.getUserId(), ADMIN_USER_DATE_ERROR.getCode(), ADMIN_USER_DATE_ERROR.getMsg());
+        }
+        // 2.根据用户学历查询用户信息
+        List<UserInfoResponse> userInfoResponses;
+        try {
+            userInfoResponses = userInfoManager.getNewUsersByEducation(userByDateVo.getLocalDateTime());
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return Response.fail(userByDateVo.getUserId(), e.getMessage());
+        }
+        return Response.success(userByDateVo.getUserId(), userInfoResponses);
     }
 
     @Override

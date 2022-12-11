@@ -18,9 +18,9 @@ public class UserInfoResponse implements Serializable {
     private String id;
 
     @ApiModelProperty("今日新增数量")
-    private Long addNumber;
+    private Integer addNumber;
 
     @ApiModelProperty("截至今日总数量")
-    private Long totalNumber;
+    private Integer totalNumber;
 
 }
