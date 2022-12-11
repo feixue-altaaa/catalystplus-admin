@@ -52,6 +52,10 @@ public class RedisUtil {
         return redisTemplate.opsForHash().get(key, hashKey);
     }
 
+    public Boolean hasKey(String key) {
+        return redisTemplate.hasKey(key);
+    }
+
     /**
      * 获取redis中zset数据
      *

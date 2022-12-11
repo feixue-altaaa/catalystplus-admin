@@ -2,10 +2,9 @@ package com.catalystplus.admin;
 
 import com.catalystplus.admin.consumer.TempProducer;
 import com.catalystplus.admin.dto.AdminDTO;
-import com.catalystplus.admin.entity.SysUser;
-import com.catalystplus.admin.entity.UserInfoEducation;
 import com.catalystplus.admin.service.SysUserService;
 import com.catalystplus.admin.service.UserInfoEducationService;
+import com.catalystplus.admin.service.UserInfoUniversityService;
 import com.catalystplus.admin.util.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -35,6 +34,8 @@ class UserTests {
     @Autowired
     UserInfoEducationService userInfoEducationService;
 
+    @Autowired
+    UserInfoUniversityService userInfoUniversityService;
 
     @Test
     void testBitmap() {
@@ -49,29 +50,10 @@ class UserTests {
     }
 
     @Test
-    void testInserSysUser() {
-        SysUser sysUser = new SysUser();
-        sysUser.setUsername("bob");
-        sysUser.setJob("teacher");
-        sysUserService.save(sysUser);
-    }
-
-
-    @Test
-    void testUserInfoEducation() {
-        UserInfoEducation userInfoEducation = new UserInfoEducation();
-        userInfoEducation.setEducation("teacher");
-        userInfoEducation.setAddNumber(130L);
-        userInfoEducation.setTotalNumber(1300L);
-        userInfoEducation.setDateTime("2022-12-10");
-        userInfoEducationService.save(userInfoEducation);
-    }
-
-    @Test
     void sendMessage() {
         AdminDTO dto = new AdminDTO();
-        dto.setUserId(808649353072738304L);
-        dto.setCreatedTime(sysUserService.getById(808649353072738304L).getCreatedTime());
+        dto.setUserId(808685237490941952L);
+        dto.setCreatedTime(sysUserService.getById(808685237490941952L).getCreatedTime());
         tempProducer.sendMessage("AdminTopic:nnut", dto);
     }
 

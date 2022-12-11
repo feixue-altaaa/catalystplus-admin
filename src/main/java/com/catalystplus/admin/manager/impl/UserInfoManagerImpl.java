@@ -2,11 +2,16 @@ package com.catalystplus.admin.manager.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.catalystplus.admin.entity.SysUser;
+import com.catalystplus.admin.entity.UserInfo;
 import com.catalystplus.admin.entity.UserInfoEducation;
+import com.catalystplus.admin.entity.UserInfoUniversity;
 import com.catalystplus.admin.manager.UserInfoManager;
+import com.catalystplus.admin.mapper.UserInfoMapper;
+import com.catalystplus.admin.response.user.UserInfoMajorResponse;
 import com.catalystplus.admin.response.user.UserInfoResponse;
 import com.catalystplus.admin.service.SysUserService;
 import com.catalystplus.admin.service.UserInfoEducationService;
+import com.catalystplus.admin.service.UserInfoUniversityService;
 import com.catalystplus.admin.util.RedisKeyUtil;
 import com.catalystplus.admin.util.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.catalystplus.admin.constant.AdminUserConstant.*;
@@ -31,97 +37,178 @@ public class UserInfoManagerImpl implements UserInfoManager {
     @Autowired
     private UserInfoEducationService userInfoEducationService;
 
+    @Autowired
+    private UserInfoUniversityService userInfoUniversityService;
+
+    @Autowired
+    private UserInfoMapper userInfoMapper;
+
     @Override
-    public List<UserInfoResponse> getNewUsersByEducation(String dateTime) {
+    public void recordNewUsersInfoToday(Long userId, String dateTime) {
+        SysUser sysUser = sysUserService.getById(userId);
+        String job = sysUser.getJob();
+        String institution = sysUser.getInstitution();
+        String majorCode = sysUser.getMajorCode();
+
+        String key = RedisKeyUtil.getUserInfoKey(dateTime);
+
+        // 判断用户学校的类型，比如C9、985、211、其他
+        String institutionKey;
+        if (Arrays.asList(LIST_C9).contains(institution)) {
+            institutionKey = "c9";
+        } else if (Arrays.asList(LIST_985).contains(institution)) {
+            institutionKey = "985";
+        } else if (Arrays.asList(LIST_211).contains(institution)) {
+            institutionKey = "211";
+        } else {
+            institutionKey = "other";
+        }
+
+        redisUtil.hashValueIncrement(key, institutionKey);
+        redisUtil.hashValueIncrement(key, job);
+        redisUtil.hashValueIncrement(key, majorCode);
+    }
+
+    @Override
+    public List<UserInfoResponse> getUsersInfoByEducation(String dateTime) {
         List<UserInfoResponse> userInfoResponses = new ArrayList<>();
 
-        // 获取昨天的日期
         String lastDate = getLastDate(dateTime);
 
-        String key = RedisKeyUtil.getUserEducationInfoKey(dateTime);
+        String userInfoKey = RedisKeyUtil.getUserInfoKey(dateTime);
 
-        // 1. 统计本科生
-        UserInfoResponse undergraduateInfoResponse = new UserInfoResponse();
-        undergraduateInfoResponse.setId(UNDERGRADUATE);
-        // 1.1 今日新增本科生数量
-        Integer undergraduateAddNumber = (Integer) redisUtil.getHashValue(key, UNDERGRADUATE);
-        undergraduateInfoResponse.setAddNumber(undergraduateAddNumber);
-        // 1.2 截至今日本科生数量 = 今日新增本科生数量 + 截至昨日本科生数量
-        Integer undergraduateTotalNumber = undergraduateAddNumber + getTotalNumber(lastDate, UNDERGRADUATE);
-        undergraduateInfoResponse.setTotalNumber(undergraduateTotalNumber);
-        userInfoResponses.add(undergraduateInfoResponse);
+        UserInfoResponse userInfoResponse = new UserInfoResponse();
+        userInfoResponse.setId("本科生");
+        // 1.1 今日本科生新增数
+        Integer addNumber = (Integer) redisUtil.getHashValue(userInfoKey, "undergraduate");
+        userInfoResponse.setAddNumber(addNumber);
+        // 1.2 本科生总数 = 今日新增 + 昨日总数
+        userInfoResponse.setTotalNumber(addNumber + getTotalNumByEducation("undergraduate", lastDate));
+        userInfoResponses.add(userInfoResponse);
 
-        // 2. 统计硕士生
-        UserInfoResponse masterInfoResponse = new UserInfoResponse();
-        masterInfoResponse.setId(MASTER);
-        // 2.1 今日新增硕士生数量
-        Integer masterAddNumber = (Integer) redisUtil.getHashValue(key, MASTER);
-        masterInfoResponse.setAddNumber(masterAddNumber);
-        // 2.2 截至今日硕士生数量 = 今日新增硕士生数量 + 截至昨日硕士生数量
-        Integer masterTotalNumber = masterAddNumber + getTotalNumber(lastDate, MASTER);
-        masterInfoResponse.setTotalNumber(masterTotalNumber);
-        userInfoResponses.add(masterInfoResponse);
+        userInfoResponse.setId("硕士生");
+        // 2.1 今日研究生新增数
+        addNumber = (Integer) redisUtil.getHashValue(userInfoKey, "master");
+        userInfoResponse.setAddNumber(addNumber);
+        // 2.2 研究生总数 = 今日新增 + 昨日总数
+        userInfoResponse.setTotalNumber(addNumber + getTotalNumByEducation("master", lastDate));
+        userInfoResponses.add(userInfoResponse);
 
+        userInfoResponse.setId("博士");
+        // 3.1 今日博士生新增数
+        addNumber = (Integer) redisUtil.getHashValue(userInfoKey, "doctor");
+        userInfoResponse.setAddNumber(addNumber);
+        // 3.2 博士生总数 = 今日新增 + 昨日总数
+        userInfoResponse.setTotalNumber(addNumber + getTotalNumByEducation("doctor", lastDate));
+        userInfoResponses.add(userInfoResponse);
 
-        // TODO 3. 统计博士生
-        UserInfoResponse doctorInfoResponse = new UserInfoResponse();
-        doctorInfoResponse.setId(DOCTOR);
-        // 3.1 今日新增博士生数量
-        Integer doctorAddNumber = (Integer) redisUtil.getHashValue(key, DOCTOR);
-        doctorInfoResponse.setAddNumber(doctorAddNumber);
-        // 3.2 截至今日博士生数量 = 今日新增博士生数量 + 截至昨日博士生数量
-        Integer doctorTotalNumber = doctorAddNumber + getTotalNumber(lastDate, DOCTOR);
-        doctorInfoResponse.setTotalNumber(doctorTotalNumber);
-        userInfoResponses.add(doctorInfoResponse);
+        userInfoResponse.setId("老师");
+        // 4.1 今日老师新增数
+        addNumber = (Integer) redisUtil.getHashValue(userInfoKey, "teacher");
+        userInfoResponse.setAddNumber(addNumber);
+        // 4.2 老师总数 = 今日新增 + 昨日总数
+        userInfoResponse.setTotalNumber(addNumber + getTotalNumByEducation("teacher", lastDate));
+        userInfoResponses.add(userInfoResponse);
 
-        // TODO 4. 统计老师
-        UserInfoResponse teacherInfoResponse = new UserInfoResponse();
-        teacherInfoResponse.setId(TEACHER);
-        // 4.1 今日新增老师数量
-        Integer teacherAddNumber = (Integer) redisUtil.getHashValue(key, TEACHER);
-        teacherInfoResponse.setAddNumber(teacherAddNumber);
-        // 4.2 截至今日老师数量 = 今日新增老师数量 + 截至昨日老师数量
-        Integer teacherTotalNumber = teacherAddNumber + getTotalNumber(lastDate, TEACHER);
-        teacherInfoResponse.setTotalNumber(teacherTotalNumber);
-        userInfoResponses.add(teacherInfoResponse);
-
-        return  userInfoResponses;
+        return userInfoResponses;
     }
 
     @Override
-    public void recordNewUsersByEducationToday(Long userId, String dateTime) {
-        SysUser sysUser = sysUserService.getById(userId);
-        log.info("sysUser is {}", sysUser);
-        if (sysUser == null) {
-            throw new RuntimeException("用户不存在");
-        }
-        if (UNDERGRADUATE.equals(sysUser.getJob())) {
-            redisUtil.hashValueIncrement(RedisKeyUtil.getUserEducationInfoKey(dateTime), UNDERGRADUATE);
-        } else if (MASTER.equals(sysUser.getJob())) {
-            redisUtil.hashValueIncrement(RedisKeyUtil.getUserEducationInfoKey(dateTime), MASTER);
-        } else if (DOCTOR.equals(sysUser.getJob())) {
-            redisUtil.hashValueIncrement(RedisKeyUtil.getUserEducationInfoKey(dateTime), DOCTOR);
-        } else if (TEACHER.equals(sysUser.getJob())) {
-            redisUtil.hashValueIncrement(RedisKeyUtil.getUserEducationInfoKey(dateTime), TEACHER);
-        }
+    public List<UserInfoResponse> getUsersInfoByUniversity(String dateTime) {
+        List<UserInfoResponse> userInfoResponses = new ArrayList<>();
+
+        String lastDate = getLastDate(dateTime);
+
+        String userInfoKey = RedisKeyUtil.getUserInfoKey(dateTime);
+        UserInfoResponse userInfoResponse = new UserInfoResponse();
+
+        userInfoResponse.setId("c9院校");
+        Integer addNumber = (Integer) redisUtil.getHashValue(userInfoKey, "c9");
+        userInfoResponse.setAddNumber(addNumber);
+        userInfoResponse.setTotalNumber(addNumber + getTotalNumByUniversity("c9", lastDate));
+        userInfoResponses.add(userInfoResponse);
+
+        userInfoResponse.setId("985院校");
+        addNumber = (Integer) redisUtil.getHashValue(userInfoKey, "985");
+        userInfoResponse.setAddNumber(addNumber);
+        userInfoResponse.setTotalNumber(addNumber + getTotalNumByUniversity("985", lastDate));
+        userInfoResponses.add(userInfoResponse);
+
+        userInfoResponse.setId("211院校");
+        addNumber = (Integer) redisUtil.getHashValue(userInfoKey, "211");
+        userInfoResponse.setAddNumber(addNumber);
+        userInfoResponse.setTotalNumber(addNumber + getTotalNumByUniversity("211", lastDate));
+        userInfoResponses.add(userInfoResponse);
+
+        userInfoResponse.setId("其他院校");
+        addNumber = (Integer) redisUtil.getHashValue(userInfoKey, "other");
+        userInfoResponse.setAddNumber(addNumber);
+        userInfoResponse.setTotalNumber(addNumber + getTotalNumByUniversity("other", lastDate));
+        userInfoResponses.add(userInfoResponse);
+
+        return userInfoResponses;
     }
 
-    // 根据今日日期获取昨日日期
+    @Override
+    public List<UserInfoResponse> getUsersInfoByDiscipline(String dateTime) {
+        List<UserInfoResponse> userInfoResponses = new ArrayList<>();
+
+        String lastDate = getLastDate(dateTime);
+
+        String userInfoKey = RedisKeyUtil.getUserInfoKey(dateTime);
+        UserInfoResponse userInfoResponse = new UserInfoResponse();
+
+        userInfoResponse.setId("01哲学");
+        Integer addNumber = (Integer) redisUtil.getHashValue(userInfoKey, "01");
+        userInfoResponse.setAddNumber(addNumber);
+        userInfoResponse.setTotalNumber(addNumber + getTotalNumByDiscipline("c9", lastDate));
+        userInfoResponses.add(userInfoResponse);
+
+
+
+        return userInfoResponses;
+    }
+
+    @Override
+    public List<UserInfoMajorResponse> getUsersInfoByMajor(String dateTime, int pageNo, int pageSize) {
+        return null;
+    }
+
+    // 获取昨日的日期
     private String getLastDate(String dateTime) {
         String[] split = dateTime.split("-");
         int year = Integer.parseInt(split[0]);
         int month = Integer.parseInt(split[1]);
         int day = Integer.parseInt(split[2]);
-        LocalDate localDate = LocalDate.of(year, month, day);
-        localDate = localDate.minusDays(1);
-        return localDate.toString();
+        return LocalDate.of(year, month, day).minusDays(1).toString();
     }
 
-    // 根据日期和学历查询总用户量
-    private Integer getTotalNumber(String dateTime, String education) {
+    private Integer getTotalNumByEducation(String education, String dateTime) {
         QueryWrapper<UserInfoEducation> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("date_time", dateTime).eq("education", education);
         return Math.toIntExact(userInfoEducationService.getOne(queryWrapper).getTotalNumber());
     }
 
+    private Integer getTotalNumByUniversity(String university, String dateTime) {
+        QueryWrapper<UserInfoUniversity> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("date_time", dateTime).eq("university", university);
+        return Math.toIntExact(userInfoUniversityService.getOne(queryWrapper).getTotalNumber());
+    }
+
+    private Integer getTotalNumByDiscipline(String discipline, String dateTime) {
+        QueryWrapper<UserInfo> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("date_time", dateTime).eq("discipline", discipline);
+        List<UserInfo> userInfos = userInfoMapper.selectList(queryWrapper);
+        int sum = 0;
+        for (UserInfo userInfo : userInfos) {
+            sum += Math.toIntExact(userInfo.getTotalNumber());
+        }
+        return sum;
+    }
+
+    private Integer getTotalNumByMajor(String major, String dateTime) {
+        QueryWrapper<UserInfo> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("date_time", dateTime).eq("major", major);
+        return Math.toIntExact(userInfoMapper.selectOne(queryWrapper).getTotalNumber());
+    }
 }

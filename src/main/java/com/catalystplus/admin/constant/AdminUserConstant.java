@@ -10,24 +10,19 @@ public final class AdminUserConstant {
     // TODO: 2022/11/24 常量里面写上注释 
 
     /**
-     * 本科生
+     * C9院校
      */
-    public static final String UNDERGRADUATE = "undergraduate";
+    public static final String[] LIST_C9 = {};
 
     /**
-     * 硕士生
+     * 985院校
      */
-    public static final String MASTER = "master";
+    public static final String[] LIST_985 = {};
 
     /**
-     * 博士生
+     * 211院校
      */
-    public static final String DOCTOR = "doctor";
-
-    /**
-     * 老师
-     */
-    public static final String TEACHER = "teacher";
+    public static final String[] LIST_211 = {};
 
     /**
      * 冒号分隔符
@@ -74,10 +69,11 @@ public final class AdminUserConstant {
      */
     public static final String ADMIN_USER_ACTIVE_MNRU = "admin:user:active:mnru";
 
+
     /**
-     * 今日新增用户数-按用户学历划分
+     * 用户信息
      */
-    public static final String ADMIN_USER_INFO_EDUCATION = "admin:user:info:education";
+    public static final String ADMIN_USER_INFO = "admin:user:info";
 
 
     /**

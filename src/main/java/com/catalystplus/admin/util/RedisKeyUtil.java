@@ -47,9 +47,8 @@ public final class RedisKeyUtil {
         return  ADMIN_USER_ACTIVE_MNRU + SPLIT + dateTime;
     }
 
-    public static String getUserEducationInfoKey(String dateTime) {
-        return ADMIN_USER_INFO_EDUCATION + SPLIT + dateTime;
+    public static String getUserInfoKey(String dateTime) {
+        return  ADMIN_USER_INFO + SPLIT + dateTime;
     }
-
 
 }
