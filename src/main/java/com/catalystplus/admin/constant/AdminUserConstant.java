@@ -1,5 +1,12 @@
 package com.catalystplus.admin.constant;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 /**
  * 用户数据有关的常量
  */
@@ -10,19 +17,59 @@ public final class AdminUserConstant {
     // TODO: 2022/11/24 常量里面写上注释 
 
     /**
+     * 学历名称常量
+     */
+    public static final String[] EDUCATION = {"undergraduate", "master", "doctor", "teacher"};
+
+    /**
+     * 学校类型名称常量
+     */
+    public static final String[] UNIVERSITY_TYPE = {"c9", "985", "211", "other"};
+
+    /**
+     * 学科名称常量
+     */
+    public static final String[] DISCIPLINE = {"哲学", "经济学", "法学",
+            "教育学", "文学", "历史学", "理学", "工学", "农学", "医学", "军事学", "管理学",
+            "艺术学", "交叉学科"};
+
+    /**
+     * 学科编号常量
+     */
+    public static final String[] DISCIPLINE_CODE = {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14"};
+
+    public static final List<String> MAJOR_CODE = new ArrayList<>();
+
+    static {
+        try (
+            InputStream is = AdminUserConstant.class.getClassLoader().getResourceAsStream("UserMajorCode.properties");
+            BufferedReader reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(is)));
+        ) {
+            String str;
+            while ((str = reader.readLine()) != null) {
+                MAJOR_CODE.add(str);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("加载userinfo.properties失败");
+        }
+
+    }
+
+    /**
      * C9院校
      */
-    public static final String[] LIST_C9 = {};
+    public static final String[] LIST_C9 = {"清华大学", "北京大学", "浙江大学", "上海交通大学", "南京大学",
+            "中国科学技术大学", "西安交通大学", "哈尔滨工业大学", "复旦大学"};
 
     /**
-     * 985院校
+     * 985院校（未写完）
      */
-    public static final String[] LIST_985 = {};
+    public static final String[] LIST_985 = {"北京航空航天大学", "中国人民大学", "中山大学", "东北大学"};
 
     /**
-     * 211院校
+     * 211院校(未写完)
      */
-    public static final String[] LIST_211 = {};
+    public static final String[] LIST_211 = {"安徽大学", "合肥工业大学", "南京航空航天大学"};
 
     /**
      * 冒号分隔符

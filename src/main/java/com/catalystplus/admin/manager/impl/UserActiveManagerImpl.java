@@ -39,7 +39,8 @@ public class UserActiveManagerImpl implements UserActiveManager {
 
     @Override
     public void recordNewUsersToday(Long userId, String createdTime) {
-
+        String key = RedisKeyUtil.getUserActiveNNUTKey(createdTime);
+        redisUtil.setBit(key, userId, true);
     }
 
     @Override

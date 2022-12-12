@@ -1,6 +1,5 @@
 package com.catalystplus.admin.manager;
 
-import com.catalystplus.admin.response.user.UserInfoMajorResponse;
 import com.catalystplus.admin.response.user.UserInfoResponse;
 
 import java.util.List;
@@ -14,5 +13,7 @@ public interface UserInfoManager {
 
     List<UserInfoResponse> getUsersInfoByDiscipline(String dateTime);
 
-    List<UserInfoMajorResponse> getUsersInfoByMajor(String dateTime, int pageNo, int pageSize);
+    List<UserInfoResponse> getUsersInfoByMajor(String dateTime);
+    List<UserInfoResponse> getUsersInfoByMajorByPage(String dateTime, int startIndex, int endIndex, int pageSize);
+    Long getMaxNumberInfoByMajor(String dateTime);
 }

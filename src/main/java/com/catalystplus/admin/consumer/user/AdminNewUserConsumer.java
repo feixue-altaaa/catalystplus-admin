@@ -44,10 +44,10 @@ public class AdminNewUserConsumer implements RocketMQListener<AdminDTO> {
         // 注册时间
         LocalDateTime createdTime = message.getCreatedTime();
 
-        // 1.统计今日新增用户
-        userActiveManager.recordNewUsersToday(userId, createdTime.format(DateTimeFormatter.ISO_LOCAL_DATE));
+//        // 1.统计今日新增用户（userId必须不能超过整型，否则bitmap报错）
+//        userActiveManager.recordNewUsersToday(userId, createdTime.format(DateTimeFormatter.ISO_LOCAL_DATE));
 
-        // 2.缓存预热
+        // 2.初始化redis的哈希键
         prepareRedisKey(createdTime.format(DateTimeFormatter.ISO_LOCAL_DATE));
 
         // 3.统计用户信息
@@ -65,6 +65,7 @@ public class AdminNewUserConsumer implements RocketMQListener<AdminDTO> {
             ) {
                 String hashKey;
                 while ((hashKey = reader.readLine()) != null) {
+                    // 将所有的hashValue初值设为0
                     redisUtil.putHashKey(key, hashKey, 0);
                 }
             } catch (Exception e) {

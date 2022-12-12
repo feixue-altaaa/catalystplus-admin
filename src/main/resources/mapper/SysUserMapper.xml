@@ -22,7 +22,7 @@
             <result property="accessToken" column="access_token" jdbcType="VARCHAR"/>
             <result property="expiresIn" column="expires_in" jdbcType="BIGINT"/>
             <result property="socialUid" column="social_uid" jdbcType="VARCHAR"/>
-            <result property="majorCode" column="majorCode" jdbcType="VARCHAR"/>
+            <result property="discipline" column="discipline" jdbcType="VARCHAR"/>
             <result property="major" column="major" jdbcType="VARCHAR"/>
             <result property="institution" column="institution" jdbcType="VARCHAR"/>
             <result property="institutionId" column="institution_id" jdbcType="BIGINT"/>
@@ -37,7 +37,7 @@
         avatar,mobile,email,
         birth,city,job,
         job_title,source_type,access_token,
-        expires_in,social_uid,majorCode,major,institution,institutionId,
+        expires_in,social_uid,discipline,major,institution,institutionId,
         status,created_time,updated_time
     </sql>
 </mapper>

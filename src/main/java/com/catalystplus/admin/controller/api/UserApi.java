@@ -12,6 +12,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Api(value = "UserApi", tags = "用户数据统计接口")
 @RequestMapping("/admin")
@@ -54,9 +55,8 @@ public interface UserApi {
 
     @PostMapping("/auth/user/info/major")
     @ApiOperation("获取用户信息按专业划分")
-    Response<List<UserInfoResponse>> queryUsersInfoByMajor(@RequestBody UserByDateVo userByDateVo,
-                                                           @RequestParam(required = false, defaultValue = "1") int pageNo,
-                                                           @RequestParam(required = false, defaultValue = "10") int pageSize);
-
+    Response<Map<String, Object>> queryUsersInfoByMajor(@RequestBody UserByDateVo userByDateVo,
+                                                        @RequestParam(required = false, defaultValue = "1") int pageNo,
+                                                        @RequestParam(required = false, defaultValue = "10") int pageSize);
 
 }

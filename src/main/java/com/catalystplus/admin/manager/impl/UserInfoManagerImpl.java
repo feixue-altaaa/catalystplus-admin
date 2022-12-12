@@ -7,7 +7,6 @@ import com.catalystplus.admin.entity.UserInfoEducation;
 import com.catalystplus.admin.entity.UserInfoUniversity;
 import com.catalystplus.admin.manager.UserInfoManager;
 import com.catalystplus.admin.mapper.UserInfoMapper;
-import com.catalystplus.admin.response.user.UserInfoMajorResponse;
 import com.catalystplus.admin.response.user.UserInfoResponse;
 import com.catalystplus.admin.service.SysUserService;
 import com.catalystplus.admin.service.UserInfoEducationService;
@@ -43,108 +42,86 @@ public class UserInfoManagerImpl implements UserInfoManager {
     @Autowired
     private UserInfoMapper userInfoMapper;
 
+    // 记录用户今日新增的所有信息
     @Override
     public void recordNewUsersInfoToday(Long userId, String dateTime) {
         SysUser sysUser = sysUserService.getById(userId);
+        // 获取用户的学历，用英文表示，比如undergraduate、master、doctor
         String job = sysUser.getJob();
+        // 获取用户的学校信息
         String institution = sysUser.getInstitution();
-        String majorCode = sysUser.getMajorCode();
+        // 获取用户的学科编号
+        String discipline = sysUser.getDiscipline();
+        // 获取用户的专业编号
+        String major = sysUser.getMajor();
 
+        // 保存用户信息数据的redis的哈希键
         String key = RedisKeyUtil.getUserInfoKey(dateTime);
+
+        // 记录用户的学历信息
+        redisUtil.hashValueIncrement(key, job);
+        // 记录用户的学科信息
+        redisUtil.hashValueIncrement(key, discipline);
+        // 记录用户的专业信息
+        redisUtil.hashValueIncrement(key, major);
 
         // 判断用户学校的类型，比如C9、985、211、其他
         String institutionKey;
         if (Arrays.asList(LIST_C9).contains(institution)) {
-            institutionKey = "c9";
+            institutionKey = UNIVERSITY_TYPE[0];
         } else if (Arrays.asList(LIST_985).contains(institution)) {
-            institutionKey = "985";
+            institutionKey = UNIVERSITY_TYPE[1];
         } else if (Arrays.asList(LIST_211).contains(institution)) {
-            institutionKey = "211";
+            institutionKey = UNIVERSITY_TYPE[2];
         } else {
-            institutionKey = "other";
+            institutionKey = UNIVERSITY_TYPE[3];
         }
-
+        // 记录用户的学校信息
         redisUtil.hashValueIncrement(key, institutionKey);
-        redisUtil.hashValueIncrement(key, job);
-        redisUtil.hashValueIncrement(key, majorCode);
     }
 
+    // 按学历划分获取用户信息
     @Override
     public List<UserInfoResponse> getUsersInfoByEducation(String dateTime) {
         List<UserInfoResponse> userInfoResponses = new ArrayList<>();
-
+        //获取昨日日期
         String lastDate = getLastDate(dateTime);
-
+        // 获取记录用户信息的redis哈希键
         String userInfoKey = RedisKeyUtil.getUserInfoKey(dateTime);
 
-        UserInfoResponse userInfoResponse = new UserInfoResponse();
-        userInfoResponse.setId("本科生");
-        // 1.1 今日本科生新增数
-        Integer addNumber = (Integer) redisUtil.getHashValue(userInfoKey, "undergraduate");
-        userInfoResponse.setAddNumber(addNumber);
-        // 1.2 本科生总数 = 今日新增 + 昨日总数
-        userInfoResponse.setTotalNumber(addNumber + getTotalNumByEducation("undergraduate", lastDate));
-        userInfoResponses.add(userInfoResponse);
-
-        userInfoResponse.setId("硕士生");
-        // 2.1 今日研究生新增数
-        addNumber = (Integer) redisUtil.getHashValue(userInfoKey, "master");
-        userInfoResponse.setAddNumber(addNumber);
-        // 2.2 研究生总数 = 今日新增 + 昨日总数
-        userInfoResponse.setTotalNumber(addNumber + getTotalNumByEducation("master", lastDate));
-        userInfoResponses.add(userInfoResponse);
-
-        userInfoResponse.setId("博士");
-        // 3.1 今日博士生新增数
-        addNumber = (Integer) redisUtil.getHashValue(userInfoKey, "doctor");
-        userInfoResponse.setAddNumber(addNumber);
-        // 3.2 博士生总数 = 今日新增 + 昨日总数
-        userInfoResponse.setTotalNumber(addNumber + getTotalNumByEducation("doctor", lastDate));
-        userInfoResponses.add(userInfoResponse);
-
-        userInfoResponse.setId("老师");
-        // 4.1 今日老师新增数
-        addNumber = (Integer) redisUtil.getHashValue(userInfoKey, "teacher");
-        userInfoResponse.setAddNumber(addNumber);
-        // 4.2 老师总数 = 今日新增 + 昨日总数
-        userInfoResponse.setTotalNumber(addNumber + getTotalNumByEducation("teacher", lastDate));
-        userInfoResponses.add(userInfoResponse);
+        for (int i = 0; i < 4; i++) {
+            UserInfoResponse userInfoResponse = new UserInfoResponse();
+            userInfoResponse.setId(EDUCATION[i]);
+            // 今日新增数量
+            Integer addNumber = (Integer) redisUtil.getHashValue(userInfoKey, EDUCATION[i]);
+            userInfoResponse.setAddNumber(addNumber);
+            // 今日总数量 = 今日新增 + 昨日总数量
+            userInfoResponse.setTotalNumber(addNumber + getTotalNumByEducationAndDate(EDUCATION[i], lastDate));
+            userInfoResponses.add(userInfoResponse);
+        }
 
         return userInfoResponses;
     }
 
+    // 按学校划分获取用户信息
     @Override
     public List<UserInfoResponse> getUsersInfoByUniversity(String dateTime) {
         List<UserInfoResponse> userInfoResponses = new ArrayList<>();
-
+        //获取昨日日期
         String lastDate = getLastDate(dateTime);
-
+        // 获取记录用户信息的redis哈希键
         String userInfoKey = RedisKeyUtil.getUserInfoKey(dateTime);
-        UserInfoResponse userInfoResponse = new UserInfoResponse();
 
-        userInfoResponse.setId("c9院校");
-        Integer addNumber = (Integer) redisUtil.getHashValue(userInfoKey, "c9");
-        userInfoResponse.setAddNumber(addNumber);
-        userInfoResponse.setTotalNumber(addNumber + getTotalNumByUniversity("c9", lastDate));
-        userInfoResponses.add(userInfoResponse);
-
-        userInfoResponse.setId("985院校");
-        addNumber = (Integer) redisUtil.getHashValue(userInfoKey, "985");
-        userInfoResponse.setAddNumber(addNumber);
-        userInfoResponse.setTotalNumber(addNumber + getTotalNumByUniversity("985", lastDate));
-        userInfoResponses.add(userInfoResponse);
-
-        userInfoResponse.setId("211院校");
-        addNumber = (Integer) redisUtil.getHashValue(userInfoKey, "211");
-        userInfoResponse.setAddNumber(addNumber);
-        userInfoResponse.setTotalNumber(addNumber + getTotalNumByUniversity("211", lastDate));
-        userInfoResponses.add(userInfoResponse);
-
-        userInfoResponse.setId("其他院校");
-        addNumber = (Integer) redisUtil.getHashValue(userInfoKey, "other");
-        userInfoResponse.setAddNumber(addNumber);
-        userInfoResponse.setTotalNumber(addNumber + getTotalNumByUniversity("other", lastDate));
-        userInfoResponses.add(userInfoResponse);
+        for (int i = 0; i < 4; i++) {
+            UserInfoResponse userInfoResponse = new UserInfoResponse();
+            userInfoResponse.setId(UNIVERSITY_TYPE[i]);
+            // 今日新增数量
+            Integer addNumber = (Integer) redisUtil.getHashValue(userInfoKey, UNIVERSITY_TYPE[i]);
+            userInfoResponse.setAddNumber(addNumber);
+            // 今日总数量 = 今日新增 + 昨日总数量
+            userInfoResponse.setTotalNumber(addNumber + getTotalNumByUniversityAndDate(UNIVERSITY_TYPE[i], lastDate));
+            userInfoResponses.add(userInfoResponse);
+        }
 
         return userInfoResponses;
     }
@@ -152,27 +129,88 @@ public class UserInfoManagerImpl implements UserInfoManager {
     @Override
     public List<UserInfoResponse> getUsersInfoByDiscipline(String dateTime) {
         List<UserInfoResponse> userInfoResponses = new ArrayList<>();
-
+        //获取昨日日期
         String lastDate = getLastDate(dateTime);
-
+        // 获取记录用户信息的redis哈希键
         String userInfoKey = RedisKeyUtil.getUserInfoKey(dateTime);
-        UserInfoResponse userInfoResponse = new UserInfoResponse();
 
-        userInfoResponse.setId("01哲学");
-        Integer addNumber = (Integer) redisUtil.getHashValue(userInfoKey, "01");
-        userInfoResponse.setAddNumber(addNumber);
-        userInfoResponse.setTotalNumber(addNumber + getTotalNumByDiscipline("c9", lastDate));
-        userInfoResponses.add(userInfoResponse);
+        for (int i = 0; i < 14; i++) {
+            UserInfoResponse userInfoResponse = new UserInfoResponse();
+            userInfoResponse.setId(DISCIPLINE[i]);
+            // 今日新增数量
+            Integer addNumber = (Integer) redisUtil.getHashValue(userInfoKey, DISCIPLINE_CODE[i]);
+            userInfoResponse.setAddNumber(addNumber);
+            // 今日总数量 = 今日新增 + 昨日总数量
+            userInfoResponse.setTotalNumber(addNumber + getTotalNumByDisciplineAndDate(DISCIPLINE_CODE[i], lastDate));
+            userInfoResponses.add(userInfoResponse);
+        }
+        return userInfoResponses;
+    }
 
-
+    @Override
+    public List<UserInfoResponse> getUsersInfoByMajor(String dateTime) {
+        List<UserInfoResponse> userInfoResponses = new ArrayList<>();
+        //获取昨日日期
+        String lastDate = getLastDate(dateTime);
+        // 获取记录用户信息的redis哈希键
+        String userInfoKey = RedisKeyUtil.getUserInfoKey(dateTime);
+        for (String s : MAJOR_CODE) {
+            UserInfoResponse userInfoResponse = new UserInfoResponse();
+            userInfoResponse.setId(s);
+            // 今日新增数量
+            Integer addNumber = (Integer) redisUtil.getHashValue(userInfoKey, s);
+            userInfoResponse.setAddNumber(addNumber);
+            // 今日总数量 = 今日新增 + 昨日总数量
+            userInfoResponse.setTotalNumber(addNumber + getTotalNumByDisciplineAndDate(s, lastDate));
+            userInfoResponses.add(userInfoResponse);
+        }
 
         return userInfoResponses;
     }
 
     @Override
-    public List<UserInfoMajorResponse> getUsersInfoByMajor(String dateTime, int pageNo, int pageSize) {
-        return null;
+    public List<UserInfoResponse> getUsersInfoByMajorByPage(String dateTime, int startIndex, int endIndex, int pageSize) {
+        List<UserInfoResponse> userInfoResponses = new ArrayList<>();
+        //获取昨日日期
+        String lastDate = getLastDate(dateTime);
+        // 获取记录用户信息的redis哈希键
+        String userInfoKey = RedisKeyUtil.getUserInfoKey(dateTime);
+        for (int i = 0; i < pageSize; i++) {
+            UserInfoResponse userInfoResponse = new UserInfoResponse();
+            userInfoResponse.setId(MAJOR_CODE.get(i));
+            // 今日新增数量
+            Integer addNumber = (Integer) redisUtil.getHashValue(userInfoKey, MAJOR_CODE.get(i));
+            userInfoResponse.setAddNumber(addNumber);
+            // 今日总数量 = 今日新增 + 昨日总数量
+            userInfoResponse.setTotalNumber(addNumber + getTotalNumByDisciplineAndDate(MAJOR_CODE.get(i), lastDate));
+            userInfoResponses.add(userInfoResponse);
+        }
+
+        return userInfoResponses;
     }
+
+    /**
+     * 获取所有专业中总人数的最大值
+     * @param dateTime
+     * @return
+     */
+    @Override
+    public Long getMaxNumberInfoByMajor(String dateTime) {
+        long res = 0L;
+        //获取昨日日期
+        String lastDate = getLastDate(dateTime);
+        // 获取记录用户信息的redis哈希键
+        String userInfoKey = RedisKeyUtil.getUserInfoKey(dateTime);
+        for (String s : MAJOR_CODE) {
+            // 获取该专业的今日总人数
+            // 该专业今日新增人数
+            Integer addNumber = (Integer) redisUtil.getHashValue(userInfoKey, s);
+            int totalNumber = addNumber + getTotalNumByMajorAndDate(s, lastDate);
+            res = Math.max(res, totalNumber);
+        }
+        return res;
+    }
+
 
     // 获取昨日的日期
     private String getLastDate(String dateTime) {
@@ -183,19 +221,19 @@ public class UserInfoManagerImpl implements UserInfoManager {
         return LocalDate.of(year, month, day).minusDays(1).toString();
     }
 
-    private Integer getTotalNumByEducation(String education, String dateTime) {
+    private Integer getTotalNumByEducationAndDate(String education, String dateTime) {
         QueryWrapper<UserInfoEducation> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("date_time", dateTime).eq("education", education);
         return Math.toIntExact(userInfoEducationService.getOne(queryWrapper).getTotalNumber());
     }
 
-    private Integer getTotalNumByUniversity(String university, String dateTime) {
+    private Integer getTotalNumByUniversityAndDate(String university, String dateTime) {
         QueryWrapper<UserInfoUniversity> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("date_time", dateTime).eq("university", university);
         return Math.toIntExact(userInfoUniversityService.getOne(queryWrapper).getTotalNumber());
     }
 
-    private Integer getTotalNumByDiscipline(String discipline, String dateTime) {
+    private Integer getTotalNumByDisciplineAndDate(String discipline, String dateTime) {
         QueryWrapper<UserInfo> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("date_time", dateTime).eq("discipline", discipline);
         List<UserInfo> userInfos = userInfoMapper.selectList(queryWrapper);
@@ -206,7 +244,7 @@ public class UserInfoManagerImpl implements UserInfoManager {
         return sum;
     }
 
-    private Integer getTotalNumByMajor(String major, String dateTime) {
+    private Integer getTotalNumByMajorAndDate(String major, String dateTime) {
         QueryWrapper<UserInfo> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("date_time", dateTime).eq("major", major);
         return Math.toIntExact(userInfoMapper.selectOne(queryWrapper).getTotalNumber());

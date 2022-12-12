@@ -15,9 +15,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import static com.catalystplus.admin.response.ResponseCode.*;
+import static com.catalystplus.admin.constant.AdminUserConstant.MAJOR_CODE;
+import static com.catalystplus.admin.response.ResponseCode.ADMIN_USER_DATE_ERROR;
 
 
 @Slf4j
@@ -115,22 +118,84 @@ public class UserController implements UserApi {
 
     @Override
     public Response<List<UserInfoResponse>> queryUsersInfoByEducation(UserByDateVo userByDateVo) {
-        return null;
+        // 1.验证参数
+        log.info("userByDateVo is {}", userByDateVo);
+        if (Assert.notEmpty(userByDateVo.getLocalDateTime())) {
+            return Response.fail(userByDateVo.getUserId(), ADMIN_USER_DATE_ERROR.getCode(), ADMIN_USER_DATE_ERROR.getMsg());
+        }
+        // 2.按学历获取用户信息
+        List<UserInfoResponse> userInfoResponses;
+        try {
+            userInfoResponses = userInfoManager.getUsersInfoByEducation(userByDateVo.getLocalDateTime());
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return Response.fail(userByDateVo.getUserId(), e.getMessage());
+        }
+        return Response.success(userByDateVo.getUserId(), userInfoResponses);
     }
 
     @Override
     public Response<List<UserInfoResponse>> queryUsersInfoByUniversity(UserByDateVo userByDateVo) {
-        return null;
+        // 1.验证参数
+        log.info("userByDateVo is {}", userByDateVo);
+        if (Assert.notEmpty(userByDateVo.getLocalDateTime())) {
+            return Response.fail(userByDateVo.getUserId(), ADMIN_USER_DATE_ERROR.getCode(), ADMIN_USER_DATE_ERROR.getMsg());
+        }
+        // 2.按学校获取用户信息
+        List<UserInfoResponse> userInfoResponses;
+        try {
+            userInfoResponses = userInfoManager.getUsersInfoByUniversity(userByDateVo.getLocalDateTime());
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return Response.fail(userByDateVo.getUserId(), e.getMessage());
+        }
+        return Response.success(userByDateVo.getUserId(), userInfoResponses);
     }
 
     @Override
     public Response<List<UserInfoResponse>> queryUsersInfoByDiscipline(UserByDateVo userByDateVo) {
-        return null;
+        // 1.验证参数
+        log.info("userByDateVo is {}", userByDateVo);
+        if (Assert.notEmpty(userByDateVo.getLocalDateTime())) {
+            return Response.fail(userByDateVo.getUserId(), ADMIN_USER_DATE_ERROR.getCode(), ADMIN_USER_DATE_ERROR.getMsg());
+        }
+        // 2.按学科获取用户信息
+        List<UserInfoResponse> userInfoResponses;
+        try {
+            userInfoResponses = userInfoManager.getUsersInfoByDiscipline(userByDateVo.getLocalDateTime());
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return Response.fail(userByDateVo.getUserId(), e.getMessage());
+        }
+        return Response.success(userByDateVo.getUserId(), userInfoResponses);
     }
 
     @Override
-    public Response<List<UserInfoResponse>> queryUsersInfoByMajor(UserByDateVo userByDateVo, int pageNo, int pageSize) {
-        return null;
+    public Response<Map<String, Object>> queryUsersInfoByMajor(UserByDateVo userByDateVo, int pageNo, int pageSize) {
+        // 1.验证参数
+        log.info("userByDateVo is {}", userByDateVo);
+        if (Assert.notEmpty(userByDateVo.getLocalDateTime())) {
+            return Response.fail(userByDateVo.getUserId(), ADMIN_USER_DATE_ERROR.getCode(), ADMIN_USER_DATE_ERROR.getMsg());
+        }
+        long pageTotal = MAJOR_CODE.size() / pageSize + 1;
+        int startIndex = (pageNo - 1) * pageSize;
+        int endIndex = pageNo * pageSize - 1;
+        // 2. 按专业分页获取用户信息
+        List<UserInfoResponse> userInfoResponses;
+        try {
+            userInfoResponses = userInfoManager.getUsersInfoByMajorByPage(userByDateVo.getLocalDateTime(), startIndex, endIndex, pageSize);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return Response.fail(userByDateVo.getUserId(), e.getMessage());
+        }
+        Map<String, Object> map = new HashMap<>();
+        // 3.获取所有专业中用户的最大总人数
+        map.put("maxNumber", userInfoManager.getMaxNumberInfoByMajor(userByDateVo.getLocalDateTime()));
+        map.put("userMajorInfo", userInfoResponses);
+        // 4. 返回响应
+        Response<Map<String, Object>> success = Response.success(userByDateVo.getUserId(), map);
+        success.setPageTotal(pageTotal);
+        return success;
     }
 
 }

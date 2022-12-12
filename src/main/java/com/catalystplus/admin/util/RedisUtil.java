@@ -52,8 +52,14 @@ public class RedisUtil {
         return redisTemplate.opsForHash().get(key, hashKey);
     }
 
+    // 判断键是否存在
     public Boolean hasKey(String key) {
         return redisTemplate.hasKey(key);
+    }
+
+    // 保存哈希键
+    public void putHashKey(String key, String hashKey, Object hashValue) {
+        redisTemplate.opsForHash().put(key, hashKey, hashValue);
     }
 
     /**
@@ -162,5 +168,4 @@ public class RedisUtil {
     public void delete(String key) {
         redisTemplate.delete(key);
     }
-
 }
