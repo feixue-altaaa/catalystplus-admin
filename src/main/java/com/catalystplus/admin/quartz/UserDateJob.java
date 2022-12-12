@@ -180,6 +180,9 @@ public class UserDateJob {
             userInfoService.save(userInfo);
         }
 
+        // 删除redis中的键
+        redisUtil.delete(RedisKeyUtil.getUserInfoKey(dateTime));
+
     }
 
 }
