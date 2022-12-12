@@ -169,13 +169,13 @@ public class UserInfoManagerImpl implements UserInfoManager {
     }
 
     @Override
-    public List<UserInfoResponse> getUsersInfoByMajorByPage(String dateTime, int startIndex, int endIndex, int pageSize) {
+    public List<UserInfoResponse> getUsersInfoByMajorByPage(String dateTime, int startIndex, int endIndex) {
         List<UserInfoResponse> userInfoResponses = new ArrayList<>();
         //获取昨日日期
         String lastDate = getLastDate(dateTime);
         // 获取记录用户信息的redis哈希键
         String userInfoKey = RedisKeyUtil.getUserInfoKey(dateTime);
-        for (int i = 0; i < pageSize; i++) {
+        for (int i = startIndex; i < endIndex; i++) {
             UserInfoResponse userInfoResponse = new UserInfoResponse();
             userInfoResponse.setId(MAJOR_CODE.get(i));
             // 今日新增数量

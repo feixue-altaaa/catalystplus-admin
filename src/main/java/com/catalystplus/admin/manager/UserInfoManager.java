@@ -14,6 +14,6 @@ public interface UserInfoManager {
     List<UserInfoResponse> getUsersInfoByDiscipline(String dateTime);
 
     List<UserInfoResponse> getUsersInfoByMajor(String dateTime);
-    List<UserInfoResponse> getUsersInfoByMajorByPage(String dateTime, int startIndex, int endIndex, int pageSize);
+    List<UserInfoResponse> getUsersInfoByMajorByPage(String dateTime, int startIndex, int endIndex);
     Long getMaxNumberInfoByMajor(String dateTime);
 }

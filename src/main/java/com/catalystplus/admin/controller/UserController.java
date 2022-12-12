@@ -183,7 +183,7 @@ public class UserController implements UserApi {
         // 2. 按专业分页获取用户信息
         List<UserInfoResponse> userInfoResponses;
         try {
-            userInfoResponses = userInfoManager.getUsersInfoByMajorByPage(userByDateVo.getLocalDateTime(), startIndex, endIndex, pageSize);
+            userInfoResponses = userInfoManager.getUsersInfoByMajorByPage(userByDateVo.getLocalDateTime(), startIndex, endIndex);
         } catch (Exception e) {
             log.error(e.getMessage());
             return Response.fail(userByDateVo.getUserId(), e.getMessage());
