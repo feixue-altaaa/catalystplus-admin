@@ -1,5 +1,7 @@
 package com.catalystplus.admin.response.journal;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.catalystplus.admin.entity.Subject;
 import com.catalystplus.admin.response.area.AreaResponse;
 import com.catalystplus.admin.response.subject.SubjectSimpleResponse;
@@ -29,46 +31,103 @@ public class JournalResponse implements Serializable {
     @ApiModelProperty("表序列，除了查找文献以外，其他都用这个这个id")
     private Long id;
 
-
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     @ApiModelProperty("真实唯一journalId，查找文献用这个id")
     private Long journalId;
 
     /**
+     * ISBN编号, 国际标准书号
+     */
+    private String isbn;
+
+    /**
+     * ISSN编号, 标准国际刊号，对外宣称的
+     */
+    private String issnL;
+
+    /**
+     * 带横杠版的issn，对外宣称的
+     */
+    private String issnPrimaryFormattedL;
+
+    /**
+     * ISSN(打印版编号)
+     */
+    private String issnPrint;
+
+    /**
+     * 带横杠版的ISSN(打印版编号)
+     */
+    private String issnPrintPrimaryFormatted;
+
+    /**
+     * ISSN(网络版编号)
+     */
+    private String issnOnline;
+
+    /**
+     * 带横杠版的ISSN(网络版编号)
+     */
+    private String issnOnlinePrimaryFormatted;
+
+    /**
      * 期刊名字, en_name:英文名
      */
-    @ApiModelProperty("期刊英文名字")
     private String enName;
 
     /**
      * 期刊名字, cn_name:中文名
      */
-    @ApiModelProperty("期刊中文文字")
     private String chName;
 
+    /**
+     * 期刊描述
+     */
+    private String enDescription;
+
+    /**
+     * 期刊描述，中文描述
+     */
+    private String chDescription;
+
+    /**
+     * 封面图片地址链接
+     */
+    private String cover;
+
+    /**
+     * 封面图片base64数据
+     */
+    private String coverBase64;
+
+    /**
+     * 期刊关联subject主题表,
+     */
+    private Long subjectId;
 
     /**
      * 关联publisher出版商表
      */
-    @ApiModelProperty("期刊出版商ID")
     private Long publisherId;
 
+    /**
+     * 期刊的名字
+     */
+    private String publisherName;
 
     /**
-     * 带横杠版的issn
+     * 出版商的详细信息页链接
      */
-    private String issnPrimaryFormatted;
+    private String informationPageUrl;
 
     /**
-     * Area Quartile in Category分区，1为一区，2为二区，3为三区，4为四区，以Area分区为标准
+     * 期刊影响因子
      */
-    @ApiModelProperty("期刊分区")
-    private Integer quartile;
+    private Double impactFactor;
 
     /**
      * 是否为顶刊，0不是顶刊，1是顶刊
      */
-    @ApiModelProperty("是否为顶刊")
     private Integer top;
 
     /**
@@ -82,10 +141,14 @@ public class JournalResponse implements Serializable {
     private Integer review;
 
     /**
-     * 出版商的详细信息页链接
+     * Area Quartile in Category分区，1为一区，2为二区，3为三区，4为四区，以Area分区为标准
      */
-    @ApiModelProperty("期刊官方网址")
-    private String informationPageUrl;
+    private Integer quartile;
+
+    /**
+     * Subject Quartile in Category分区，1为一区，2为二区，3为三区，4为四区
+     */
+    private Integer subQuartile;
 
 
     /**

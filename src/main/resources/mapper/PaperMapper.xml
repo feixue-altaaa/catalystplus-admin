@@ -82,7 +82,7 @@
     <!--                "WHERE p.journal_id IN #{journalIds}",-->
     <!--                "LIMIT #{pageNo}, #{pageSize}"})-->
 
-    <select id="getPaperByJournalIds" resultType="com.catalystplus.library.entity.Paper">
+    <select id="getPaperByJournalIds" resultType="com.catalystplus.admin.entity.Paper">
         select
         p.*
         from paper p
@@ -97,7 +97,7 @@
     </select>
 
 
-    <select id="getPaperByKeywordsAndAuthors" resultType="com.catalystplus.library.entity.Paper">
+    <select id="getPaperByKeywordsAndAuthors" resultType="com.catalystplus.admin.entity.Paper">
         select
         p.*
         from paper p

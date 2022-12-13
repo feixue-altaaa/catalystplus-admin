@@ -225,11 +225,19 @@ class CatalystplusAdminApplicationTests {
     void subjectTest() {
 
 
-        SubjectByAreaIdVo subjectByAreaIdVo = new SubjectByAreaIdVo();
-        subjectByAreaIdVo.setAreaId(1L);
-        subjectByAreaIdVo.setSubjectName("geo");
-        Response<List<SubjectResponse>> subjectByAreaId = subjectController.getSubjectByAreaId(subjectByAreaIdVo);
-        subjectByAreaId.getData().forEach(System.out::println);
+        rankManager.updatePaperTotal(AdminRankConstant.READ_TOTAL,AdminRankConstant.rankNumber,AdminRankConstant.ADMIN_RANK_TOTAL_READ);
+        rankManager.updatePaperTotal(AdminRankConstant.COLLECT_TOTAL,AdminRankConstant.rankNumber,AdminRankConstant.ADMIN_RANK_TOTAL_COLLECT);
+        rankManager.updatePaperTotal(AdminRankConstant.TAG_TOTAL,AdminRankConstant.rankNumber,AdminRankConstant.ADMIN_RANK_TOTAL_TAG);
+        rankManager.updatePaperTotal(AdminRankConstant.NOTE_TOTAL,AdminRankConstant.rankNumber,AdminRankConstant.ADMIN_RANK_TOTAL_NOTE);
+        rankManager.updatePaperTotal(AdminRankConstant.GOOD_TOTAL,AdminRankConstant.rankNumber,AdminRankConstant.ADMIN_RANK_TOTAL_GOOD);
+        rankManager.updateJournalTotal
+                (AdminRankConstant.SUBSCRIPTION_TOTAL,AdminRankConstant.rankNumber,AdminRankConstant.ADMIN_RANK_TOTAL_SUBSCRIPTION);
+
+//        SubjectByAreaIdVo subjectByAreaIdVo = new SubjectByAreaIdVo();
+//        subjectByAreaIdVo.setAreaId(1L);
+//        subjectByAreaIdVo.setSubjectName("geo");
+//        Response<List<SubjectResponse>> subjectByAreaId = subjectController.getSubjectByAreaId(subjectByAreaIdVo);
+//        subjectByAreaId.getData().forEach(System.out::println);
 
 //        Page<Subject> page = new Page<>(1, 10);
 //        LambdaQueryWrapper<Subject> subjectLambdaQueryWrapper = new LambdaQueryWrapper<>();
