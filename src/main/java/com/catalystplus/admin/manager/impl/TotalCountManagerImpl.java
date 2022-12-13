@@ -8,6 +8,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +21,7 @@ public class TotalCountManagerImpl implements TotalCountManager {
     TotalCountService totalCountService;
 
     @Override
-    public TotalCountResponse getByDate() {
+    public Map<String, Map> getByDate() {
 
         //1. 初始化
         TotalCountResponse totalCountResponse = new TotalCountResponse();
@@ -57,43 +58,55 @@ public class TotalCountManagerImpl implements TotalCountManager {
 
 
 
-        paperRead.put("todayRead",totalCount.getTodayRead());
-        paperRead.put("readTotal",totalCount.getReadTotal());
-        paperRead.put("todayPerCapitaRead",totalCount.getTodayRead()/totalCount.getTodayReadUser());
-        paperRead.put("totalPerCapitaRead",totalCount.getReadTotal()/totalCount.getReadTotalUser());
+        paperRead.put("today",totalCount.getTodayRead());
+        paperRead.put("total",totalCount.getReadTotal());
+        paperRead.put("todayPerCapita",totalCount.getTodayRead()/totalCount.getTodayReadUser());
+        paperRead.put("totalPerCapita",totalCount.getReadTotal()/totalCount.getReadTotalUser());
 
-        paperCollect.put("todayCollect",totalCount.getTodayCollect());
-        paperCollect.put("collectTotal",totalCount.getCollectTotal());
-        paperCollect.put("todayPerCapitaCollect",totalCount.getTodayCollect()/totalCount.getTodayCollectUser());
-        paperCollect.put("totalPerCapitaCollect",totalCount.getCollectTotal()/totalCount.getCollectTotalUser());
+        paperCollect.put("today",totalCount.getTodayCollect());
+        paperCollect.put("total",totalCount.getCollectTotal());
+        paperCollect.put("todayPerCapita",totalCount.getTodayCollect()/totalCount.getTodayCollectUser());
+        paperCollect.put("totalPerCapita",totalCount.getCollectTotal()/totalCount.getCollectTotalUser());
 
-        paperTag.put("todayTag",totalCount.getTodayTag());
-        paperTag.put("tagTotal",totalCount.getTagTotal());
-        paperTag.put("todayPerCapitaTag",totalCount.getTodayTag()/totalCount.getTodayTagUser());
-        paperTag.put("totalPerCapitaTag",totalCount.getTagTotal()/totalCount.getTagTotalUser());
+        paperTag.put("today",totalCount.getTodayTag());
+        paperTag.put("total",totalCount.getTagTotal());
+        paperTag.put("todayPerCapita",totalCount.getTodayTag()/totalCount.getTodayTagUser());
+        paperTag.put("totalPerCapita",totalCount.getTagTotal()/totalCount.getTagTotalUser());
 
-        paperNote.put("todayNote",totalCount.getTodayNote());
-        paperNote.put("noteTotal",totalCount.getNoteTotal());
-        paperNote.put("todayPerCapitaNote",totalCount.getTodayNote()/totalCount.getTodayNoteUser());
-        paperNote.put("totalPerCapitaNote",totalCount.getNoteTotal()/totalCount.getNoteTotalUser());
+        paperNote.put("today",totalCount.getTodayNote());
+        paperNote.put("total",totalCount.getNoteTotal());
+        paperNote.put("todayPerCapita",totalCount.getTodayNote()/totalCount.getTodayNoteUser());
+        paperNote.put("totalPerCapita",totalCount.getNoteTotal()/totalCount.getNoteTotalUser());
 
-        paperGood.put("todayGood",totalCount.getTodayGood());
-        paperGood.put("goodTotal",totalCount.getGoodTotal());
-        paperGood.put("todayPerCapitaGood",totalCount.getTodayGood()/totalCount.getTodayGoodUser());
-        paperGood.put("totalPerCapitaGood",totalCount.getGoodTotal()/totalCount.getGoodTotalUser());
+        paperGood.put("today",totalCount.getTodayGood());
+        paperGood.put("total",totalCount.getGoodTotal());
+        paperGood.put("todayPerCapita",totalCount.getTodayGood()/totalCount.getTodayGoodUser());
+        paperGood.put("totalPerCapita",totalCount.getGoodTotal()/totalCount.getGoodTotalUser());
 
-        journalSubscription.put("todaySubscription",totalCount.getTodaySubscription());
-        journalSubscription.put("subscriptionTotal",totalCount.getSubscriptionTotal());
-        journalSubscription.put("todayPerCapitaSubscription",totalCount.getTodaySubscription()/totalCount.getTodaySubscriptionUser());
-        journalSubscription.put("totalPerCapitaSubscription",totalCount.getSubscriptionTotal()/totalCount.getSubscriptionTotalUser());
+        journalSubscription.put("today",totalCount.getTodaySubscription());
+        journalSubscription.put("total",totalCount.getSubscriptionTotal());
+        journalSubscription.put("todayPerCapita",totalCount.getTodaySubscription()/totalCount.getTodaySubscriptionUser());
+        journalSubscription.put("totalPerCapita",totalCount.getSubscriptionTotal()/totalCount.getSubscriptionTotalUser());
 
-        totalCountResponse.setPaperRead(paperRead);
-        totalCountResponse.setPaperCollect(paperCollect);
-        totalCountResponse.setPaperTag(paperTag);
-        totalCountResponse.setPaperNote(paperNote);
-        totalCountResponse.setPaperGood(paperGood);
-        totalCountResponse.setJournalSubscription(journalSubscription);
+//        totalCountResponse.setPaperRead(paperRead);
+//        totalCountResponse.setPaperCollect(paperCollect);
+//        totalCountResponse.setPaperTag(paperTag);
+//        totalCountResponse.setPaperNote(paperNote);
+//        totalCountResponse.setPaperGood(paperGood);
+//        totalCountResponse.setJournalSubscription(journalSubscription);
 
-        return totalCountResponse;
+//        return totalCountResponse;
+
+//        List<Map> total = new ArrayList<>();
+        Map<String,Map> total = new HashMap<>();
+
+        total.put("paperRead",paperRead);
+        total.put("paperCollect",paperCollect);
+        total.put("paperNote",paperNote);
+        total.put("paperTag",paperTag);
+        total.put("paperGood",paperGood);
+        total.put("journalSubscription",journalSubscription);
+
+        return total;
     }
 }

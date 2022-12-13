@@ -8,7 +8,9 @@ import lombok.Data;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Data
@@ -24,18 +26,19 @@ public class TotalCountResponse implements Serializable {
 //    @ApiModelProperty("自增ID")
 //    private Long id;
 
+            List<Map> totalCount = new ArrayList<>();
 
-    Map<String,Long> paperRead;
-
-    Map<String,Long> paperCollect;
-
-    Map<String,Long> paperTag;
-
-    Map<String,Long> paperNote;
-
-    Map<String,Long> paperGood;
-
-    Map<String,Long> journalSubscription;
+//    Map<String,Long> paperRead;
+//
+//    Map<String,Long> paperCollect;
+//
+//    Map<String,Long> paperTag;
+//
+//    Map<String,Long> paperNote;
+//
+//    Map<String,Long> paperGood;
+//
+//    Map<String,Long> journalSubscription;
 
     /**
      * 今日文章阅读次数

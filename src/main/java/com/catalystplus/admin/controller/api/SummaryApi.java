@@ -10,11 +10,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.List;
+import java.util.Map;
+
 @Api(value = "SummaryApi" , tags = "期刊文章浏览汇总接口")
 @RequestMapping("/admin")
 public interface SummaryApi {
 
     @PostMapping("/auth/summary")
     @ApiOperation("查询期刊文章浏览汇总信息")
-    Response<TotalCountResponse> getPaperJournalSummary(@RequestBody SummaryVo summaryVo);
+    Response<Map<String, Map>> getPaperJournalSummary(@RequestBody SummaryVo summaryVo);
 }

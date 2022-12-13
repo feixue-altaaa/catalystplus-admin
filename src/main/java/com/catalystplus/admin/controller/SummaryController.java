@@ -10,6 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @RestController
 @Slf4j
 @CrossOrigin
@@ -19,17 +24,18 @@ public class SummaryController implements SummaryApi {
     TotalCountManager totalCountManager;
 
     @Override
-    public Response<TotalCountResponse> getPaperJournalSummary(SummaryVo summaryVo) {
+    public Response<Map<String, Map>> getPaperJournalSummary(SummaryVo summaryVo) {
         //1. 初始化
-        TotalCountResponse totalCountResponse = new TotalCountResponse();
+//        List<Map> totalCount = new ArrayList<>();
+        Map<String,Map> totalCount = new HashMap<>();
 
         //2. 获取期刊文章浏览汇总信息
         try {
-            totalCountResponse = totalCountManager.getByDate();
+            totalCount = totalCountManager.getByDate();
         } catch (Exception e) {
             return Response.fail(summaryVo.getUserId(),e.getMessage());
         }
 
-        return Response.success(summaryVo.getUserId(),totalCountResponse);
+        return Response.success(summaryVo.getUserId(),totalCount);
     }
 }
