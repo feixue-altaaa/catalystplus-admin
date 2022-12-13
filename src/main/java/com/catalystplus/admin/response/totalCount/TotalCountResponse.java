@@ -11,7 +11,7 @@ import java.io.Serializable;
 
 @Data
 @ToString
-@ApiModel
+@ApiModel("tocal_count通用响应")
 public class TotalCountResponse implements Serializable {
 
     private static final long serialVersionUID = -2906993922799552745L;

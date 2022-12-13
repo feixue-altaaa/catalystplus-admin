@@ -32,7 +32,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -48,13 +52,51 @@ class CatalystplusAdminApplicationTests {
 
 
     @Test
+    void dateTest(){
+
+        /**
+         * 获取明天的日期字符串
+         * @return
+         */
+            Date date=new Date();//取时间
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            //把日期往后增加一天.整数往后推,负数往前移动(1:表示明天、-1：表示昨天，0：表示今天)
+            calendar.add(Calendar.DATE,-1);
+
+            //这个时间就是日期往后推一天的结果
+            date=calendar.getTime();
+
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            String tomorrowStr = formatter.format(date);
+
+        System.out.println(tomorrowStr);
+    }
+
+
+    @Test
     void redisTest(){
 
 
 //        Set keys = redisTemplate.keys("admin:user:today:" + "*");
 //        keys.forEach(key -> );
 
-        redisTemplate.delete(redisTemplate.keys("admin:user:today:"+"*"));
+//        redisTemplate.delete(redisTemplate.keys("admin:user:today:"+"*"));
+//
+//        redisTemplate.opsForValue().setBit("ttt","123",true)
+        redisTemplate.opsForValue().setBit("test1", 1, true);
+
+        String test1 = redisTemplate.opsForValue().get("test1", 0, -1);
+//
+        System.out.println(test1);
+//        test1 = ""
+        redisTemplate.opsForHash().put("hashKey", "test1", test1);
+
+        Object o = redisTemplate.opsForHash().get("hashKey", "test1");
+        System.out.println(o);
+
+        System.out.println("******************");
+//        System.out.println(redisUtil.bitCount(o.toString()));
 
 
 

@@ -8,6 +8,7 @@ import com.catalystplus.admin.mapper.TotalCountMapper;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -23,7 +24,6 @@ public class TotalCountServiceImpl extends ServiceImpl<TotalCountMapper, TotalCo
     @Override
     public TotalCount getByDate() {
 
-
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         long currentTimeMillis = System.currentTimeMillis();
         Date date = new Date(currentTimeMillis);
@@ -33,6 +33,26 @@ public class TotalCountServiceImpl extends ServiceImpl<TotalCountMapper, TotalCo
         totalCountLambdaQueryWrapper.eq(TotalCount::getDateTime,formatDate);
         return this.baseMapper.selectOne(totalCountLambdaQueryWrapper);
 
+    }
+
+    /**
+     * 获取明天的日期字符串
+     * @return
+     */
+    @Override
+    public String tomorrowDateStr(){
+        Date date=new Date();//取时间
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        //把日期往后增加一天.整数往后推,负数往前移动(1:表示明天、-1：表示昨天，0：表示今天)
+        calendar.add(Calendar.DATE,1);
+
+        //这个时间就是日期往后推一天的结果
+        date=calendar.getTime();
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String tomorrowStr = formatter.format(date);
+        return tomorrowStr;
     }
 }
 

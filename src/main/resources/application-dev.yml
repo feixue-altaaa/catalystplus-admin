@@ -20,26 +20,8 @@ spring:
 
 rocketmq:
   ###连接地址nameServer
-#  name-server: 192.168.3.30:9876
+#  name-server: 192.168.3.102:9876
   name-server: 116.62.104.15:6789
   producer:
     group: admin-producer
 
-
-#elasticjob:
-#  reg-center:
-#    server-lists: 192.168.3.101:2181
-#    namespace: admin-time
-#  jobs:
-#    correct-elastic-job: #自定义名称
-#      elasticJobClass: com.catalystplus.admin.elasticjob.PaperCountCorrectByDatabaseJob #类名
-##            cron: 0 0 1 * * ? #cron：每日凌晨1点
-##      cron: 0/5 * * * * ?
-#      sharding-total-count: 1 #总分片数
-#      shardingItemParameters: 0=correct-job #分片参数
-#    insert-elastic-job: #自定义名称
-#      elasticJobClass: com.catalystplus.admin.elasticjob.PaperCountInsertNewDataJob #类名
-#      #      cron: 0 0 1 ? * SAT #cron：每周六凌晨1点
-#      cron: 0 14 11 ? * *
-#      sharding-total-count: 1 #总分片数
-#      shardingItemParameters: 0=insert-job #分片参数

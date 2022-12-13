@@ -2,13 +2,20 @@ package com.catalystplus.admin.quartz;
 
 
 import com.catalystplus.admin.constant.AdminRankConstant;
+import com.catalystplus.admin.entity.TotalCount;
 import com.catalystplus.admin.manager.RankManager;
+import com.catalystplus.admin.manager.TotalCountManager;
+import com.catalystplus.admin.response.totalCount.TotalCountResponse;
+import com.catalystplus.admin.response.totalCount.TotalResponse;
+import com.catalystplus.admin.service.TotalCountService;
 import com.catalystplus.admin.util.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 
 @Slf4j
@@ -19,11 +26,15 @@ public class PaperJournalRankJob {
     RankManager rankManager;
     @Autowired
     RedisUtil redisUtil;
+    @Autowired
+    TotalCountManager totalCountManager;
+    @Autowired
+    TotalCountService totalCountService;
 
     /**
      * 每天凌晨更新Redis中期刊、文章总量信息
      */
-    @Scheduled(cron = "0 29 13 ? * *")
+    @Scheduled(cron = "0 55 23 ? * *")
     public void updatePaperAndJournalTotal(){
 
 
@@ -51,7 +62,12 @@ public class PaperJournalRankJob {
         redisUtil.deleteBatch("admin:user:today");
 
         //total_count重新插入一条
-
+        TotalCount todayTotalCount = new TotalCount();
+        TotalCount oldTotalCount = totalCountService.getByDate();
+        TotalResponse totalResponse = new TotalResponse();
+        BeanUtils.copyProperties(oldTotalCount,totalResponse);
+        BeanUtils.copyProperties(totalResponse,todayTotalCount);
+        todayTotalCount.setDateTime(totalCountService.tomorrowDateStr());
 
     }
 

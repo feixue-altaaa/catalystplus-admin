@@ -3,6 +3,8 @@ package com.catalystplus.admin;
 import com.catalystplus.admin.consumer.TempProducer;
 import com.catalystplus.admin.dto.AdminDTO;
 import com.catalystplus.admin.entity.UserInfo;
+import com.catalystplus.admin.manager.UserInfoManager;
+import com.catalystplus.admin.response.user.UserInfoResponse;
 import com.catalystplus.admin.service.SysUserService;
 import com.catalystplus.admin.service.UserInfoEducationService;
 import com.catalystplus.admin.service.UserInfoService;
@@ -15,6 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.BitSet;
+import java.util.List;
 import java.util.Objects;
 
 import static com.catalystplus.admin.constant.AdminUserConstant.MAJOR_CODE;
@@ -40,6 +43,19 @@ class UserTests {
 
     @Autowired
     UserInfoUniversityService userInfoUniversityService;
+
+    @Autowired
+    UserInfoManager userInfoManager;
+
+
+    @Test
+    void userinfoTest(){
+        List<UserInfoResponse> usersInfoByEducation = userInfoManager.getUsersInfoByEducation("2022-12-13");
+        usersInfoByEducation.forEach(userInfoResponse -> {
+            System.out.println(userInfoResponse.toString());
+        });
+    }
+
 
     @Test
     void testBitmap() {
