@@ -6,26 +6,45 @@
 
     <resultMap id="BaseResultMap" type="com.catalystplus.admin.entity.Paper">
         <id property="id" column="id" jdbcType="BIGINT"/>
-        <result property="detailUrl" column="detail_url" jdbcType="VARCHAR"/>
-        <result property="journalId" column="journal_id" jdbcType="BIGINT"/>
-        <result property="journalName" column="journal_name" jdbcType="VARCHAR"/>
+        <result property="publisher" column="publisher" jdbcType="VARCHAR"/>
+        <result property="publisherId" column="publisher_id" jdbcType="BIGINT"/>
+        <result property="publicationId" column="publication_id" jdbcType="BIGINT"/>
+        <result property="publicationName" column="publication_name" jdbcType="VARCHAR"/>
+        <result property="publicationType" column="publication_type" jdbcType="VARCHAR"/>
+        <result property="publicationCover" column="publication_cover" jdbcType="VARCHAR"/>
+        <result property="paperType" column="paper_type" jdbcType="VARCHAR"/>
+        <result property="paperUrl" column="paper_url" jdbcType="VARCHAR"/>
+        <result property="enNameHtml" column="en_name_html" jdbcType="VARCHAR"/>
         <result property="enName" column="en_name" jdbcType="VARCHAR"/>
         <result property="chName" column="ch_name" jdbcType="VARCHAR"/>
-        <result property="keyword" column="keyword" jdbcType="VARCHAR"/>
-        <result property="imageUrl" column="image_url" jdbcType="VARCHAR"/>
-        <result property="coverDateStart" column="cover_date_start" jdbcType="VARCHAR"/>
-        <result property="doi" column="doi" jdbcType="VARCHAR"/>
-        <result property="pdfDownloadUrl" column="pdf_download_url" jdbcType="VARCHAR"/>
-        <result property="hubJumpUrl" column="hub_jump_url" jdbcType="VARCHAR"/>
-        <result property="hubPdfUrl" column="hub_pdf_url" jdbcType="VARCHAR"/>
-        <result property="authors" column="authors" jdbcType="VARCHAR"/>
+        <result property="abstractHtml" column="abstract_html" jdbcType="VARCHAR"/>
         <result property="enAbstract" column="en_abstract" jdbcType="VARCHAR"/>
         <result property="chAbstract" column="ch_abstract" jdbcType="VARCHAR"/>
-        <result property="highlights" column="highlights" jdbcType="VARCHAR"/>
         <result property="graphicalAbstract" column="graphical_abstract" jdbcType="VARCHAR"/>
+        <result property="keywords" column="keywords" jdbcType="VARCHAR"/>
+        <result property="authors" column="authors" jdbcType="VARCHAR"/>
+        <result property="doi" column="doi" jdbcType="VARCHAR"/>
+        <result property="pdfPublisher" column="pdf_publisher" jdbcType="VARCHAR"/>
+        <result property="pdfHub" column="pdf_hub" jdbcType="VARCHAR"/>
+        <result property="volume" column="volume" jdbcType="VARCHAR"/>
+        <result property="issue" column="issue" jdbcType="VARCHAR"/>
+        <result property="firstPage" column="first_page" jdbcType="VARCHAR"/>
+        <result property="lastPage" column="last_page" jdbcType="VARCHAR"/>
+        <result property="copyrightLine" column="copyright_line" jdbcType="VARCHAR"/>
+        <result property="referenceNums" column="reference_nums" jdbcType="INTEGER"/>
+        <result property="referenceContent" column="reference_content" jdbcType="VARCHAR"/>
+        <result property="citationNums" column="citation_nums" jdbcType="INTEGER"/>
+        <result property="citationContent" column="citation_content" jdbcType="VARCHAR"/>
+        <result property="coverDateStart" column="cover_date_start" jdbcType="VARCHAR"/>
+        <result property="coverDateText" column="cover_date_text" jdbcType="VARCHAR"/>
+        <result property="availableOnline" column="available_online" jdbcType="VARCHAR"/>
+        <result property="receiveds" column="receiveds" jdbcType="VARCHAR"/>
+        <result property="reviseds" column="reviseds" jdbcType="VARCHAR"/>
+        <result property="accepted" column="accepted" jdbcType="VARCHAR"/>
+        <result property="publicationDate" column="publication_date" jdbcType="VARCHAR"/>
+        <result property="elseMessage" column="else_message" jdbcType="VARCHAR"/>
         <result property="popularity" column="popularity" jdbcType="BIGINT"/>
         <result property="clickCount" column="click_count" jdbcType="BIGINT"/>
-        <result property="timeFrequency" column="time_frequency" jdbcType="BIGINT"/>
         <result property="good" column="good" jdbcType="BIGINT"/>
         <result property="status" column="status" jdbcType="TINYINT"/>
         <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
@@ -33,14 +52,68 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,detail_url,journal_id,
-        journal_name,en_name,ch_name,
-        keyword,image_url,cover_date_start,
-        doi,pdf_download_url,hub_jump_url,
-        hub_pdf_url,authors,en_abstract,
-        ch_abstract,highlights,graphical_abstract,
-        popularity,click_count,time_frequency,
-        good,status,created_time,
-        updated_time
+        id,publisher,publisher_id,
+        publication_id,publication_name,publication_type,
+        publication_cover,paper_type,paper_url,
+        en_name_html,en_name,ch_name,
+        abstract_html,en_abstract,ch_abstract,
+        graphical_abstract,keywords,authors,
+        doi,pdf_publisher,pdf_hub,
+        volume,issue,first_page,
+        last_page,copyright_line,reference_nums,
+        reference_content,citation_nums,citation_content,
+        cover_date_start,cover_date_text,available_online,
+        receiveds,reviseds,accepted,
+        publication_date,else_message,popularity,
+        click_count,good,status,
+        created_time,updated_time
     </sql>
+
+
+    <!--    <select id="getByKeyword" resultType="com.catalystplus.library.entity.Paper">-->
+    <!--        SELECT p.* FROM paper p-->
+    <!--            WHERE MATCH(p.keyword) AGAINST(#{keyword})-->
+    <!--            OR MATCH(p.en_abstract) AGAINST(#{keyword})-->
+    <!--            OR MATCH(p.en_abstract) AGAINST(#{keyword})-->
+    <!--    </select>-->
+
+    <!--        @Select({"SELECT p.*, pc.id AS paperColdId, pc.* FROM paper p",-->
+    <!--                "JOIN paper_cold pc ON p.id = pc.paper_id",-->
+    <!--                "WHERE p.journal_id IN #{journalIds}",-->
+    <!--                "LIMIT #{pageNo}, #{pageSize}"})-->
+
+    <select id="getPaperByJournalIds" resultType="com.catalystplus.library.entity.Paper">
+        select
+        p.*
+        from paper p
+        <if test="journalIds != null and journalIds.size() > 0">
+            where p.publication_id in
+            <foreach collection="journalIds" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        order by p.cover_date_start desc
+        limit #{pageNo}, #{pageSize}
+    </select>
+
+
+    <select id="getPaperByKeywordsAndAuthors" resultType="com.catalystplus.library.entity.Paper">
+        select
+        p.*
+        from paper p
+        <if test="keywords != null and keywords.size() > 0">
+            where p.publication_id in
+            <foreach collection="keywords" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="authors != null and authors.size() > 0">
+            where p.publication_id in
+            <foreach collection="authors" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        order by p.cover_date_start desc
+        limit #{pageNo}, #{pageSize}
+    </select>
 </mapper>

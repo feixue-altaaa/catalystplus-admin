@@ -6,16 +6,24 @@
 
     <resultMap id="BaseResultMap" type="com.catalystplus.admin.entity.Journal">
         <id property="id" column="id" jdbcType="BIGINT"/>
+        <id property="updatedTime" column="updated_time" jdbcType="TIMESTAMP"/>
         <result property="journalId" column="journal_id" jdbcType="BIGINT"/>
         <result property="isbn" column="isbn" jdbcType="VARCHAR"/>
-        <result property="issn" column="issn" jdbcType="VARCHAR"/>
-        <result property="issnPrimaryFormatted" column="issn_primary_formatted" jdbcType="VARCHAR"/>
+        <result property="issnL" column="issn_L" jdbcType="VARCHAR"/>
+        <result property="issnPrimaryFormattedL" column="issn_primary_formatted_L" jdbcType="VARCHAR"/>
+        <result property="issnPrint" column="issn_print" jdbcType="VARCHAR"/>
+        <result property="issnPrintPrimaryFormatted" column="issn_print_primary_formatted" jdbcType="VARCHAR"/>
+        <result property="issnOnline" column="issn_online" jdbcType="VARCHAR"/>
+        <result property="issnOnlinePrimaryFormatted" column="issn_online_primary_formatted" jdbcType="VARCHAR"/>
         <result property="enName" column="en_name" jdbcType="VARCHAR"/>
         <result property="chName" column="ch_name" jdbcType="VARCHAR"/>
-        <result property="description" column="description" jdbcType="VARCHAR"/>
+        <result property="enDescription" column="en_description" jdbcType="VARCHAR"/>
+        <result property="chDescription" column="ch_description" jdbcType="VARCHAR"/>
         <result property="cover" column="cover" jdbcType="VARCHAR"/>
+        <result property="coverBase64" column="cover_base64" jdbcType="VARCHAR"/>
         <result property="subjectId" column="subject_id" jdbcType="BIGINT"/>
         <result property="publisherId" column="publisher_id" jdbcType="BIGINT"/>
+        <result property="publisherName" column="publisher_name" jdbcType="VARCHAR"/>
         <result property="informationPageUrl" column="information_page_url" jdbcType="VARCHAR"/>
         <result property="impactFactor" column="impact_factor" jdbcType="DOUBLE"/>
         <result property="top" column="top" jdbcType="TINYINT"/>
@@ -25,16 +33,19 @@
         <result property="subQuartile" column="sub_quartile" jdbcType="TINYINT"/>
         <result property="status" column="status" jdbcType="TINYINT"/>
         <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
-        <result property="updatedTime" column="updated_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,journal_id,isbn,
-        issn,issn_primary_formatted,en_name,
-        ch_name,description,cover,
-        subject_id,publisher_id,information_page_url,
-        impact_factor,top,open_access,
-        review,quartile,sub_quartile,
-        status,created_time,updated_time
+        id
+        ,updated_time,journal_id,
+        isbn,issn_L,issn_primary_formatted_L,
+        issn_print,issn_print_primary_formatted,issn_online,
+        issn_online_primary_formatted,en_name,ch_name,
+        en_description,ch_description,cover,
+        cover_base64,subject_id,publisher_id,
+        publisher_name,information_page_url,impact_factor,
+        top,open_access,review,
+        quartile,sub_quartile,status,
+        created_time
     </sql>
 </mapper>
