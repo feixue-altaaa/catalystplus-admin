@@ -18,9 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import static com.catalystplus.admin.constant.AdminUserConstant.*;
 
@@ -127,24 +125,33 @@ public class UserInfoManagerImpl implements UserInfoManager {
     }
 
     @Override
-    public List<UserInfoResponse> getUsersInfoByDiscipline(String dateTime) {
+    public Map<String, Object> getUsersInfoByDiscipline(String dateTime) {
         List<UserInfoResponse> userInfoResponses = new ArrayList<>();
         //获取昨日日期
         String lastDate = getLastDate(dateTime);
         // 获取记录用户信息的redis哈希键
         String userInfoKey = RedisKeyUtil.getUserInfoKey(dateTime);
-
+        Integer totalMax = 0;
+        Integer addMax = 0;
         for (int i = 0; i < 14; i++) {
             UserInfoResponse userInfoResponse = new UserInfoResponse();
             userInfoResponse.setId(DISCIPLINE[i]);
             // 今日新增数量
+//                  test                                           admin:user:info:2022-12-19  01
             Integer addNumber = (Integer) redisUtil.getHashValue(userInfoKey, DISCIPLINE_CODE[i]);
+            addMax = Math.max(addMax, addNumber);
             userInfoResponse.setAddNumber(addNumber);
             // 今日总数量 = 今日新增 + 昨日总数量
-            userInfoResponse.setTotalNumber(addNumber + getTotalNumByDisciplineAndDate(DISCIPLINE_CODE[i], lastDate));
+            Integer todaySumNumber = addNumber + getTotalNumByDisciplineAndDate(DISCIPLINE_CODE[i], lastDate);
+            userInfoResponse.setTotalNumber(todaySumNumber);
+            totalMax = Math.max(totalMax, todaySumNumber);
             userInfoResponses.add(userInfoResponse);
         }
-        return userInfoResponses;
+        Map<String, Object> re = new HashMap<>();
+        re.put("userInfoResponses", userInfoResponses);
+        re.put("addNumberMax", addMax);
+        re.put("totalMax", totalMax);
+        return re;
     }
 
     @Override
@@ -235,12 +242,15 @@ public class UserInfoManagerImpl implements UserInfoManager {
 
     private Integer getTotalNumByDisciplineAndDate(String discipline, String dateTime) {
         QueryWrapper<UserInfo> queryWrapper = new QueryWrapper<>();
+        log.info(dateTime + " " + discipline);
         queryWrapper.eq("date_time", dateTime).eq("discipline", discipline);
         List<UserInfo> userInfos = userInfoMapper.selectList(queryWrapper);
         int sum = 0;
         for (UserInfo userInfo : userInfos) {
             sum += Math.toIntExact(userInfo.getTotalNumber());
         }
+        log.info("The Sum is : " + sum + " ");
+
         return sum;
     }
 

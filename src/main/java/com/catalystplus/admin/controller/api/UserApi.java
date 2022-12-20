@@ -51,7 +51,8 @@ public interface UserApi {
 
     @PostMapping("/auth/user/info/discipline")
     @ApiOperation("获取用户信息按学科划分")
-    Response<List<UserInfoResponse>> queryUsersInfoByDiscipline(@RequestBody UserByDateVo userByDateVo);
+//    Response<List<UserInfoResponse>> queryUsersInfoByDiscipline(@RequestBody UserByDateVo userByDateVo);
+    Response<Map<String, Object>>  queryUsersInfoByDiscipline(@RequestBody UserByDateVo userByDateVo);
 
     @PostMapping("/auth/user/info/major")
     @ApiOperation("获取用户信息按专业划分")

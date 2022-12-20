@@ -153,14 +153,14 @@ public class UserController implements UserApi {
     }
 
     @Override
-    public Response<List<UserInfoResponse>> queryUsersInfoByDiscipline(UserByDateVo userByDateVo) {
+    public Response<Map<String, Object>> queryUsersInfoByDiscipline(UserByDateVo userByDateVo) {
         // 1.验证参数
         log.info("userByDateVo is {}", userByDateVo);
         if (Assert.notEmpty(userByDateVo.getLocalDateTime())) {
             return Response.fail(userByDateVo.getUserId(), ADMIN_USER_DATE_ERROR.getCode(), ADMIN_USER_DATE_ERROR.getMsg());
         }
         // 2.按学科获取用户信息
-        List<UserInfoResponse> userInfoResponses;
+        Map<String, Object> userInfoResponses;
         try {
             userInfoResponses = userInfoManager.getUsersInfoByDiscipline(userByDateVo.getLocalDateTime());
         } catch (Exception e) {
