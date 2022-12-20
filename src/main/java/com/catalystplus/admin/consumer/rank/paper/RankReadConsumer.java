@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Slf4j
@@ -29,7 +30,13 @@ public class RankReadConsumer implements RocketMQListener<String> {
 
         redisUtil.update(AdminRankConstant.ADMIN_RANK_TODAY_READ,Long.parseLong(message));
 
-        TotalCount totalCount = totalCountService.getByDate();
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        long currentTimeMillis = System.currentTimeMillis();
+        Date date = new Date(currentTimeMillis);
+        String formatDate = simpleDateFormat.format(date);
+
+        TotalCount totalCount = totalCountService.getByDate(formatDate);
         totalCount.setTodayRead(totalCount.getTodayRead()+1);
         totalCount.setReadTotal(totalCount.getReadTotal()+1);
         totalCountService.updateById(totalCount);

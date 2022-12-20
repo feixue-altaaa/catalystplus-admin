@@ -22,8 +22,8 @@ public class JournalSimpleResponse implements Serializable {
     private String enName;
 
     /**
-     * 带横杠版的issn
+     * 带横杠版的issn，对外宣称的
      */
-    private String issnPrimaryFormatted;
+    private String issnPrimaryFormattedL;
 
 }

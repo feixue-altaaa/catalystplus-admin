@@ -21,33 +21,14 @@ public class TotalCountManagerImpl implements TotalCountManager {
     TotalCountService totalCountService;
 
     @Override
-    public Map<String, Map> getByDate() {
+    public Map<String, Map> getByDate(String dateTime) {
 
         //1. 初始化
         TotalCountResponse totalCountResponse = new TotalCountResponse();
 
         //2. 获取今日、截至今日文章期刊用户新增
-        TotalCount totalCount = totalCountService.getByDate();
+        TotalCount totalCount = totalCountService.getByDate(dateTime);
 
-        //3. 组装响应
-//        BeanUtils.copyProperties(totalCount,totalCountResponse);
-//        totalCountResponse.setTodayPerCapitaSubscription(totalCount.getTodaySubscription()/totalCount.getTodaySubscriptionUser());
-//        totalCountResponse.setTotalPerCapitaSubscription(totalCount.getSubscriptionTotal()/totalCount.getSubscriptionTotalUser());
-//
-//        totalCountResponse.setTodayPerCapitaRead(totalCount.getTodayRead()/totalCount.getTodayReadUser());
-//        totalCountResponse.setTotalPerCapitaRead(totalCount.getReadTotal()/totalCount.getReadTotalUser());
-//
-//        totalCountResponse.setTodayPerCapitaCollect(totalCount.getTodayCollect()/totalCount.getTodayCollectUser());
-//        totalCountResponse.setTotalPerCapitaCollect(totalCount.getReadTotal()/totalCount.getReadTotalUser());
-//
-//        totalCountResponse.setTodayPerCapitaTag(totalCount.getTodayTag()/totalCount.getTodayTagUser());
-//        totalCountResponse.setTotalPerCapitaTag(totalCount.getTagTotal()/totalCount.getTagTotalUser());
-//
-//        totalCountResponse.setTodayPerCapitaNote(totalCount.getTodayNote()/totalCount.getTodayNoteUser());
-//        totalCountResponse.setTotalPerCapitaNote(totalCount.getNoteTotal()/totalCount.getNoteTotalUser());
-//
-//        totalCountResponse.setTodayPerCapitaGood(totalCount.getTodayGood()/totalCount.getTodayGoodUser());
-//        totalCountResponse.setTotalPerCapitaGood(totalCount.getGoodTotal()/totalCount.getGoodTotalUser());
 
         Map<String, Long> paperRead = new HashMap<>();
         Map<String,Long> paperCollect = new HashMap<>();
@@ -100,12 +81,12 @@ public class TotalCountManagerImpl implements TotalCountManager {
 //        List<Map> total = new ArrayList<>();
         Map<String,Map> total = new HashMap<>();
 
-        total.put("paperRead",paperRead);
-        total.put("paperCollect",paperCollect);
-        total.put("paperNote",paperNote);
-        total.put("paperTag",paperTag);
-        total.put("paperGood",paperGood);
-        total.put("journalSubscription",journalSubscription);
+        total.put("read",paperRead);
+        total.put("collect",paperCollect);
+        total.put("note",paperNote);
+        total.put("tag",paperTag);
+        total.put("good",paperGood);
+        total.put("subscription",journalSubscription);
 
         return total;
     }

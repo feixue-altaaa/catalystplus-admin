@@ -168,12 +168,6 @@ public class JournalResponse implements Serializable {
     private Long subscriptionTotal;
 
     /**
-     * 关联publisher出版商表
-     */
-    @ApiModelProperty("期刊出版商")
-    private String publisher;
-
-    /**
      * 领域名字, cn_name:中文名
      */
     @ApiModelProperty("领域ID及中文名称")

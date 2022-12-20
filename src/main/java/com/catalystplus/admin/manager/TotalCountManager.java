@@ -8,6 +8,6 @@ import java.util.Map;
 
 public interface TotalCountManager {
 
-    Map<String, Map> getByDate();
+    Map<String, Map> getByDate(String dateTime);
 
 }

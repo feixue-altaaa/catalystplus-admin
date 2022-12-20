@@ -15,7 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.HashMap;
 
 @Slf4j
@@ -63,7 +65,12 @@ public class PaperJournalRankJob {
 
         //total_count重新插入一条
         TotalCount todayTotalCount = new TotalCount();
-        TotalCount oldTotalCount = totalCountService.getByDate();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        long currentTimeMillis = System.currentTimeMillis();
+        Date date = new Date(currentTimeMillis);
+        String formatDate = simpleDateFormat.format(date);
+
+        TotalCount oldTotalCount = totalCountService.getByDate(formatDate);
         TotalResponse totalResponse = new TotalResponse();
         BeanUtils.copyProperties(oldTotalCount,totalResponse);
         BeanUtils.copyProperties(totalResponse,todayTotalCount);

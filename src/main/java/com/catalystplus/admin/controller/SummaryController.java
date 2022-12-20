@@ -31,7 +31,7 @@ public class SummaryController implements SummaryApi {
 
         //2. 获取期刊文章浏览汇总信息
         try {
-            totalCount = totalCountManager.getByDate();
+            totalCount = totalCountManager.getByDate(summaryVo.getLocalDateTime());
         } catch (Exception e) {
             return Response.fail(summaryVo.getUserId(),e.getMessage());
         }

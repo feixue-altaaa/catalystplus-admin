@@ -22,16 +22,6 @@ public class RankJournal implements Serializable {
     private Long id;
 
     /**
-     * 期刊名字, en_name:英文名
-     */
-    private String enName;
-
-    /**
-     * 期刊名字, ch_name:中文名
-     */
-    private String chName;
-
-    /**
      * 今日期刊订阅数
      */
     private Long todaySubscription;
@@ -77,8 +67,6 @@ public class RankJournal implements Serializable {
         }
         RankJournal other = (RankJournal) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-            && (this.getEnName() == null ? other.getEnName() == null : this.getEnName().equals(other.getEnName()))
-            && (this.getChName() == null ? other.getChName() == null : this.getChName().equals(other.getChName()))
             && (this.getTodaySubscription() == null ? other.getTodaySubscription() == null : this.getTodaySubscription().equals(other.getTodaySubscription()))
             && (this.getSubscriptionTotal() == null ? other.getSubscriptionTotal() == null : this.getSubscriptionTotal().equals(other.getSubscriptionTotal()))
             && (this.getDateTime() == null ? other.getDateTime() == null : this.getDateTime().equals(other.getDateTime()))
@@ -92,8 +80,6 @@ public class RankJournal implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
-        result = prime * result + ((getEnName() == null) ? 0 : getEnName().hashCode());
-        result = prime * result + ((getChName() == null) ? 0 : getChName().hashCode());
         result = prime * result + ((getTodaySubscription() == null) ? 0 : getTodaySubscription().hashCode());
         result = prime * result + ((getSubscriptionTotal() == null) ? 0 : getSubscriptionTotal().hashCode());
         result = prime * result + ((getDateTime() == null) ? 0 : getDateTime().hashCode());
@@ -110,8 +96,6 @@ public class RankJournal implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", enName=").append(enName);
-        sb.append(", chName=").append(chName);
         sb.append(", todaySubscription=").append(todaySubscription);
         sb.append(", subscriptionTotal=").append(subscriptionTotal);
         sb.append(", dateTime=").append(dateTime);

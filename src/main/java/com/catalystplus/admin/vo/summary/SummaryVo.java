@@ -15,4 +15,7 @@ public class SummaryVo implements Serializable {
     @ApiModelProperty("用户ID")
     private Long userId;
 
+    @ApiModelProperty("今日时间")
+    private  String localDateTime;
+
 }

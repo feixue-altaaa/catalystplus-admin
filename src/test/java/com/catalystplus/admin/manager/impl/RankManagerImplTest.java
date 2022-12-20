@@ -63,8 +63,11 @@ class RankManagerImplTest {
 //        papers.forEach(System.out::println);
 
         //没问题
-        rankManager.updatePaperTotal(AdminRankConstant.COLLECT_TOTAL,10L,AdminRankConstant.ADMIN_RANK_TOTAL_COLLECT);
-        rankManager.updatePaperTotal(AdminRankConstant.GOOD_TOTAL,10L,AdminRankConstant.ADMIN_RANK_TOTAL_GOOD);
+//        rankManager.updatePaperTotal(AdminRankConstant.COLLECT_TOTAL,10L,AdminRankConstant.ADMIN_RANK_TOTAL_COLLECT);
+//        rankManager.updatePaperTotal(AdminRankConstant.GOOD_TOTAL,10L,AdminRankConstant.ADMIN_RANK_TOTAL_GOOD);
+        rankManager.updatePaperTotal(AdminRankConstant.READ_TOTAL,10L,AdminRankConstant.ADMIN_RANK_TOTAL_READ);
+        rankManager.updatePaperTotal(AdminRankConstant.NOTE_TOTAL,10l,AdminRankConstant.ADMIN_RANK_TOTAL_NOTE);
+        rankManager.updatePaperTotal(AdminRankConstant.TAG_TOTAL,10l,AdminRankConstant.ADMIN_RANK_TOTAL_TAG);
 
     }
 

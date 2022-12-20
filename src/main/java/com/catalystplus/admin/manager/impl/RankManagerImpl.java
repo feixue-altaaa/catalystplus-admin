@@ -90,7 +90,8 @@ public class RankManagerImpl implements RankManager {
             rankFlag = 0;
             journals.forEach(journal -> {
                 JournalResponse journalResponse = new JournalResponse();
-                BeanUtils.copyProperties(journals.get(rankFlag), journalResponse);
+                BeanUtils.copyProperties(journal, journalResponse);
+                log.info("journal详细信息:{}",journal);
                 BeanUtils.copyProperties(rankJournals.get(rankFlag++), journalResponse);
                 journalResponses.add(journalResponse);
             });

@@ -61,6 +61,7 @@ public class JournalManagerImpl implements JournalManager {
            });
            journals.clear();
        }
+
         //3. 先根据分区排序，再根据英文名排序
         // return journalResponses.parallelStream().sorted(Comparator.comparing(JournalResponse::getQuartile).thenComparing(JournalResponse::getEnName)).collect(Collectors.toList());
         return journalSimpleResponses;
@@ -137,13 +138,12 @@ public class JournalManagerImpl implements JournalManager {
             subjectSimpleResponse.setId(subjectJournal.getSubjectId());
             subjectSimpleResponses.add(subjectSimpleResponse);
         }
-        Publisher publisher = publisherService.getById(journalByJournalName.getPublisherId());
+//        Publisher publisher = publisherService.getById(journalByJournalName.getPublisherId());
 
         //4. 组装响应
         BeanUtils.copyProperties(journalByJournalName,journalResponse);
         journalResponse.setAreaResponse(areaResponse);
         journalResponse.setSubjectSimpleResponses(subjectSimpleResponses);
-        journalResponse.setPublisher(publisher.getName());
 
         return journalResponse;
     }

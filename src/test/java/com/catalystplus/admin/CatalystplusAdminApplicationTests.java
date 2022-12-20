@@ -4,10 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.catalystplus.admin.constant.AdminRankConstant;
 import com.catalystplus.admin.controller.*;
 import com.catalystplus.admin.entity.*;
-import com.catalystplus.admin.manager.PaperCountManager;
-import com.catalystplus.admin.manager.PaperJournalManager;
-import com.catalystplus.admin.manager.ProducerManager;
-import com.catalystplus.admin.manager.RankManager;
+import com.catalystplus.admin.manager.*;
 import com.catalystplus.admin.manager.impl.JournalManagerImpl;
 import com.catalystplus.admin.mapper.JournalMapper;
 import com.catalystplus.admin.mapper.PaperCountMapper;
@@ -17,6 +14,7 @@ import com.catalystplus.admin.response.journal.JournalResponse;
 import com.catalystplus.admin.response.paper.PaperJournalResponse;
 import com.catalystplus.admin.response.paperCount.PaperCountResponse;
 import com.catalystplus.admin.response.subject.SubjectResponse;
+import com.catalystplus.admin.response.user.UserInfoResponse;
 import com.catalystplus.admin.service.*;
 import com.catalystplus.admin.service.impl.AreaServiceImpl;
 import com.catalystplus.admin.service.impl.JournalServiceImpl;
@@ -174,15 +172,23 @@ class CatalystplusAdminApplicationTests {
     @Test
     void journalTest() {
 
-        Long journalTotalByArea = journalMapper.getJournalTotalByArea(2L);
-        log.info("journalTotalByArea:{}",journalTotalByArea);
+//        Long journalTotalByArea = journalMapper.getJournalTotalByArea(2L);
+//        log.info("journalTotalByArea:{}",journalTotalByArea);
 
 //        Journal journal = journalService.getJournalByJournalName("Nature climate change");
 //        log.info("journal:{}", journal);
 //        Journal journal1 = journalService.getJournalByJournalName("地球未来");
 //        log.info("journal:{}", journal1);
 
-//        List<Journal> journalBySubjectId = journalService.getJournalBySubjectId(101L, 1, 12);
+//        Journal nature = journalService.getJournalByJournalName("Nature climate change");
+//        System.out.println(nature.toString());
+
+        JournalByJournalNameVo journalByJournalNameVo = new JournalByJournalNameVo();
+        journalByJournalNameVo.setJournalName("Nature climate change");
+        JournalResponse journalByJournalName = journalManager.getJournalByJournalName(journalByJournalNameVo);
+        System.out.println(journalByJournalName.toString());
+
+//        List<Journal> journalBySubjectId = journalService.getJournalBySubjectId(107L, 1, 12);
 //        journalBySubjectId.forEach(System.out::println);
 
 //        JournalByJournalNameVo journalByJournalNameVo = new JournalByJournalNameVo();
@@ -525,6 +531,32 @@ class CatalystplusAdminApplicationTests {
 
 
     }
+
+
+    @Autowired
+    UserInfoManager userInfoManager;
+    @Test
+    void user11Test(){
+
+
+        Long maxNumberInfoByMajor = userInfoManager.getMaxNumberInfoByMajor("2022-12-19");
+        System.out.println(maxNumberInfoByMajor);
+
+//        List<UserInfoResponse> usersInfoByUniversity = userInfoManager.getUsersInfoByUniversity("2022-12-19");
+//        usersInfoByUniversity.forEach(userInfoResponse -> {
+//            System.out.println(userInfoResponse.toString());
+//        });
+
+//        List<UserInfoResponse> usersInfoByEducation = userInfoManager.getUsersInfoByEducation("2022-12-19");
+//        usersInfoByEducation.forEach(userInfoResponse -> {
+//            System.out.println(userInfoResponse);
+//        });
+//        rankManager.updateJournalTotal();
+
+    }
+
+
+
 
 
 }

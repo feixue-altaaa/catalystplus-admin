@@ -17,7 +17,7 @@ public interface TotalCountService extends IService<TotalCount> {
 
 
 
-    TotalCount getByDate();
+    TotalCount getByDate(String dateTime);
 
     String tomorrowDateStr();
 

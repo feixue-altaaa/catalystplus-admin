@@ -28,7 +28,12 @@ public class RankCollectConsumer implements RocketMQListener<String> {
     public void onMessage(String message) {
         redisUtil.update(AdminRankConstant.ADMIN_RANK_TODAY_COLLECT,Long.parseLong(message));
 
-        TotalCount totalCount = totalCountService.getByDate();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        long currentTimeMillis = System.currentTimeMillis();
+        Date date = new Date(currentTimeMillis);
+        String formatDate = simpleDateFormat.format(date);
+
+        TotalCount totalCount = totalCountService.getByDate(formatDate);
         totalCount.setTodayCollect(totalCount.getTodayCollect()+1);
         totalCount.setCollectTotal(totalCount.getCollectTotal()+1);
         totalCountService.updateById(totalCount);

@@ -22,11 +22,8 @@ public interface AreaApi {
     @ApiOperation("查询所有领域18个")
     Response<List<AreaResponse>> getArea();
 
-
-
     @PostMapping("/auth/area/area_enname")
     @ApiOperation("根据领域名称查询area具体信息")
     Response<AreaResponse> getAreaByAreaName(@RequestBody AreaByAreaNameVo areaByAreaNameVo);
-
 
 }

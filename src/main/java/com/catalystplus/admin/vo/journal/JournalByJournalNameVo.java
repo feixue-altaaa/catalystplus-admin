@@ -16,8 +16,8 @@ public class JournalByJournalNameVo implements Serializable {
     @ApiModelProperty("用户ID")
     private Long userId;
 
-    @ApiModelProperty("主题ID")
-    private Long subjectId;
+//    @ApiModelProperty("主题ID")
+//    private Long subjectId;
 
     @ApiModelProperty("期刊名称")
     private String journalName;

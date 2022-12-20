@@ -22,16 +22,6 @@ public class RankPaper implements Serializable {
     private Long id;
 
     /**
-     * 文献名，英文名en_name
-     */
-    private String enName;
-
-    /**
-     * 文献名，中文名ch_name
-     */
-    private String chName;
-
-    /**
      * 文章今日阅读次数
      */
     private Long todayRead;
@@ -117,8 +107,6 @@ public class RankPaper implements Serializable {
         }
         RankPaper other = (RankPaper) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-            && (this.getEnName() == null ? other.getEnName() == null : this.getEnName().equals(other.getEnName()))
-            && (this.getChName() == null ? other.getChName() == null : this.getChName().equals(other.getChName()))
             && (this.getTodayRead() == null ? other.getTodayRead() == null : this.getTodayRead().equals(other.getTodayRead()))
             && (this.getReadTotal() == null ? other.getReadTotal() == null : this.getReadTotal().equals(other.getReadTotal()))
             && (this.getTodayCollect() == null ? other.getTodayCollect() == null : this.getTodayCollect().equals(other.getTodayCollect()))
@@ -140,8 +128,6 @@ public class RankPaper implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
-        result = prime * result + ((getEnName() == null) ? 0 : getEnName().hashCode());
-        result = prime * result + ((getChName() == null) ? 0 : getChName().hashCode());
         result = prime * result + ((getTodayRead() == null) ? 0 : getTodayRead().hashCode());
         result = prime * result + ((getReadTotal() == null) ? 0 : getReadTotal().hashCode());
         result = prime * result + ((getTodayCollect() == null) ? 0 : getTodayCollect().hashCode());
@@ -166,8 +152,6 @@ public class RankPaper implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", enName=").append(enName);
-        sb.append(", chName=").append(chName);
         sb.append(", todayRead=").append(todayRead);
         sb.append(", readTotal=").append(readTotal);
         sb.append(", todayCollect=").append(todayCollect);

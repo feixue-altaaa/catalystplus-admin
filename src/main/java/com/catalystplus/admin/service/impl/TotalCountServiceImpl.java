@@ -22,15 +22,15 @@ public class TotalCountServiceImpl extends ServiceImpl<TotalCountMapper, TotalCo
 
 
     @Override
-    public TotalCount getByDate() {
+    public TotalCount getByDate(String dateTime) {
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        long currentTimeMillis = System.currentTimeMillis();
-        Date date = new Date(currentTimeMillis);
-        String formatDate = simpleDateFormat.format(date);
+//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//        long currentTimeMillis = System.currentTimeMillis();
+//        Date date = new Date(currentTimeMillis);
+//        String formatDate = simpleDateFormat.format(date);
 
         LambdaQueryWrapper<TotalCount> totalCountLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        totalCountLambdaQueryWrapper.eq(TotalCount::getDateTime,formatDate);
+        totalCountLambdaQueryWrapper.eq(TotalCount::getDateTime,dateTime);
         return this.baseMapper.selectOne(totalCountLambdaQueryWrapper);
 
     }

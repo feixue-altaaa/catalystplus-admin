@@ -10,6 +10,9 @@ import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 @Slf4j
 @Component
 @RocketMQMessageListener(consumerGroup = "admin-rank-collect-user",
@@ -27,7 +30,12 @@ public class RankCollectUserConsumer implements RocketMQListener<String> {
 
         Long todayCollect = redisUtil.bitCount(AdminUserConstant.ADMIN_USER_TODAY_COLLECT);
 
-        TotalCount totalCount = totalCountService.getByDate();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        long currentTimeMillis = System.currentTimeMillis();
+        Date date = new Date(currentTimeMillis);
+        String formatDate = simpleDateFormat.format(date);
+
+        TotalCount totalCount = totalCountService.getByDate(formatDate);
         totalCount.setTodayCollectUser(todayCollect);
         totalCount.setCollectTotalUser(totalCount.getCollectTotalUser() + todayCollect);
         totalCountService.updateById(totalCount);

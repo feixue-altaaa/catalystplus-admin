@@ -104,12 +104,15 @@ public class JournalServiceImpl extends ServiceImpl<JournalMapper, Journal> impl
         LambdaQueryWrapper<Journal> journalLambdaQueryWrapper = new LambdaQueryWrapper<>();
         //判断journalName是英文还是中文
         if(journalByJournalNameVo.getJournalName().matches("[\u4E00-\u9FA5]+")){
-            journalLambdaQueryWrapper.like(true, Journal::getEnName, journalByJournalNameVo.getJournalName()).groupBy(Journal::getJournalId);
+            journalLambdaQueryWrapper.like(true, Journal::getChName, journalByJournalNameVo.getJournalName()).groupBy(Journal::getJournalId);
         }else {
             journalLambdaQueryWrapper.like(true, Journal::getEnName, journalByJournalNameVo.getJournalName()).groupBy(Journal::getJournalId);
         }
         Page<Journal> journalPage = new Page<>(journalByJournalNameVo.getPageNo(), journalByJournalNameVo.getPageSize());
         Page<Journal> page = this.page(journalPage,journalLambdaQueryWrapper);
+        page.getRecords().forEach(journal -> {
+            System.out.println(journal);
+        });
         return page.getRecords();
     }
 

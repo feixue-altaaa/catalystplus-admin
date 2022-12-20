@@ -10,6 +10,9 @@ import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 @Slf4j
 @Component
 @RocketMQMessageListener(consumerGroup = "admin-rank-subscription",
@@ -26,7 +29,12 @@ public class RankJournalSubscriptionConsumer implements RocketMQListener<String>
         redisUtil.update(AdminRankConstant.ADMIN_RANK_TODAY_SUBSCRIPTION,Long.parseLong(message));
         log.info("subscription消费成功");
 
-        TotalCount totalCount = totalCountService.getByDate();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        long currentTimeMillis = System.currentTimeMillis();
+        Date date = new Date(currentTimeMillis);
+        String formatDate = simpleDateFormat.format(date);
+
+        TotalCount totalCount = totalCountService.getByDate(formatDate);
         totalCount.setTodaySubscription(totalCount.getTodaySubscription()+1);
         totalCount.setSubscriptionTotal(totalCount.getSubscriptionTotal()+1);
         totalCountService.updateById(totalCount);
