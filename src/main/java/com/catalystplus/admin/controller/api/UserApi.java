@@ -57,7 +57,6 @@ public interface UserApi {
     @PostMapping("/auth/user/info/major")
     @ApiOperation("获取用户信息按专业划分")
     Response<Map<String, Object>> queryUsersInfoByMajor(@RequestBody UserByDateVo userByDateVo,
-                                                        @RequestParam(required = false, defaultValue = "1") int pageNo,
-                                                        @RequestParam(required = false, defaultValue = "10") int pageSize);
+                                                        @RequestParam(required = false, defaultValue = "1") int pageNo, @RequestParam(required = false, defaultValue = "10") int pageSize);
 
 }

@@ -17,6 +17,9 @@ public class UserInfoResponse implements Serializable {
     @ApiModelProperty("指标名称")
     private String id;
 
+//    @ApiModelProperty("学科截至今日总数量最大值")
+//    private String maxTotalNumber;
+
     @ApiModelProperty("今日新增数量")
     private Integer addNumber;
 

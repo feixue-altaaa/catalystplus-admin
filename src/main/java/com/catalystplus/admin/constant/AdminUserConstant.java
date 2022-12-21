@@ -123,7 +123,6 @@ public final class AdminUserConstant {
      */
     public static final String ADMIN_USER_INFO = "admin:user:info";
 
-
     /**
      * 今日期刊订阅用户数
      */
