@@ -44,6 +44,7 @@ public class RedisUtil {
 
     // 哈希键自增1
     public void hashValueIncrement(String key, String hashKey) {
+        // 给哈希表key中的指定字段的整数值加上增量increment
         redisTemplate.opsForHash().increment(key, hashKey, 1);
     }
 

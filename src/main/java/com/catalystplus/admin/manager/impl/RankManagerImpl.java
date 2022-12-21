@@ -37,7 +37,7 @@ public class RankManagerImpl implements RankManager {
 
     //存放rank_top中所有的key
     public static List<String> rankTopPaperToday = new ArrayList<>();
-    public static List<String> rankToppaperTotal = new ArrayList<>();
+    public static List<String> rankTopPaperTotal = new ArrayList<>();
     public static List<String> rankTopJournalToday = new ArrayList<>();
     public static List<String> rankTopJournalTotal = new ArrayList<>();
 
@@ -52,12 +52,12 @@ public class RankManagerImpl implements RankManager {
         rankTopPaperToday.add(AdminRankConstant.ADMIN_RANK_TODAY_NOTE);
         rankTopPaperToday.add(AdminRankConstant.ADMIN_RANK_TODAY_GOOD);
 
-        //初始化rankToppaperTotal
-        rankToppaperTotal.add(AdminRankConstant.ADMIN_RANK_TOTAL_READ);
-        rankToppaperTotal.add(AdminRankConstant.ADMIN_RANK_TOTAL_COLLECT);
-        rankToppaperTotal.add(AdminRankConstant.ADMIN_RANK_TOTAL_TAG);
-        rankToppaperTotal.add(AdminRankConstant.ADMIN_RANK_TOTAL_NOTE);
-        rankToppaperTotal.add(AdminRankConstant.ADMIN_RANK_TOTAL_GOOD);
+        //初始化rankTopPaperTotal
+        rankTopPaperTotal.add(AdminRankConstant.ADMIN_RANK_TOTAL_READ);
+        rankTopPaperTotal.add(AdminRankConstant.ADMIN_RANK_TOTAL_COLLECT);
+        rankTopPaperTotal.add(AdminRankConstant.ADMIN_RANK_TOTAL_TAG);
+        rankTopPaperTotal.add(AdminRankConstant.ADMIN_RANK_TOTAL_NOTE);
+        rankTopPaperTotal.add(AdminRankConstant.ADMIN_RANK_TOTAL_GOOD);
 
         //初始化rankTopJournalToday
         rankTopJournalToday.add(AdminRankConstant.ADMIN_RANK_TODAY_SUBSCRIPTION);
@@ -191,7 +191,7 @@ public class RankManagerImpl implements RankManager {
 
         //1. 更新rank_top文章截至今日总量
         rankFlag = 2;
-        rankToppaperTotal.forEach(paperTotal -> {
+        rankTopPaperTotal.forEach(paperTotal -> {
 
             //1.1 获取Redis中各类型排名Top数据
             List<Object> paperObjects = redisUtil.get(paperTotal);
@@ -369,7 +369,7 @@ public class RankManagerImpl implements RankManager {
         List<Object> paperObjects = new ArrayList<>();
 
         //2 截至今日总量直接从Redis中获取；如果Redis中没有，从数据库rank_top表中查询
-        if (rankToppaperTotal.contains(rankVo.getCategoryOfRanking())) {
+        if (rankTopPaperTotal.contains(rankVo.getCategoryOfRanking())) {
             log.info("获取文章详细信息");
             paperObjects = redisUtil.get(rankVo.getCategoryOfRanking());
             if (paperObjects.size() > 0) {

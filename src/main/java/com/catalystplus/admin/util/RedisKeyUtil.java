@@ -48,8 +48,8 @@ public final class RedisKeyUtil {
     }
 
     public static String getUserInfoKey(String dateTime) {
+        //  例：admin:user:info:2022-12-19
         return  ADMIN_USER_INFO + SPLIT + dateTime;
-//        admin:user:info:2022-12-19
     }
 
 }

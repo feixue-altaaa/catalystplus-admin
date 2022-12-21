@@ -41,6 +41,7 @@ public class UserInfoManagerImpl implements UserInfoManager {
     private UserInfoMapper userInfoMapper;
 
     // 记录用户今日新增的所有信息
+    // 记录用户今天新增的数目信息 对redis中的 job discipline major 以及学校类别 计数进行 +1
     @Override
     public void recordNewUsersInfoToday(Long userId, String dateTime) {
         SysUser sysUser = sysUserService.getById(userId);
@@ -55,6 +56,8 @@ public class UserInfoManagerImpl implements UserInfoManager {
 
         // 保存用户信息数据的redis的哈希键
         String key = RedisKeyUtil.getUserInfoKey(dateTime);
+
+        // 对redis中的 job discipline major 以及学校类别 计数进行 +1
 
         // 记录用户的学历信息
         redisUtil.hashValueIncrement(key, job);
@@ -87,7 +90,7 @@ public class UserInfoManagerImpl implements UserInfoManager {
         // 获取记录用户信息的redis哈希键
         String userInfoKey = RedisKeyUtil.getUserInfoKey(dateTime);
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < EDUCATION.length; i++) {
             UserInfoResponse userInfoResponse = new UserInfoResponse();
             userInfoResponse.setId(EDUCATION[i]);
             // 今日新增数量
@@ -131,8 +134,8 @@ public class UserInfoManagerImpl implements UserInfoManager {
         String lastDate = getLastDate(dateTime);
         // 获取记录用户信息的redis哈希键
         String userInfoKey = RedisKeyUtil.getUserInfoKey(dateTime);
-        Integer totalMax = 0;
-        Integer addMax = 0;
+        long totalMax = 0L;
+        long addMax = 0L;
         for (int i = 0; i < 14; i++) {
             UserInfoResponse userInfoResponse = new UserInfoResponse();
             userInfoResponse.setId(DISCIPLINE[i]);
@@ -184,6 +187,7 @@ public class UserInfoManagerImpl implements UserInfoManager {
         String userInfoKey = RedisKeyUtil.getUserInfoKey(dateTime);
         for (int i = startIndex; i < endIndex; i++) {
             UserInfoResponse userInfoResponse = new UserInfoResponse();
+            // 获取对应Major的编号
             userInfoResponse.setId(MAJOR_CODE.get(i));
             // 今日新增数量
             Integer addNumber = (Integer) redisUtil.getHashValue(userInfoKey, MAJOR_CODE.get(i));
@@ -229,6 +233,7 @@ public class UserInfoManagerImpl implements UserInfoManager {
     }
 
     private Integer getTotalNumByEducationAndDate(String education, String dateTime) {
+//        MyBatisPlus操作的方法
         QueryWrapper<UserInfoEducation> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("date_time", dateTime).eq("education", education);
         return Math.toIntExact(userInfoEducationService.getOne(queryWrapper).getTotalNumber());
@@ -250,7 +255,6 @@ public class UserInfoManagerImpl implements UserInfoManager {
             sum += Math.toIntExact(userInfo.getTotalNumber());
         }
         log.info("The Sum is : " + sum + " ");
-
         return sum;
     }
 

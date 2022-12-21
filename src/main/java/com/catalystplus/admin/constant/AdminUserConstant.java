@@ -42,6 +42,7 @@ public final class AdminUserConstant {
 
     static {
         try (
+            // getClassLoader是直接从classpath开始查找文件的，因此使用这个就需要定位在classpath这个位置
             InputStream is = AdminUserConstant.class.getClassLoader().getResourceAsStream("UserMajorCode.properties");
             BufferedReader reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(is)));
         ) {
