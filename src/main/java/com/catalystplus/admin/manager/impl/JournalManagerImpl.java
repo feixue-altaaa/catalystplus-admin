@@ -42,7 +42,7 @@ public class JournalManagerImpl implements JournalManager {
 
 
     @Override
-    public List<JournalSimpleResponse> getJournalBySubjectId(JournalBySubjectIdVo journalBySubjectIdVo) {
+    public List<JournalSimpleResponse>  getJournalBySubjectId(JournalBySubjectIdVo journalBySubjectIdVo) {
 
         //1. 初始化
         Long subjectId = journalBySubjectIdVo.getSubjectId();
